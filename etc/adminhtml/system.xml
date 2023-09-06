@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!--
+  ~ @author Improntus Dev Team
+  ~ @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
+  -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="shipping" translate="label" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="uber" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label><![CDATA[<span class="uber-brand">Uber</span> Uber Configuration]]></label>
+                <fieldset_css>uber-top-section</fieldset_css>
+                <field id="geocoding_service" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Geocoding Service</label>
+                    <source_model>Improntus\Uber\Model\Config\Source\GeocodingServiceOption</source_model>
+                </field>
+                <field id="google_api_key" translate="label" type="obscure" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Google API Key</label>
+                    <comment>Data provided by Google</comment>
+                    <validate>required-entry no-whitespace</validate>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <depends>
+                        <field id="geocoding_service">1</field>
+                    </depends>
+                </field>
+                <field id="customer_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customer ID</label>
+                    <comment>Data provided by Uber</comment>
+                    <validate>required-entry no-whitespace</validate>
+                </field>
+                <field id="client_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client ID</label>
+                    <comment>Data provided by Uber</comment>
+                    <validate>required-entry no-whitespace</validate>
+                </field>
+                <field id="client_secret" translate="label" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client Secret</label>
+                    <comment>Data provided by Uber</comment>
+                    <validate>required-entry no-whitespace</validate>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

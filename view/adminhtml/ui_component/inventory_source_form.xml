@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ @author Improntus Dev Team
+  ~ @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
+  -->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="uber_waypoint" sortOrder="35">
+        <settings>
+            <label translate="true">Day and Hours availability</label>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+            <dataScope>general</dataScope>
+        </settings>
+        <field name="monday_open" formElement="select" sortOrder="10">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Monday Opening</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="monday_close" formElement="select" sortOrder="15">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Monday Closing</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="tuesday_open" formElement="select" sortOrder="20">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Tuesday Opening</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="tuesday_close" formElement="select" sortOrder="25">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Tuesday Closing</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="wednesday_open" formElement="select" sortOrder="30">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Wednesday Opening</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="wednesday_close" formElement="select" sortOrder="35">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Wednesday Closing</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="thursday_open" formElement="select" sortOrder="40">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Thursday Opening</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="thursday_close" formElement="select" sortOrder="45">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Thursday Closing</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="friday_open" formElement="select" sortOrder="50">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Friday Opening</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="friday_close" formElement="select" sortOrder="55">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Friday Closing</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="saturday_open" formElement="select" sortOrder="60">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Saturday Opening</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="saturday_close" formElement="select" sortOrder="65">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Saturday Closing</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="sunday_open" formElement="select" sortOrder="70">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Sunday Opening</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="sunday_close" formElement="select" sortOrder="75">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Sunday Closing</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+</form>

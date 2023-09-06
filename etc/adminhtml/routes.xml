@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+  ~ @author Improntus Dev Team
+  ~ @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
+  -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="admin">
+        <route id="uber" frontName="uber">
+            <module name="Improntus_Uber" before="Magento_Adminhtml"/>
+        </route>
+    </router>
+</config>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+  ~ @author Improntus Dev Team
+  ~ @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
+  -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="UberLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="info" xsi:type="object">Improntus\Uber\Logger\Handler\CustomHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Improntus\Uber\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">uber</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Improntus\Uber\Logger\Handler\CustomHandler</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -110,7 +110,7 @@ class Save extends Action
         $resultRedirect = $this->resultRedirectFactory->create();
 
         // Create Organization?
-        /*if (empty($data['organization_id'])) {
+        if (empty($data['organization_id'])) {
             try {
                 // Create Organization
                 $uberResult = $this->uber->createOrganization($data);
@@ -125,7 +125,7 @@ class Save extends Action
             } catch (\Exception $e) {
                 $this->helper->log("UBER Create Org: " . $e->getMessage());
             }
-        }*/
+        }
 
         // Save
         try {

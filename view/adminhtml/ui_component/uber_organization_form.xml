@@ -189,83 +189,83 @@
                 <label translate="true">Phone Number</label>
             </settings>
         </field>
-        <!-- ADDRESS DATA -->
-        <fieldset name="address_data" sortOrder="60">
+    </fieldset>
+    <!-- ADDRESS DATA -->
+    <fieldset name="address_data" sortOrder="60">
+        <settings>
+            <label translate="true">Address Data</label>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+        </settings>
+        <field name="street" formElement="input" sortOrder="5">
             <settings>
-                <label translate="true">Address Data</label>
-                <collapsible>true</collapsible>
-                <opened>false</opened>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <dataScope>street</dataScope>
+                <label translate="true">Street</label>
+                <notice translate="true">The street detail if needed, for example 2000 Tustin Ave.</notice>
             </settings>
-            <field name="street" formElement="input" sortOrder="5">
-                <settings>
-                    <validation>
-                        <rule name="required-entry" xsi:type="boolean">true</rule>
-                    </validation>
-                    <dataType>text</dataType>
-                    <dataScope>street</dataScope>
-                    <label translate="true">Street</label>
-                    <notice translate="true">The street detail if needed, for example 2000 Tustin Ave.</notice>
-                </settings>
-            </field>
+        </field>
 
-            <field name="postcode" formElement="input" sortOrder="10">
-                <settings>
-                    <validation>
-                        <rule name="required-entry" xsi:type="boolean">true</rule>
-                    </validation>
-                    <dataType>text</dataType>
-                    <dataScope>postcode</dataScope>
-                    <label translate="true">Postcode / Zipcode</label>
-                </settings>
-            </field>
+        <field name="postcode" formElement="input" sortOrder="10">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <dataScope>postcode</dataScope>
+                <label translate="true">Postcode / Zipcode</label>
+            </settings>
+        </field>
 
-            <field name="street2" formElement="input" sortOrder="15">
-                <settings>
-                    <dataType>text</dataType>
-                    <dataScope>street2</dataScope>
-                    <label translate="true">Additional Street</label>
-                    <notice translate="true">Additional street detail if needed</notice>
-                </settings>
-            </field>
+        <field name="street2" formElement="input" sortOrder="15">
+            <settings>
+                <dataType>text</dataType>
+                <dataScope>street2</dataScope>
+                <label translate="true">Additional Street</label>
+                <notice translate="true">Additional street detail if needed</notice>
+            </settings>
+        </field>
 
-            <field name="city" formElement="input" sortOrder="20">
-                <settings>
-                    <validation>
-                        <rule name="required-entry" xsi:type="boolean">true</rule>
-                    </validation>
-                    <dataType>text</dataType>
-                    <dataScope>city</dataScope>
-                    <label translate="true">City</label>
-                    <notice translate="true">The city detail for the address, for example “Irvine”</notice>
-                </settings>
-            </field>
+        <field name="city" formElement="input" sortOrder="20">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <dataScope>city</dataScope>
+                <label translate="true">City</label>
+                <notice translate="true">The city detail for the address, for example “Irvine”</notice>
+            </settings>
+        </field>
 
-            <field name="state" formElement="input" sortOrder="25">
-                <settings>
-                    <validation>
-                        <rule name="required-entry" xsi:type="boolean">true</rule>
-                    </validation>
-                    <dataType>text</dataType>
-                    <dataScope>state</dataScope>
-                    <label translate="true">State</label>
-                    <notice translate="true">The state detail for the address, for example “CA” for California</notice>
-                </settings>
-            </field>
+        <field name="state" formElement="input" sortOrder="25">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <dataScope>state</dataScope>
+                <label translate="true">State</label>
+                <notice translate="true">The state detail for the address, for example “CA” for California</notice>
+            </settings>
+        </field>
 
-            <field name="country" formElement="select" sortOrder="30">
-                <settings>
-                    <dataType>text</dataType>
-                    <dataScope>country</dataScope>
-                    <label translate="true">Country</label>
-                </settings>
-                <formElements>
-                    <select>
-                        <settings>
-                            <options class="Magento\Directory\Model\Config\Source\Country"/>
-                        </settings>
-                    </select>
-                </formElements>
-            </field>
-        </fieldset>
+        <field name="country" formElement="select" sortOrder="30">
+            <settings>
+                <dataType>text</dataType>
+                <dataScope>country</dataScope>
+                <label translate="true">Country</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\Directory\Model\Config\Source\Country"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
     </fieldset>
 </form>

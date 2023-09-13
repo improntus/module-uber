@@ -26,15 +26,15 @@ define([
          * @param {String} value
          */
         onUpdate: function (value) {
-            // Get Address Collapse
-            let addressCollapse = registry.get(`index = ${this.addressCollapse}`);
+            this._super();
             // Update based on value
-            if (value == "BILLING_TYPE_DECENTRALIZED") {
-                addressCollapse.visible(true);
-                this.updateValidation(true);
-            } else {
-                addressCollapse.visible(false);
-                this.updateValidation(false);
+            switch (value) {
+                case 'BILLING_TYPE_DECENTRALIZED':
+                    this.updateValidation(true);
+                    break;
+                case 'BILLING_TYPE_CENTRALIZED':
+                    this.updateValidation(false);
+                    break;
             }
             return this;
         },
@@ -43,10 +43,26 @@ define([
          * @param valRequire
          */
         updateValidation(valRequire){
+            this._super();
+
+            // Update Form Components
             let formElements = this.addressFields;
             formElements.forEach(function (field) {
-                registry.get(`index = ${field}`).required(valRequire).value(valRequire ? '' : '-');
+                // Get Element
+                var formInput = registry.get(`index = ${field}`);
+
+                // Set Prop Required
+                formInput.required(valRequire);
+
+                // Set Visibility
+                formInput.visible(!!valRequire);
             })
+
+            // Show / Hide Address Collapse
+            let addressCollapse = registry.get(`index = ${this.addressCollapse}`);
+            addressCollapse.visible(valRequire);
+
+            // Return
             return this;
         }
 

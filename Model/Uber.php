@@ -119,7 +119,7 @@ class Uber
         ];
 
         // Populate Info
-        $requestData['info'] = [
+        $body['info'] = [
             'name' => $userData['organization_name'],
             'billing_type' => $userData['billing_type'],
             'merchant_type' => $userData['merchant_type']
@@ -127,7 +127,7 @@ class Uber
 
         // Populate Address ONLY billing_type is BILLING_TYPE_DECENTRALIZED
         if ($userData['billing_type'] === 'BILLING_TYPE_DECENTRALIZED') {
-            $requestData['info']['address'] = [
+            $body['info']['address'] = [
                 'street1' => $userData['street'],
                 'street2' => $userData['street2'],
                 'city' => $userData['city'],
@@ -138,7 +138,7 @@ class Uber
         }
 
         // Populate Point of Contact Info
-        $requestData['info']['point_of_contact'] = [
+        $body['info']['point_of_contact'] = [
             'email' => $userData['email'],
             'phone_details' => [
                 'phone_number' => $userData['phone_number'],
@@ -149,15 +149,21 @@ class Uber
 
         // Populate Hierarchy Info
         $parentOrganizationId = $this->helper->getCustomerId();
-        $requestData['hierarchy_info'] = [
+        $body['hierarchy_info'] = [
             'parent_organization_id' => $parentOrganizationId
         ];
 
         // Populate Options
-        $requestData['options'] = [
+        $onBoardingLocale = str_replace('_', '-', $this->store->getDefaultLocale()) ?? 'en-us';
+        $body['options'] = [
             'onboarding_invite_type' => $userData['onboarding_type'],
-            'locale' => $this->store->getDefaultLocale() ?? 'en_us'
+            'locale' => $onBoardingLocale
         ];
+
+        // Add Body to RequestData
+        $requestData['body'] = json_encode($body);
+
+        $a = 1;
 
         // Get endpoint URL
         $createOrganizationEndpoint = $this->helper->buildRequestURL('direct/organizations');

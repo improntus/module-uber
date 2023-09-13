@@ -25,6 +25,10 @@ class Webservice
      */
     private $clientFactory;
 
+    /**
+     * @param ClientFactory $clientFactory
+     * @param ResponseFactory $responseFactory
+     */
     public function __construct(
         ClientFactory $clientFactory,
         ResponseFactory $responseFactory,

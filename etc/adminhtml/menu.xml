@@ -22,7 +22,7 @@
              resource="Improntus_Uber::settings"
              sortOrder="20"/>
         <add id="Improntus_Uber::carriers"
-             title="Shipping Methods"
+             title="Shipping Method"
              translate="title"
              module="Improntus_Uber"
              parent="Improntus_Uber::menu"
@@ -37,5 +37,13 @@
              parent="Improntus_Uber::menu"
              action="uber/waypoint"
              resource="Improntus_Uber::waypoints"/>
+        <add id="Improntus_Uber::organizations"
+             title="Manage Organizations"
+             translate="title"
+             module="Improntus_Uber"
+             sortOrder="50"
+             parent="Improntus_Uber::menu"
+             action="uber/organization"
+             resource="Improntus_Uber::organizations"/>
     </menu>
 </config>

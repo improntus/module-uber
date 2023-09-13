@@ -11,7 +11,13 @@ use Magento\Framework\Logger\Handler\Base as BaseHandler;
 
 class CustomHandler extends BaseHandler
 {
+    /**
+     * @var int $loggerType
+     */
     protected $loggerType = MonologLogger::INFO;
 
+    /**
+     * @var string $fileName
+     */
     protected $fileName = 'var/log/uber/info.log';
 }

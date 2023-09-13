@@ -1,4 +1,4 @@
-<img src="./view/adminhtml/web/images/uber_logo.png" align="right" width="48"> <p>Official Module - Magento 2</p>
+<img src="./view/adminhtml/web/images/uber_logo_menu.svg" align="right" width="48"> <p>Official Module - Magento 2</p>
 <hr>
 
 ## Description

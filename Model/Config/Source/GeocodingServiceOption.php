@@ -17,6 +17,7 @@ class GeocodingServiceOption implements OptionSourceInterface
     public function toOptionArray(): array
     {
         return [
+            ['label' => __('-- Select --'), 'value' => ''],
             ['label' => __('Google Maps'), 'value' => 1],
             ['label' => __('Nominatim (OpenStreetMap)'), 'value' => 0],
         ];

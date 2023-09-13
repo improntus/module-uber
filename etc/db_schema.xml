@@ -5,62 +5,113 @@
   -->
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
   <table name="inventory_source" resource="default">
-    <column xsi:type="varchar" name="monday_open" nullable="true" length="2" default="99" comment="Monday - Open Working hour"/>
-    <column xsi:type="varchar" name="monday_close" nullable="true" length="2" default="99" comment="Monday - Close Working hour"/>
-    <column xsi:type="varchar" name="tuesday_open" nullable="true" length="2" default="99" comment="Tuesday - Open Working hour"/>
-    <column xsi:type="varchar" name="tuesday_close" nullable="true" length="2" default="99" comment="Tuesday - Close Working hour"/>
-    <column xsi:type="varchar" name="wednesday_open" nullable="true" length="2" default="99" comment="Wednesday - Open Working hour"/>
-    <column xsi:type="varchar" name="wednesday_close" nullable="true" length="2" default="99" comment="Wednesday - Close Working hour"/>
-    <column xsi:type="varchar" name="thursday_open" nullable="true" length="2" default="99" comment="Thursday - Open Working hour"/>
-    <column xsi:type="varchar" name="thursday_close" nullable="true" length="2" default="99" comment="Thursday - Close Working hour"/>
-    <column xsi:type="varchar" name="friday_open" nullable="true" length="2" default="99" comment="Friday - Open Working hour"/>
-    <column xsi:type="varchar" name="friday_close" nullable="true" length="2" default="99" comment="Friday - Close Working hour"/>
-    <column xsi:type="varchar" name="saturday_open" nullable="true" length="2" default="99" comment="Saturday - Open Working hour"/>
-    <column xsi:type="varchar" name="saturday_close" nullable="true" length="2" default="99" comment="Saturday - Close Working hour"/>
-    <column xsi:type="varchar" name="sunday_open" nullable="true" length="2" default="99" comment="Sunday - Open Working hour"/>
-    <column xsi:type="varchar" name="sunday_close" nullable="true" length="2" default="99" comment="Sunday - Close Working hour"/>
+    <column xsi:type="int" name="organization_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Organization Id"/>
+    <column xsi:type="varchar" name="monday_open" nullable="false" length="2" default="99" comment="Monday - Open"/>
+    <column xsi:type="varchar" name="monday_close" nullable="false" length="2" default="99" comment="Monday - Close"/>
+    <column xsi:type="varchar" name="tuesday_open" nullable="false" length="2" default="99" comment="Tuesday - Open"/>
+    <column xsi:type="varchar" name="tuesday_close" nullable="false" length="2" default="99" comment="Tuesday - Close"/>
+    <column xsi:type="varchar" name="wednesday_open" nullable="false" length="2" default="99" comment="Wednesday - Open"/>
+    <column xsi:type="varchar" name="wednesday_close" nullable="false" length="2" default="99" comment="Wednesday - Close"/>
+    <column xsi:type="varchar" name="thursday_open" nullable="false" length="2" default="99" comment="Thursday - Open"/>
+    <column xsi:type="varchar" name="thursday_close" nullable="false" length="2" default="99" comment="Thursday - Close"/>
+    <column xsi:type="varchar" name="friday_open" nullable="false" length="2" default="99" comment="Friday - Open"/>
+    <column xsi:type="varchar" name="friday_close" nullable="false" length="2" default="99" comment="Friday - Close"/>
+    <column xsi:type="varchar" name="saturday_open" nullable="false" length="2" default="99" comment="Saturday - Open"/>
+    <column xsi:type="varchar" name="saturday_close" nullable="false" length="2" default="99" comment="Saturday - Close"/>
+    <column xsi:type="varchar" name="sunday_open" nullable="false" length="2" default="99" comment="Sunday - Open"/>
+    <column xsi:type="varchar" name="sunday_close" nullable="false" length="2" default="99" comment="Sunday - Close"/>
   </table>
 
   <table name="improntus_uber_token" resource="default" engine="innodb" comment="Uber Access Token data">
     <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true" comment="Entity Id"/>
     <column xsi:type="int" name="store_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Store Id"/>
-    <column xsi:type="varchar" name="token" nullable="false" length="255" comment="Access Token"/>
-    <column xsi:type="timestamp" name="expiration" nullable="false" default="CURRENT_TIMESTAMP" comment="Expiration Date"/>
+    <column xsi:type="timestamp" name="expiration_date" nullable="false" default="CURRENT_TIMESTAMP" comment="Expiration Date"/>
+    <column xsi:type="longtext" name="token" nullable="false" comment="Access Token"/>
+    <column xsi:type="varchar" name="scope" nullable="false" length="255" comment="Uber Scope"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="entity_id"/>
     </constraint>
-    <constraint xsi:type="unique" referenceId="improntus_uber_store_id">
+    <constraint xsi:type="unique" referenceId="UBER_STORE_SCOPE">
       <column name="store_id"/>
+      <column name="scope"/>
     </constraint>
   </table>
 
   <table name="improntus_uber_waypoint" resource="default" engine="innodb" comment="Uber Waypoints">
-    <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true" comment="Entity Id"/>
+    <column xsi:type="int" name="waypoint_id" padding="11" unsigned="false" nullable="false" identity="true" comment="Waypoint Id"/>
     <column xsi:type="int" name="store_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Store Id"/>
-    <column xsi:type="boolean" name="enabled" nullable="false" comment="Enabled"/>
+    <column xsi:type="int" name="organization_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Organization Id"/>
+    <column xsi:type="boolean" name="active" nullable="false" comment="Active"/>
     <column xsi:type="varchar" name="name" nullable="false" length="255" comment="Name"/>
     <column xsi:type="varchar" name="address" nullable="false" length="255" comment="Address"/>
     <column xsi:type="varchar" name="postcode" nullable="false" length="255" comment="Postcode"/>
-    <column xsi:type="varchar" name="telephone" nullable="false" length="255" comment="Telephone"/>
+    <column xsi:type="varchar" name="region" nullable="false" length="255" comment="Region"/>
+    <column xsi:type="varchar" name="city" nullable="false" length="255" comment="City"/>
     <column xsi:type="varchar" name="latitude" nullable="false" length="60" comment="Latitude"/>
     <column xsi:type="varchar" name="longitude" nullable="false" length="60" comment="Longitude"/>
+    <column xsi:type="varchar" name="telephone" nullable="false" length="255" comment="Telephone"/>
     <column xsi:type="varchar" name="instructions" nullable="false" length="255" comment="Instructions"/>
-    <column xsi:type="varchar" name="monday_open" nullable="true" length="2" default="99" comment="Monday - Open Working hour"/>
-    <column xsi:type="varchar" name="monday_close" nullable="true" length="2" default="99" comment="Monday - Close Working hour"/>
-    <column xsi:type="varchar" name="tuesday_open" nullable="true" length="2" default="99" comment="Tuesday - Open Working hour"/>
-    <column xsi:type="varchar" name="tuesday_close" nullable="true" length="2" default="99" comment="Tuesday - Close Working hour"/>
-    <column xsi:type="varchar" name="wednesday_open" nullable="true" length="2" default="99" comment="Wednesday - Open Working hour"/>
-    <column xsi:type="varchar" name="wednesday_close" nullable="true" length="2" default="99" comment="Wednesday - Close Working hour"/>
-    <column xsi:type="varchar" name="thursday_open" nullable="true" length="2" default="99" comment="Thursday - Open Working hour"/>
-    <column xsi:type="varchar" name="thursday_close" nullable="true" length="2" default="99" comment="Thursday - Close Working hour"/>
-    <column xsi:type="varchar" name="friday_open" nullable="true" length="2" default="99" comment="Friday - Open Working hour"/>
-    <column xsi:type="varchar" name="friday_close" nullable="true" length="2" default="99" comment="Friday - Close Working hour"/>
-    <column xsi:type="varchar" name="saturday_open" nullable="true" length="2" default="99" comment="Saturday - Open Working hour"/>
-    <column xsi:type="varchar" name="saturday_close" nullable="true" length="2" default="99" comment="Saturday - Close Working hour"/>
-    <column xsi:type="varchar" name="sunday_open" nullable="true" length="2" default="99" comment="Sunday - Open Working hour"/>
-    <column xsi:type="varchar" name="sunday_close" nullable="true" length="2" default="99" comment="Sunday - Close Working hour"/>
+    <column xsi:type="varchar" name="monday_open" nullable="true" length="2" default="99" comment="Monday - Open"/>
+    <column xsi:type="varchar" name="monday_close" nullable="true" length="2" default="99" comment="Monday - Close"/>
+    <column xsi:type="varchar" name="tuesday_open" nullable="true" length="2" default="99" comment="Tuesday - Open"/>
+    <column xsi:type="varchar" name="tuesday_close" nullable="true" length="2" default="99" comment="Tuesday - Close"/>
+    <column xsi:type="varchar" name="wednesday_open" nullable="true" length="2" default="99" comment="Wednesday - Open"/>
+    <column xsi:type="varchar" name="wednesday_close" nullable="true" length="2" default="99" comment="Wednesday - Close"/>
+    <column xsi:type="varchar" name="thursday_open" nullable="true" length="2" default="99" comment="Thursday - Open"/>
+    <column xsi:type="varchar" name="thursday_close" nullable="true" length="2" default="99" comment="Thursday - Close"/>
+    <column xsi:type="varchar" name="friday_open" nullable="true" length="2" default="99" comment="Friday - Open"/>
+    <column xsi:type="varchar" name="friday_close" nullable="true" length="2" default="99" comment="Friday - Close"/>
+    <column xsi:type="varchar" name="saturday_open" nullable="true" length="2" default="99" comment="Saturday - Open"/>
+    <column xsi:type="varchar" name="saturday_close" nullable="true" length="2" default="99" comment="Saturday - Close"/>
+    <column xsi:type="varchar" name="sunday_open" nullable="true" length="2" default="99" comment="Sunday - Open"/>
+    <column xsi:type="varchar" name="sunday_close" nullable="true" length="2" default="99" comment="Sunday - Close"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="waypoint_id"/>
+    </constraint>
+  </table>
+
+  <table name="improntus_uber_organization" resource="default" engine="innodb" comment="Uber MSI Data">
+    <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true" comment="Entity Id"/>
+    <column xsi:type="boolean" name="active" nullable="false" default="false" comment="Active"/>
+    <column xsi:type="varchar" name="organization_id" nullable="false" length="255" comment="Organization Id"/>
+    <column xsi:type="varchar" name="organization_name" nullable="false" length="255" comment="Organization Name"/>
+    <column xsi:type="varchar" name="billing_type" nullable="false" length="255" comment="Billing Type"/>
+    <column xsi:type="varchar" name="merchant_type" nullable="false" length="255" comment="Merchant Type"/>
+    <column xsi:type="varchar" name="onboarding_type" nullable="false" length="255" comment="Onboarding Type"/>
+    <column xsi:type="varchar" name="email" nullable="false" length="255" comment="Email"/>
+    <column xsi:type="varchar" name="phone_number" nullable="false" length="255" comment="Phone Number"/>
+    <column xsi:type="varchar" name="phone_country_code" nullable="false" length="6" comment="Phone Country Code"/>
+    <column xsi:type="varchar" name="street" nullable="false" length="255" comment="Street"/>
+    <column xsi:type="varchar" name="street2" nullable="false" length="255" comment="Street 2"/>
+    <column xsi:type="varchar" name="city" nullable="false" length="255" comment="City"/>
+    <column xsi:type="varchar" name="state" nullable="false" length="255" comment="State"/>
+    <column xsi:type="varchar" name="postcode" nullable="false" length="255" comment="postcode"/>
+    <column xsi:type="varchar" name="country" nullable="false" length="255" comment="Country"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="entity_id"/>
     </constraint>
   </table>
+  <!-- UBER MSI
+  <table name="improntus_uber_msi" resource="default" engine="innodb" comment="Uber MSI Data">
+    <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true" comment="Entity Id"/>
+    <column xsi:type="int" name="organization_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Organization Id"/>
+    <column xsi:type="varchar" name="source_code" nullable="false" length="255" comment="MSI Source Code"/>
+    <column xsi:type="varchar" name="monday_open" nullable="true" length="2" default="99" comment="Monday - Open"/>
+    <column xsi:type="varchar" name="monday_close" nullable="true" length="2" default="99" comment="Monday - Close"/>
+    <column xsi:type="varchar" name="tuesday_open" nullable="true" length="2" default="99" comment="Tuesday - Open"/>
+    <column xsi:type="varchar" name="tuesday_close" nullable="true" length="2" default="99" comment="Tuesday - Close"/>
+    <column xsi:type="varchar" name="wednesday_open" nullable="true" length="2" default="99" comment="Wednesday - Open"/>
+    <column xsi:type="varchar" name="wednesday_close" nullable="true" length="2" default="99" comment="Wednesday - Close"/>
+    <column xsi:type="varchar" name="thursday_open" nullable="true" length="2" default="99" comment="Thursday - Open"/>
+    <column xsi:type="varchar" name="thursday_close" nullable="true" length="2" default="99" comment="Thursday - Close"/>
+    <column xsi:type="varchar" name="friday_open" nullable="true" length="2" default="99" comment="Friday - Open"/>
+    <column xsi:type="varchar" name="friday_close" nullable="true" length="2" default="99" comment="Friday - Close"/>
+    <column xsi:type="varchar" name="saturday_open" nullable="true" length="2" default="99" comment="Saturday - Open"/>
+    <column xsi:type="varchar" name="saturday_close" nullable="true" length="2" default="99" comment="Saturday - Close"/>
+    <column xsi:type="varchar" name="sunday_open" nullable="true" length="2" default="99" comment="Sunday - Open"/>
+    <column xsi:type="varchar" name="sunday_close" nullable="true" length="2" default="99" comment="Sunday - Close"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="entity_id"/>
+    </constraint>
+  </table>-->
 </schema>

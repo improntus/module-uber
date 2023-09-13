@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Improntus Dev Team
  * @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
@@ -7,23 +6,12 @@
 
 namespace Improntus\Uber\Model\ResourceModel;
 
-use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
-use Magento\Framework\Model\ResourceModel\Db\Context;
-
-class Token extends AbstractDb
+class Token extends AbstractModel
 {
     /**
-     * @param Context $context
-     * @param null $resourcePrefix
+     * @return void
      */
-    public function __construct(
-        Context $context,
-        $resourcePrefix = null
-    ) {
-        parent::__construct($context, $resourcePrefix);
-    }
-
-    public function _construct()
+    protected function _construct()
     {
         $this->_init('improntus_uber_token', 'entity_id');
     }

@@ -11,34 +11,96 @@
             <group id="uber" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label><![CDATA[<span class="uber-brand">Uber</span> Uber Configuration]]></label>
                 <fieldset_css>uber-top-section</fieldset_css>
-                <field id="geocoding_service" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Geocoding Service</label>
-                    <source_model>Improntus\Uber\Model\Config\Source\GeocodingServiceOption</source_model>
-                </field>
-                <field id="google_api_key" translate="label" type="obscure" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Google API Key</label>
-                    <comment>Data provided by Google</comment>
-                    <validate>required-entry no-whitespace</validate>
-                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-                    <depends>
-                        <field id="geocoding_service">1</field>
-                    </depends>
-                </field>
-                <field id="customer_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="customer_id" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Customer ID</label>
                     <comment>Data provided by Uber</comment>
                     <validate>required-entry no-whitespace</validate>
                 </field>
-                <field id="client_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="client_id" translate="label" type="obscure" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Client ID</label>
                     <comment>Data provided by Uber</comment>
                     <validate>required-entry no-whitespace</validate>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                 </field>
-                <field id="client_secret" translate="label" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="client_secret" translate="label" type="obscure" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Client Secret</label>
                     <comment>Data provided by Uber</comment>
                     <validate>required-entry no-whitespace</validate>
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+            </group>
+        </section>
+        <!-- CARRIER -->
+        <section id="carriers" translate="label" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="uber" translate="label" type="text" sortOrder="400" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label><![CDATA[<span class="uber-brand">Uber</span> Uber Configuration]]></label>
+                <fieldset_css>uber-top-section</fieldset_css>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="mode" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Integration Mode</label>
+                    <source_model>Improntus\Uber\Model\Config\Source\Carriers\IntegrationModeOption</source_model>
+                </field>
+                <field id="debug" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Debug Mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="source" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use MSI or Waypoints</label>
+                    <source_model>Improntus\Uber\Model\Config\Source\Carriers\SourceOption</source_model>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+                <field id="description" translate="label" type="textarea" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Description</label>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Order</label>
+                </field>
+                <field id="locale" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Language</label>
+                    <source_model>Magento\Config\Model\Config\Source\Locale</source_model>
+                    <comment>It will be used to configure the popup to enter the shipping address</comment>
+                </field>
+                <field id="showmethod" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show Method if Not Applicable</label>
+                    <frontend_class>shipping-skip-hide</frontend_class>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="automatic_shipment" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Automatic Shipment Generation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="free_shipping" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Free Shipping</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Apply Free Shipping rules</comment>
+                </field>
+                <field id="verification_type" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Verification Type</label>
+                    <source_model>Improntus\Uber\Model\Config\Source\Carriers\VerificationOption</source_model>
+                    <comment>Verification steps that must be taken before the dropoff can be completed.</comment>
+                </field>
+                <field id="cash_delivery" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cash on Delivery</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="product_volume_attribute" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Volume attribute code</label>
+                    <source_model>Improntus\Uber\Model\Config\Source\Carriers\CatalogProductOption</source_model>
+                </field>
+                <field id="preparation_time" translate="label" type="text" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Preparation time</label>
+                    <validate>required-entry</validate>
+                    <comment>Preparation time in minutes</comment>
+                </field>
+                <field id="status_allowed" translate="label" type="multiselect" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Status for automatic shipping creation</label>
+                    <source_model>Improntus\Uber\Model\Config\Source\Carriers\StatusOrderOption</source_model>
+                    <comment>When order change to one of this selected status, shipment will be generated automatically</comment>
                 </field>
             </group>
         </section>

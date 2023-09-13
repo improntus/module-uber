@@ -6,43 +6,19 @@
 
 namespace Improntus\Uber\Model\ResourceModel\Token;
 
-use Magento\Framework\Data\Collection\Db\FetchStrategyInterface;
-use Magento\Framework\Data\Collection\EntityFactory;
-use Magento\Framework\DB\Adapter\AdapterInterface;
-use Magento\Framework\Event\ManagerInterface;
-use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
-use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
-use Psr\Log\LoggerInterface;
+use Improntus\Uber\Model\ResourceModel\AbstractCollection;
+use Improntus\Uber\Model\Token;
 
 class Collection extends AbstractCollection
 {
     /**
-     * @var string $_idFieldName
+     * @return void
      */
-    protected $_idFieldName = 'entity_id';
-
-    /**
-     * @param EntityFactory $entityFactory
-     * @param LoggerInterface $logger
-     * @param FetchStrategyInterface $fetchStrategy
-     * @param ManagerInterface $eventManager
-     * @param AdapterInterface|null $connection
-     * @param AbstractDb|null $resource
-     */
-    public function __construct(
-        EntityFactory $entityFactory,
-        LoggerInterface $logger,
-        FetchStrategyInterface $fetchStrategy,
-        ManagerInterface $eventManager,
-        AdapterInterface $connection = null,
-        AbstractDb $resource = null
-    ) {
-        parent::__construct($entityFactory, $logger, $fetchStrategy, $eventManager, $connection, $resource);
-    }
-
     protected function _construct()
     {
-        parent::_construct();
-        $this->_init('Improntus\Uber\Model\Token', 'Improntus\Uber\Model\ResourceModel\Token');
+        $this->_init(
+            Token::class,
+            \Improntus\Uber\Model\ResourceModel\Token::class
+        );
     }
 }

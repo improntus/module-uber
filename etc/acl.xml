@@ -16,8 +16,12 @@
                         <resource id="Improntus_Uber::waypoint_edit" title="Edit" sortOrder="20"/>
                         <resource id="Improntus_Uber::waypoint_delete" title="Delete" sortOrder="30" />
                     </resource>
-                    <resource id="Improntus_Uber::settings" title="Credentials" sortOrder="20"/>
-                    <resource id="Improntus_Uber::carriers" title="Delivery Method" sortOrder="30"/>
+                    <resource id="Improntus_Uber::organizations" title="Organizations" sortOrder="20">
+                        <resource id="Improntus_Uber::organization_create" title="Create" sortOrder="10"/>
+                        <resource id="Improntus_Uber::organization_edit" title="Edit" sortOrder="20"/>
+                    </resource>
+                    <resource id="Improntus_Uber::settings" title="Credentials" sortOrder="30"/>
+                    <resource id="Improntus_Uber::carriers" title="Delivery Method" sortOrder="40"/>
                 </resource>
                 <resource id="Improntus_Uber::shipment" title="Shipment" sortOrder="10">
                     <resource id="Improntus_Uber::shipment_create" title="Create" sortOrder="10"/>

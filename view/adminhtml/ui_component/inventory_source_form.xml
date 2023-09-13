@@ -6,11 +6,28 @@
 <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <fieldset name="uber_waypoint" sortOrder="35">
         <settings>
-            <label translate="true">Day and Hours availability</label>
+            <label translate="true">Uber</label>
             <collapsible>true</collapsible>
             <opened>false</opened>
             <dataScope>general</dataScope>
         </settings>
+        <field name="organization_id" formElement="select" sortOrder="0">
+            <settings>
+                <dataType>text</dataType>
+                <dataScope>organization_id</dataScope>
+                <label translate="true">Organization</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Organization\OrganizationOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
         <field name="monday_open" formElement="select" sortOrder="10">
             <settings>
                 <dataType>text</dataType>
@@ -22,7 +39,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
                     </settings>
                 </select>
             </formElements>
@@ -38,7 +55,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
                     </settings>
                 </select>
             </formElements>
@@ -55,7 +72,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
                     </settings>
                 </select>
             </formElements>
@@ -71,7 +88,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
                     </settings>
                 </select>
             </formElements>
@@ -88,7 +105,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
                     </settings>
                 </select>
             </formElements>
@@ -104,7 +121,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
                     </settings>
                 </select>
             </formElements>
@@ -121,7 +138,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
                     </settings>
                 </select>
             </formElements>
@@ -137,7 +154,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
                     </settings>
                 </select>
             </formElements>
@@ -154,7 +171,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
                     </settings>
                 </select>
             </formElements>
@@ -170,7 +187,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
                     </settings>
                 </select>
             </formElements>
@@ -187,7 +204,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
                     </settings>
                 </select>
             </formElements>
@@ -203,7 +220,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
                     </settings>
                 </select>
             </formElements>
@@ -220,7 +237,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
                     </settings>
                 </select>
             </formElements>
@@ -236,7 +253,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Improntus\Uber\Model\Config\Source\TimeOption"/>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
                     </settings>
                 </select>
             </formElements>

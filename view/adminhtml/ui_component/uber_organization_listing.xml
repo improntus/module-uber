@@ -1,0 +1,124 @@
+<?xml version="1.0" ?>
+<!--
+  ~ @author Improntus Dev Team
+  ~ @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
+  -->
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">uber_organization_listing.uber_organization_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="add">
+                <url path="*/*/new" />
+                <class>uber-button</class>
+                <label translate="true">Add Organization</label>
+            </button>
+        </buttons>
+        <spinner>uber_organization_columns</spinner>
+        <deps>
+            <dep>uber_organization_listing.uber_organization_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="uber_organization_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">entity_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render" />
+        </settings>
+        <aclResource>Improntus_Uber::organizations</aclResource>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="uber_organization_listing_data_source">
+            <settings>
+                <requestFieldName>entity_id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks" />
+        <columnsControls name="columns_controls" />
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="templates" xsi:type="array">
+                        <item name="filters" xsi:type="array">
+                            <item name="select" xsi:type="array">
+                                <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                                <item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                            </item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </filters>
+        <paging name="listing_paging" />
+    </listingToolbar>
+    <columns name="uber_organization_columns">
+        <column name="entity_id" sortOrder="10">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Id</label>
+            </settings>
+        </column>
+        <column name="active" sortOrder="20">
+            <settings>
+                <filter>select</filter>
+                <label translate="true">Active</label>
+                <dataType>select</dataType>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
+            </settings>
+        </column>
+        <column name="organization_id" sortOrder="30">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Organization Id</label>
+            </settings>
+        </column>
+        <column name="organization_name" sortOrder="40">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Organization Name</label>
+            </settings>
+        </column>
+        <column name="billing_type" sortOrder="50">
+            <settings>
+                <filter>select</filter>
+                <label translate="true">Billing Type</label>
+                <dataType>select</dataType>
+                <options class="Improntus\Uber\Model\Config\Source\Organization\BillingOption"/>
+            </settings>
+        </column>
+        <column name="merchant_type" sortOrder="60">
+            <settings>
+                <filter>select</filter>
+                <label translate="true">Merchant Type</label>
+                <dataType>select</dataType>
+                <options class="Improntus\Uber\Model\Config\Source\Organization\MerchantOption"/>
+            </settings>
+        </column>
+        <column name="email" sortOrder="70">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Email</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Improntus\Uber\Ui\Component\Listing\Column\EditAction" sortOrder="250">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="editUrlPath" xsi:type="string">uber/organization/edit</item>
+                    <item name="aclRole" xsi:type="string">organization_edit</item>
+                </item>
+            </argument>
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

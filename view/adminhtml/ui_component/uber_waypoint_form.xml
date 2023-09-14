@@ -60,14 +60,12 @@
             <settings>
                 <dataType>text</dataType>
                 <visible>false</visible>
-                <dataScope>waypoint_id</dataScope>
             </settings>
         </field>
         <field name="active" formElement="checkbox" sortOrder="15">
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Active</label>
-                <dataScope>active</dataScope>
             </settings>
             <formElements>
                 <checkbox>
@@ -85,7 +83,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Store</label>
-                <dataScope>store_id</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
@@ -101,7 +98,6 @@
         <field name="organization_id" formElement="select" sortOrder="25">
             <settings>
                 <dataType>text</dataType>
-                <dataScope>organization_id</dataScope>
                 <label translate="true">Organization</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -122,7 +118,6 @@
                 </validation>
                 <dataType>text</dataType>
                 <label translate="true">Name</label>
-                <dataScope>name</dataScope>
             </settings>
         </field>
         <field name="address" formElement="input" sortOrder="35">
@@ -132,7 +127,6 @@
                 </validation>
                 <dataType>text</dataType>
                 <label translate="true">Address</label>
-                <dataScope>address</dataScope>
             </settings>
         </field>
         <field name="postcode" formElement="input" sortOrder="40">
@@ -142,7 +136,6 @@
                 </validation>
                 <dataType>text</dataType>
                 <label translate="true">Postcode</label>
-                <dataScope>postcode</dataScope>
             </settings>
         </field>
         <field name="region" formElement="input" sortOrder="45">
@@ -152,7 +145,6 @@
                 </validation>
                 <dataType>text</dataType>
                 <label translate="true">Region</label>
-                <dataScope>region</dataScope>
             </settings>
         </field>
         <field name="city" formElement="input" sortOrder="50">
@@ -162,7 +154,6 @@
                 </validation>
                 <dataType>text</dataType>
                 <label translate="true">City</label>
-                <dataScope>city</dataScope>
             </settings>
         </field>
         <field name="telephone" formElement="input" sortOrder="55">
@@ -172,14 +163,12 @@
                 </validation>
                 <dataType>text</dataType>
                 <label translate="true">Telephone</label>
-                <dataScope>telephone</dataScope>
             </settings>
         </field>
         <field name="instructions" formElement="input" sortOrder="60">
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Instructions</label>
-                <dataScope>instructions</dataScope>
             </settings>
         </field>
         <field name="latitude" formElement="input" sortOrder="65">
@@ -189,7 +178,6 @@
                 </validation>
                 <dataType>text</dataType>
                 <label translate="true">Latitude</label>
-                <dataScope>latitude</dataScope>
                 <tooltip>
                     <link>https://support.google.com/maps/answer/18539</link>
                     <description translate="true"><![CDATA[To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>]]></description>
@@ -203,7 +191,6 @@
                 </validation>
                 <dataType>text</dataType>
                 <label translate="true">Longitude</label>
-                <dataScope>longitude</dataScope>
                 <tooltip>
                     <link>https://support.google.com/maps/answer/18539</link>
                     <description translate="true"><![CDATA[To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>]]></description>
@@ -222,7 +209,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Monday Opening</label>
-                <dataScope>monday_open</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
@@ -239,7 +225,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Monday Closing</label>
-                <dataScope>monday_close</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
@@ -257,7 +242,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Tuesday Opening</label>
-                <dataScope>tuesday_open</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
@@ -274,7 +258,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Tuesday Closing</label>
-                <dataScope>tuesday_close</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
@@ -292,7 +275,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Wednesday Opening</label>
-                <dataScope>wednesday_open</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
@@ -309,7 +291,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Wednesday Closing</label>
-                <dataScope>wednesday_close</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
@@ -327,7 +308,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Thursday Opening</label>
-                <dataScope>thursday_open</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
@@ -344,7 +324,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Thursday Closing</label>
-                <dataScope>thursday_close</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
@@ -362,7 +341,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Friday Opening</label>
-                <dataScope>friday_open</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
@@ -379,7 +357,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Friday Closing</label>
-                <dataScope>friday_close</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
@@ -397,7 +374,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Saturday Opening</label>
-                <dataScope>saturday_open</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
@@ -414,7 +390,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Saturday Closing</label>
-                <dataScope>saturday_close</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
@@ -432,7 +407,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Sunday Opening</label>
-                <dataScope>sunday_open</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
@@ -449,7 +423,6 @@
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Sunday Closing</label>
-                <dataScope>sunday_close</dataScope>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>

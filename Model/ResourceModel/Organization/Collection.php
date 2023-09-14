@@ -18,7 +18,7 @@ class Collection extends AbstractCollection
     protected function _construct()
     {
         $this->_init(
-            Organization::class,
+            \Improntus\Uber\Model\Organization::class,
             \Improntus\Uber\Model\ResourceModel\Organization::class
         );
     }

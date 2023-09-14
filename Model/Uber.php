@@ -163,8 +163,6 @@ class Uber
         // Add Body to RequestData
         $requestData['body'] = json_encode($body);
 
-        $a = 1;
-
         // Get endpoint URL
         $createOrganizationEndpoint = $this->helper->buildRequestURL('direct/organizations');
 

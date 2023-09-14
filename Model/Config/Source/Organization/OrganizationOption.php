@@ -41,7 +41,7 @@ class OrganizationOption implements OptionSourceInterface
     public function toOptionArray(): array
     {
         // Init Option
-        $organizationOptions[] = ['label' => __('Use Root Organization'), 'value' => ''];
+        $organizationOptions[] = ['label' => __('Use Root Organization'), 'value' => 0];
 
         // Search Criteria
         $searchCriteria = $this->searchCriteriaBuilder->create();
@@ -54,7 +54,7 @@ class OrganizationOption implements OptionSourceInterface
             foreach ($organizationRepository as $organization) {
                 $organizationOptions[] = [
                     'label' => $organization->getOrganizationName(),
-                    'value' => $organization->getEntityId(),
+                    'value' => $organization->getId(),
                 ];
             }
         } catch (LocalizedException $e) {

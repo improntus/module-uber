@@ -4,9 +4,9 @@
   ~ @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
   -->
 <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
-    <fieldset name="uber_waypoint" sortOrder="35">
+    <fieldset name="uber_waypoint" sortOrder="15">
         <settings>
-            <label translate="true">Uber</label>
+            <label translate="true">Uber Direct</label>
             <collapsible>true</collapsible>
             <opened>false</opened>
             <dataScope>general</dataScope>
@@ -14,7 +14,7 @@
         <field name="organization_id" formElement="select" sortOrder="0">
             <settings>
                 <dataType>text</dataType>
-                <dataScope>organization_id</dataScope>
+                <dataScope>extension_attributes.organization_id</dataScope>
                 <label translate="true">Organization</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -31,6 +31,7 @@
         <field name="monday_open" formElement="select" sortOrder="10">
             <settings>
                 <dataType>text</dataType>
+                <dataScope>extension_attributes.monday_open</dataScope>
                 <label translate="true">Monday Opening</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -47,6 +48,7 @@
         <field name="monday_close" formElement="select" sortOrder="15">
             <settings>
                 <dataType>text</dataType>
+                <dataScope>extension_attributes.monday_close</dataScope>
                 <label translate="true">Monday Closing</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -60,10 +62,10 @@
                 </select>
             </formElements>
         </field>
-
         <field name="tuesday_open" formElement="select" sortOrder="20">
             <settings>
                 <dataType>text</dataType>
+                <dataScope>extension_attributes.tuesday_open</dataScope>
                 <label translate="true">Tuesday Opening</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -80,6 +82,7 @@
         <field name="tuesday_close" formElement="select" sortOrder="25">
             <settings>
                 <dataType>text</dataType>
+                <dataScope>extension_attributes.tuesday_close</dataScope>
                 <label translate="true">Tuesday Closing</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -93,10 +96,10 @@
                 </select>
             </formElements>
         </field>
-
         <field name="wednesday_open" formElement="select" sortOrder="30">
             <settings>
                 <dataType>text</dataType>
+                <dataScope>extension_attributes.wednesday_open</dataScope>
                 <label translate="true">Wednesday Opening</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -113,6 +116,7 @@
         <field name="wednesday_close" formElement="select" sortOrder="35">
             <settings>
                 <dataType>text</dataType>
+                <dataScope>extension_attributes.wednesday_close</dataScope>
                 <label translate="true">Wednesday Closing</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -126,10 +130,10 @@
                 </select>
             </formElements>
         </field>
-
         <field name="thursday_open" formElement="select" sortOrder="40">
             <settings>
                 <dataType>text</dataType>
+                <dataScope>extension_attributes.thursday_open</dataScope>
                 <label translate="true">Thursday Opening</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -146,6 +150,7 @@
         <field name="thursday_close" formElement="select" sortOrder="45">
             <settings>
                 <dataType>text</dataType>
+                <dataScope>extension_attributes.thursday_close</dataScope>
                 <label translate="true">Thursday Closing</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -159,10 +164,10 @@
                 </select>
             </formElements>
         </field>
-
         <field name="friday_open" formElement="select" sortOrder="50">
             <settings>
                 <dataType>text</dataType>
+                <dataScope>extension_attributes.friday_open</dataScope>
                 <label translate="true">Friday Opening</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -179,6 +184,7 @@
         <field name="friday_close" formElement="select" sortOrder="55">
             <settings>
                 <dataType>text</dataType>
+                <dataScope>extension_attributes.friday_close</dataScope>
                 <label translate="true">Friday Closing</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -192,10 +198,10 @@
                 </select>
             </formElements>
         </field>
-
         <field name="saturday_open" formElement="select" sortOrder="60">
             <settings>
                 <dataType>text</dataType>
+                <dataScope>extension_attributes.saturday_open</dataScope>
                 <label translate="true">Saturday Opening</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -212,6 +218,7 @@
         <field name="saturday_close" formElement="select" sortOrder="65">
             <settings>
                 <dataType>text</dataType>
+                <dataScope>extension_attributes.saturday_close</dataScope>
                 <label translate="true">Saturday Closing</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -225,10 +232,10 @@
                 </select>
             </formElements>
         </field>
-
         <field name="sunday_open" formElement="select" sortOrder="70">
             <settings>
                 <dataType>text</dataType>
+                <dataScope>extension_attributes.sunday_open</dataScope>
                 <label translate="true">Sunday Opening</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -245,6 +252,7 @@
         <field name="sunday_close" formElement="select" sortOrder="75">
             <settings>
                 <dataType>text</dataType>
+                <dataScope>extension_attributes.sunday_close</dataScope>
                 <label translate="true">Sunday Closing</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>

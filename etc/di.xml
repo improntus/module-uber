@@ -96,4 +96,8 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Inventory\Model\SourceRepository">
+        <plugin name="sourceRepositoryPlugin"
+                type="Improntus\Uber\Plugin\SourceRepositoryPlugin"/>
+    </type>
 </config>

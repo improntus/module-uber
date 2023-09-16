@@ -80,6 +80,21 @@
         </arguments>
     </type>
 
+    <!-- Order Shipment -->
+    <preference for="Improntus\Uber\Api\OrderShipmentRepositoryInterface" type="Improntus\Uber\Model\OrderShipmentRepository"/>
+    <preference for="Improntus\Uber\Api\Data\OrderShipmentInterface" type="Improntus\Uber\Model\OrderShipment"/>
+    <preference for="Improntus\Uber\Api\Data\OrderShipmentSearchResultInterface" type="Magento\Framework\Api\SearchResults"/>
+
+    <type name="Improntus\Uber\Model\ResourceModel\OrderShipment\Collection">
+        <arguments>
+            <argument name="model" xsi:type="string">Improntus\Uber\Model\OrderShipment</argument>
+            <argument name="resourceModel" xsi:type="string">Improntus\Uber\Model\ResourceModel\OrderShipment</argument>
+            <argument name="idFieldName" xsi:type="string">entity_id</argument>
+            <argument name="eventPrefix" xsi:type="string">improntus_uber_token_collection</argument>
+            <argument name="eventObject" xsi:type="string">token_collection</argument>
+        </arguments>
+    </type>
+
     <!-- Logger -->
     <virtualType name="UberLogger" type="Magento\Framework\Logger\Monolog">
         <arguments>
@@ -96,8 +111,18 @@
             </argument>
         </arguments>
     </type>
+
+    <!-- Plugins -->
     <type name="Magento\Inventory\Model\SourceRepository">
         <plugin name="sourceRepositoryPlugin"
                 type="Improntus\Uber\Plugin\SourceRepositoryPlugin"/>
+    </type>
+    <type name="Magento\Payment\Model\MethodList">
+        <plugin name="methodListPlugin"
+                type="Improntus\Uber\Plugin\MethodListPlugin"/>
+    </type>
+    <type name="Magento\Backend\Block\Widget\Button\Toolbar">
+        <plugin name="orderToolbarButtons"
+                type="Improntus\Uber\Plugin\OrderToolbarButtons"/>
     </type>
 </config>

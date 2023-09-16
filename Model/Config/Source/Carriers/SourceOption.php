@@ -6,20 +6,42 @@
 
 namespace Improntus\Uber\Model\Config\Source\Carriers;
 
+use Improntus\Uber\Helper\Data;
 use Magento\Framework\Data\OptionSourceInterface;
 
 class SourceOption implements OptionSourceInterface
 {
+    /**
+     * @var Data $helper
+     */
+    protected Data $helper;
 
     /**
-     * @inheritDoc
+     * @param Data $helper
+     */
+    public function __construct(
+        Data $helper
+    ) {
+        $this->helper = $helper;
+    }
+
+    /**
+     * @return array[]
      */
     public function toOptionArray(): array
     {
-        return [
+        $sourceOptions = [
             ['label' => __('-- Select Source --'), 'value' => ''],
-            ['label' => __('MSI'), 'value' => 1],
-            ['label' => __('Waypoints'), 'value' => 0],
+            ['label' => __('Waypoints'), 'value' => 0]
         ];
+
+        /**
+         * MSI has Enabled?
+         */
+        if ($this->helper->hasMsiInstalled()) {
+            $sourceOptions[] = ['label' => __('MSI'), 'value' => 1];
+        }
+
+        return $sourceOptions;
     }
 }

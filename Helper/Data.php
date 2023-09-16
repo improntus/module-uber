@@ -13,11 +13,10 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\Module\ModuleListInterface;
 
 class Data extends AbstractHelper
 {
-    const UBER_AUTH_ENDPOINT = 'https://login.uber.com/oauth/v2/token';
-
     const UBER_PRODUCTION_ENDPOINT = 'https://api.uber.com/v1/%s';
 
     const UBER_SANDBOX_ENDPOINT = 'https://sandbox-api.uber.com/v1/%s';
@@ -25,6 +24,8 @@ class Data extends AbstractHelper
     const UBER_CARRIER_CONFIG_PATH = 'carriers/uber/%s';
 
     const UBER_SHIPPING_CONFIG_PATH = 'shipping/uber/%s';
+
+    const PAYMENT_COD_CONFIG_PATH = 'payment/cashondelivery/%s';
 
     const CLIENT_SECRET = 'client_secret';
 
@@ -46,23 +47,31 @@ class Data extends AbstractHelper
     protected StoreManagerInterface $storeManager;
 
     /**
+     * @var ModuleListInterface $moduleList
+     */
+    protected ModuleListInterface $moduleList;
+
+    /**
      * @param EncryptorInterface $encryptor
      * @param ScopeConfigInterface $scopeConfig
      * @param Logger $logger
      * @param StoreManagerInterface $storeManager
      * @param Context $context
+     * @param ModuleListInterface $moduleList
      */
     public function __construct(
         EncryptorInterface $encryptor,
         ScopeConfigInterface $scopeConfig,
         Logger $logger,
         StoreManagerInterface $storeManager,
-        Context $context
+        Context $context,
+        ModuleListInterface $moduleList
     ) {
         $this->storeManager = $storeManager;
         $this->logger = $logger;
         $this->encryptor = $encryptor;
         $this->scopeConfig = $scopeConfig;
+        $this->moduleList = $moduleList;
         parent::__construct($context);
     }
 
@@ -74,6 +83,67 @@ class Data extends AbstractHelper
     public function isDebugEnabled($storeId = null): bool
     {
         return (bool)$this->getConfigCarrierData('debug', $storeId);
+    }
+
+    /**
+     * isCashOnDeliveryEnabled
+     * @param $storeId
+     * @return bool
+     */
+    public function isCashOnDeliveryEnabled($storeId = null): bool
+    {
+        return (bool)$this->getConfigCarrierData('cod', $storeId);
+    }
+
+    /**
+     * isModuleEnabled
+     * @param $storeId
+     * @return bool
+     */
+    public function isModuleEnabled($storeId = null): bool
+    {
+        return (bool)$this->getConfigCarrierData('active', $storeId);
+    }
+
+    /**
+     * isAutomaticShipmentGenerationEnabled
+     * @param $storeId
+     * @return bool
+     */
+    public function isAutomaticShipmentGenerationEnabled($storeId = null): bool
+    {
+        return (bool)$this->getConfigCarrierData('automatic_shipment', $storeId);
+    }
+
+    /**
+     * getAutomaticShipmentGenerationStatus
+     * @param $storeId
+     * @return array
+     */
+    public function getAutomaticShipmentGenerationStatus($storeId = null): array
+    {
+        $automaticShipmentGenerationStatus = $this->getConfigCarrierData('automatic_shipment', $storeId) ?: [];
+        return explode(",", $automaticShipmentGenerationStatus);
+    }
+
+    /**
+     * isPaymentCashOnDeliveryEnabled
+     * @param $storeId
+     * @return bool
+     */
+    public function isPaymentCashOnDeliveryEnabled($storeId = null): bool
+    {
+        $path = vsprintf(self::PAYMENT_COD_CONFIG_PATH, ["active"]);
+        return $this->scopeConfig->isSetFlag($path, ScopeInterface::SCOPE_STORE, $storeId) ?? false;
+    }
+
+    /**
+     * hasMsiInstalled
+     * @return bool
+     */
+    public function hasMsiInstalled(): bool
+    {
+        return $this->moduleList->has('Magento_Inventory');
     }
 
     /**
@@ -127,7 +197,7 @@ class Data extends AbstractHelper
      * @param $storeId
      * @return mixed|string
      */
-    public function getConfigCarrierData($configPath, $storeId = null)
+    public function getConfigCarrierData($configPath, $storeId = null): mixed
     {
         $path = vsprintf(self::UBER_CARRIER_CONFIG_PATH, [$configPath]);
         if ($configPath === self::CLIENT_SECRET || $configPath === self::CLIENT_ID) {

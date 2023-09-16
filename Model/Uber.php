@@ -274,6 +274,8 @@ class Uber
                 ->setExpirationDate($tokenExpiration)
                 ->setToken($responseBody['access_token'])
                 ->setScope($scope);
+
+            $tokenModel->
             $tokenResourceModel = $this->tokenModelFactory->create();
             $tokenResourceModel->save($tokenModel);
 

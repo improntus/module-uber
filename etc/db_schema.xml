@@ -22,7 +22,19 @@
     <column xsi:type="varchar" name="sunday_close" nullable="false" length="2" default="99" comment="Sunday - Close"/>
   </table>
 
-  <table name="improntus_uber_token" resource="default" engine="innodb" comment="Uber Access Token data">
+  <table name="improntus_uber_order_shipment" resource="default" comment="Uber Shipment Data">
+    <column xsi:type="int" name="entity_id" unsigned="false" nullable="false" identity="true" comment="Entity ID"/>
+    <column xsi:type="int" name="order_id" unsigned="true" nullable="true" comment="Order ID"/>
+    <column xsi:type="varchar" name="increment_id" length="255" nullable="false" comment="Increment ID"/>
+    <column xsi:type="int" name="source_waypoint" padding="11" unsigned="false" nullable="true" identity="false" comment="Source Waypoint Id"/>
+    <column xsi:type="text" name="source_msi" nullable="true" comment="Source MSI Code"/>
+    <column xsi:type="text" name="status" nullable="false" comment="Status"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="entity_id"/>
+    </constraint>
+  </table>
+
+  <table name="improntus_uber_token" resource="default" comment="Uber Access Token data">
     <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true" comment="Entity Id"/>
     <column xsi:type="int" name="store_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Store Id"/>
     <column xsi:type="timestamp" name="expiration_date" nullable="false" default="CURRENT_TIMESTAMP" comment="Expiration Date"/>
@@ -37,7 +49,7 @@
     </constraint>
   </table>
 
-  <table name="improntus_uber_waypoint" resource="default" engine="innodb" comment="Uber Waypoints">
+  <table name="improntus_uber_waypoint" resource="default" comment="Uber Waypoints">
     <column xsi:type="int" name="waypoint_id" padding="11" unsigned="false" nullable="false" identity="true" comment="Waypoint Id"/>
     <column xsi:type="int" name="store_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Store Id"/>
     <column xsi:type="int" name="organization_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Organization Id"/>
@@ -70,7 +82,7 @@
     </constraint>
   </table>
 
-  <table name="improntus_uber_organization" resource="default" engine="innodb" comment="Uber MSI Data">
+  <table name="improntus_uber_organization" resource="default" comment="Uber MSI Data">
     <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true" comment="Entity Id"/>
     <column xsi:type="boolean" name="active" nullable="false" default="false" comment="Active"/>
     <column xsi:type="varchar" name="organization_id" nullable="false" length="255" comment="Organization Id"/>

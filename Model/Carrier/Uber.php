@@ -122,15 +122,6 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
         // Order Free Shipping?
         $isFreeShipping = $this->getConfigFlag('free_shipping') && $request->getFreeShipping();
 
-        /*if ($a=false) {
-            $error = $this->_rateErrorFactory->create();
-            $error->setCarrier($this->_code);
-            $error->setCarrierTitle($this->getConfigData('title'));
-            $error->setErrorMessage("asdasdasdasd");
-
-            return $error;
-        }*/
-
         // Create Method Factory
         $uberMethod = $this->_rateMethodFactory->create();
 
@@ -145,10 +136,39 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
         // Set Method Position
         $uberMethod->setSortOrder($this->getConfigData('sort_order'));
 
-        // asdasdad
+        // isValidCart?
+        $isValidCart = $this->isValidCart($request);
+
+        // Return Rate
         $result = $this->_rateFactory->create();
         $result->append($uberMethod);
         return $result;
+    }
+
+    /**
+     * isValidCart
+     *
+     * We check if the cart has items that cannot be sent with Uber
+     * @return void
+     */
+    private function isValidCart(RateRequest $request)
+    {
+        foreach ($request->getAllItems() as $_item) {
+            if ($_item->getProductType() == 'configurable') {
+                continue;
+            }
+
+            $_product = $_item->getProduct();
+
+            if ($_item->getParentItem()) {
+                $_item = $_item->getParentItem();
+            }
+
+            $attr = $_product->getAttributes();
+            //$val = $_item->getProduct()->getResource()->getAttribute('is_uber_can_ship')->getValue($_item->getProduct());
+
+            $a = 1;
+        }
     }
 
     /**

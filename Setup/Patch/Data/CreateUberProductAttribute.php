@@ -53,26 +53,18 @@ class CreateUberProductAttribute implements DataPatchInterface
         try {
             /** @var EavSetup $eavSetup */
             $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
-            $eavSetup->addAttribute(Product::ENTITY, 'uber_can_ship', [
+            $eavSetup->addAttribute(Product::ENTITY, 'is_uber_can_ship', [
                 'type' => 'int',
-                'backend' => '',
-                'frontend' => '',
                 'label' => 'Shipping With Uber',
                 'input' => 'boolean',
-                'class' => '',
                 'source' => 'Magento\Eav\Model\Entity\Attribute\Source\Boolean',
                 'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
+                'default' => 0,
                 'visible' => true,
-                'required' => true,
+                'required' => false,
                 'user_defined' => false,
-                'default' => false,
-                'searchable' => false,
-                'filterable' => true,
-                'comparable' => false,
                 'visible_on_front' => false,
-                'used_in_product_listing' => false,
-                'unique' => false,
-                'apply_to' => 'simple,grouped,bundle,configurable,virtual'
+                'used_in_product_listing' => true
             ]);
         } catch (\Exception $e) {
             $this->logger->critical($e);
@@ -87,7 +79,7 @@ class CreateUberProductAttribute implements DataPatchInterface
         $this->moduleDataSetup->getConnection()->startSetup();
         /** @var EavSetup $eavSetup */
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
-        $eavSetup->removeAttribute(Product::ENTITY, 'uber_can_ship');
+        $eavSetup->removeAttribute(Product::ENTITY, 'is_uber_can_ship');
         $this->moduleDataSetup->getConnection()->endSetup();
     }
 

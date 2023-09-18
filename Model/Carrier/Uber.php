@@ -137,7 +137,7 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
         $uberMethod->setSortOrder($this->getConfigData('sort_order'));
 
         // isValidCart?
-        $isValidCart = $this->isValidCart($request);
+        #$isValidCart = $this->isValidCart($request);
 
         // Return Rate
         $result = $this->_rateFactory->create();

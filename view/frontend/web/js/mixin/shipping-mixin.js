@@ -14,10 +14,10 @@ define(
         'use strict';
         let uberModal;
         var mixin = {
-            customFunction: function () {
+            uberValidateAddress: function () {
                 // Abre la ventana emergente
                 uberModal = window.open("https://www.ubereats.com/gb/delivery-details?ptr=improntus", "Valida tu Domicilio", "width=400,height=300");
-                console.error("Disparo");
+
                 // Escucha los mensajes de la ventana emergente
                 window.addEventListener("message", function (event) {
                     console.error("LLEGO");

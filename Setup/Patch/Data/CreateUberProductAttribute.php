@@ -50,25 +50,26 @@ class CreateUberProductAttribute implements DataPatchInterface
      */
     public function apply()
     {
-        try {
-            /** @var EavSetup $eavSetup */
-            $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
-            $eavSetup->addAttribute(Product::ENTITY, 'is_uber_can_ship', [
-                'type' => 'int',
-                'label' => 'Shipping With Uber',
-                'input' => 'boolean',
-                'source' => 'Magento\Eav\Model\Entity\Attribute\Source\Boolean',
-                'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
-                'default' => 0,
-                'visible' => true,
-                'required' => false,
-                'user_defined' => false,
-                'visible_on_front' => false,
-                'used_in_product_listing' => true
-            ]);
-        } catch (\Exception $e) {
-            $this->logger->critical($e);
-        }
+        $this->moduleDataSetup->getConnection()->startSetup();
+        /** @var EavSetup $eavSetup */
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
+        $eavSetup->addAttribute(Product::ENTITY, 'is_uber_can_ship', [
+            'group' => 'General',
+            'type' => 'int',
+            'label' => 'Shipping With Uber',
+            'input' => 'boolean',
+            'backend' => \Magento\Catalog\Model\Product\Attribute\Backend\Boolean::class,
+            'source' => \Magento\Eav\Model\Entity\Attribute\Source\Boolean::class,
+            'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
+            'default' => 0,
+            'visible' => true,
+            'required' => false,
+            'user_defined' => true,
+            'visible_on_front' => false,
+            'used_in_product_listing' => true,
+            'sort_order' => 100
+        ]);
+        $this->moduleDataSetup->getConnection()->endSetup();
     }
 
     /**

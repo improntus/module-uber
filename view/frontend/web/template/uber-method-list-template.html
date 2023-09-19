@@ -24,12 +24,14 @@
     <td class="col col-carrier"
         attr="'id': 'label_carrier_' + method.method_code + '_' + method.carrier_code"
         text="method.carrier_title"></td>
-    <!-- ko if: element.isUber(method) -->
-    <td class="col col-test">
-        <div class="primary" click="element.customFunction">
-            <button class="button action continue primary">Test</button>
-        </div>
-    </td>
+    <!-- ko ifnot: (method.error_message) -->
+        <!-- ko if: element.isUber(method) -->
+        <td class="col col-test">
+            <div style="width: 200px" click="element.uberValidateAddress">
+                <button style="background: black; color: white;" data-bind="i18n: 'Click here to validate address with Uber'"></button>
+            </div>
+        </td>
+        <!-- /ko -->
     <!-- /ko -->
 </tr>
 <tr class="row row-error"

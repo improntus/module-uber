@@ -7,16 +7,19 @@
 namespace Improntus\Uber\Model\Carrier;
 
 use Improntus\Uber\Helper\Data as UberHelper;
+use Improntus\Uber\Model\WaypointRepository;
 use Magento\CatalogInventory\Api\StockRegistryInterface;
 use Magento\Directory\Helper\Data;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Directory\Model\CurrencyFactory;
 use Magento\Directory\Model\RegionFactory;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DataObject;
 use Magento\Framework\Xml\Security;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
+use Magento\Quote\Model\Quote\Address\RateResult\Method;
 use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
 use Magento\Shipping\Model\Carrier\AbstractCarrierOnline;
 use Magento\Shipping\Model\Carrier\CarrierInterface;
@@ -24,6 +27,7 @@ use Magento\Shipping\Model\Rate\ResultFactory;
 use Magento\Shipping\Model\Simplexml\ElementFactory;
 use Magento\Shipping\Model\Tracking\Result\StatusFactory;
 use Psr\Log\LoggerInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 class Uber extends AbstractCarrierOnline implements CarrierInterface
 {
@@ -49,6 +53,21 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
     protected UberHelper $uberHelper;
 
     /**
+     * @var WaypointRepository $waypointRepository
+     */
+    protected WaypointRepository $waypointRepository;
+
+    /**
+     * @var SearchCriteriaBuilder $searchCriteriaBuilder
+     */
+    protected SearchCriteriaBuilder $searchCriteriaBuilder;
+
+    /**
+     * @var StoreManagerInterface $storeManager
+     */
+    protected StoreManagerInterface $storeManager;
+
+    /**
      * @param ScopeConfigInterface $scopeConfig
      * @param ErrorFactory $rateErrorFactory
      * @param LoggerInterface $logger
@@ -65,6 +84,9 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
      * @param Data $directoryData
      * @param StockRegistryInterface $stockRegistry
      * @param UberHelper $uberHelper
+     * @param WaypointRepository $waypointRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param StoreManagerInterface $storeManager
      * @param array $data
      */
     public function __construct(
@@ -84,6 +106,9 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
         Data $directoryData,
         StockRegistryInterface $stockRegistry,
         UberHelper $uberHelper,
+        WaypointRepository $waypointRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        StoreManagerInterface $storeManager,
         array $data = []
     ) {
         parent::__construct(
@@ -106,6 +131,8 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
         );
 
         $this->uberHelper = $uberHelper;
+        $this->waypointRepository = $waypointRepository;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
 
     /**
@@ -119,56 +146,103 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
             return false;
         }
 
-        // Order Free Shipping?
-        $isFreeShipping = $this->getConfigFlag('free_shipping') && $request->getFreeShipping();
-
-        // Create Method Factory
-        $uberMethod = $this->_rateMethodFactory->create();
-
-        // Set Carrier / Title
-        $uberMethod->setCarrier($this->_code);
-        $uberMethod->setCarrierTitle($this->getConfigData('title'));
-
-        // Set Method / Title
-        $uberMethod->setMethod($this->_code);
-        $uberMethod->setMethodTitle($this->getConfigData('description'));
-
-        // Set Method Position
-        $uberMethod->setSortOrder($this->getConfigData('sort_order'));
-
-        // isValidCart?
-        #$isValidCart = $this->isValidCart($request);
-
         // Return Rate
         $result = $this->_rateFactory->create();
-        $result->append($uberMethod);
+
+        try {
+            // Validate Street & Postcode / Zipcode
+            if (empty($request->getDestStreet()) && empty($request->getDestPostcode())) {
+                // todo: Change Exception msg (Street & Postcode)
+                throw new \Exception(__('This shipping method is not available. Please specify the zip code.'));
+            }
+
+            // Validate Cart
+            $isValidCart = $this->isValidCart($request);
+            if (!$isValidCart) {
+                // todo: Change Exception msg (Invalid items)
+                throw new \Exception(__('The cart contains items that cannot be shipped with Uber'));
+            }
+
+            // Get Current StoreId
+            $orderStoreId = $this->storeManager->getStore()->getStoreId();
+
+            // Get Waypoint / Source MSI
+
+
+            // Create Method Factory
+            $uberMethod = $this->createMethod();
+
+            // Free Ship?
+            $isFreeShipping = $this->getConfigFlag('free_shipping') && $request->getFreeShipping();
+
+            // Todo: Remove this split (Lol)
+            $result->append($uberMethod);
+        } catch (\Exception $e) {
+            // Set error message
+            $erroMsg = $e->getMessage() ?: __('No estimates available for the address entered');
+
+            // Show ERROR Method?
+            if ($this->getConfigFlag('showmethod')) {
+                $error = $this->_rateErrorFactory->create();
+                $error->setCarrier($this->_code);
+                $error->setCarrierTitle($this->getConfigData('title'));
+                $error->setErrorMessage($erroMsg);
+                $result->append($error);
+            }
+
+            // Log error?
+        }
+
         return $result;
+    }
+
+    /**
+     * createMethod
+     *
+     * Create and Set basic data
+     * @return Method
+     */
+    private function createMethod(): Method
+    {
+        // Instance
+        $method = $this->_rateMethodFactory->create();
+        // Set Carrier / Title
+        $method->setCarrier($this->_code);
+        $method->setCarrierTitle($this->getConfigData('title'));
+        // Set Method / Title
+        $method->setMethod($this->_code);
+        $method->setMethodTitle($this->getConfigData('description'));
+        // Set Method Position
+        $method->setSortOrder($this->getConfigData('sort_order'));
+        return $method;
     }
 
     /**
      * isValidCart
      *
      * We check if the cart has items that cannot be sent with Uber
-     * @return void
+     * @return bool
      */
-    private function isValidCart(RateRequest $request)
+    private function isValidCart(RateRequest $request): bool
     {
+        $cartValid = true;
         foreach ($request->getAllItems() as $_item) {
+            // Exclude Configurable Items
             if ($_item->getProductType() == 'configurable') {
                 continue;
             }
-
             $_product = $_item->getProduct();
-
             if ($_item->getParentItem()) {
                 $_item = $_item->getParentItem();
             }
-
-            $attr = $_product->getAttributes();
-            //$val = $_item->getProduct()->getResource()->getAttribute('is_uber_can_ship')->getValue($_item->getProduct());
-
-            $a = 1;
+            // Item can ship with Uber?
+            if (!$_product->getIsUberCanShip()) {
+                $cartValid = false;
+                break;
+            }
         }
+        // Return Cart Validation
+        return $cartValid;
     }
 
     /**
@@ -195,5 +269,15 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
     public function getAllowedMethods()
     {
         return true;
+    }
+
+    /**
+     * Method not Implemented
+     * @param DataObject $request
+     * @return DataObject
+     */
+    public function processAdditionalValidation(\Magento\Framework\DataObject $request)
+    {
+        return $request;
     }
 }

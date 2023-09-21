@@ -5,6 +5,10 @@
   -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Catalog:etc/catalog_attributes.xsd">
     <group name="quote_item">
-        <attribute name="is_uber_can_ship"/>
+        <attribute name="can_ship_uber"/>
+        <attribute name="uber_size"/>
+        <attribute name="uber_width"/>
+        <attribute name="uber_height"/>
+        <attribute name="uber_depth"/>
     </group>
 </config>

@@ -22,7 +22,7 @@
              resource="Improntus_Uber::settings"
              sortOrder="20"/>
         <add id="Improntus_Uber::carriers"
-             title="Shipping Method"
+             title="Delivery Method"
              translate="title"
              module="Improntus_Uber"
              parent="Improntus_Uber::menu"

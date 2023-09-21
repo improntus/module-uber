@@ -106,6 +106,18 @@ class Data extends AbstractHelper
     }
 
     /**
+     * getSourceOrigin
+     *
+     * Returns True if MSI should be used or False if Uber Waypoints should be used
+     * @param $storeId
+     * @return bool
+     */
+    public function getSourceOrigin($storeId = null): bool
+    {
+        return (bool)$this->getConfigCarrierData('source', $storeId);
+    }
+
+    /**
      * isAutomaticShipmentGenerationEnabled
      * @param $storeId
      * @return bool

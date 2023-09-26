@@ -110,14 +110,14 @@ class Save extends Action
         $resultRedirect = $this->resultRedirectFactory->create();
 
         // Create Organization?
-        if (empty($data['organization_id'])) {
+        if (empty($data['uber_organization_id'])) {
             try {
                 // Create Organization
                 $uberResult = $this->uber->createOrganization($data);
 
                 // Set Organization Id
                 if (isset($uberResult["organization_id"])) {
-                    $data['organization_id'] = $uberResult["organization_id"];
+                    $data['uber_organization_id'] = $uberResult["organization_id"];
                 } else {
                     // ERROR todo
                     $this->messageManager->addErrorMessage(__('There was a problem creating the Organization in UBER'));

@@ -86,6 +86,16 @@ class Data extends AbstractHelper
     }
 
     /**
+     * getIntegrationMode
+     * @param $storeId
+     * @return bool
+     */
+    public function getIntegrationMode($storeId = null): bool
+    {
+        return (bool)$this->getConfigCarrierData('mode', $storeId);
+    }
+
+    /**
      * isCashOnDeliveryEnabled
      * @param $storeId
      * @return bool
@@ -115,6 +125,78 @@ class Data extends AbstractHelper
     public function getSourceOrigin($storeId = null): bool
     {
         return (bool)$this->getConfigCarrierData('source', $storeId);
+    }
+
+    /**
+     * getPreparationTime
+     *
+     * Returns Windows Delivery (PreparationTime)
+     * @param $storeId
+     * @return int
+     */
+    public function getPreparationTime($storeId = null): int
+    {
+        return (int)$this->getConfigCarrierData('preparation_time', $storeId);
+    }
+
+    /**
+     * getVerificationType
+     *
+     * Returns Verification Type selected
+     * @param $storeId
+     * @return string
+     */
+    public function getVerificationType($storeId = null): string
+    {
+        return $this->getConfigCarrierData('verification_type', $storeId);
+    }
+
+    /**
+     * getProductWidthAttribute
+     *
+     * Return attribute name
+     * @param $storeId
+     * @return string
+     */
+    public function getProductWidthAttribute($storeId = null): string
+    {
+        return $this->getConfigCarrierData('product_width_attribute', $storeId);
+    }
+
+    /**
+     * getProductHeightAttribute
+     *
+     * Return attribute name
+     * @param $storeId
+     * @return string
+     */
+    public function getProductHeightAttribute($storeId = null): string
+    {
+        return $this->getConfigCarrierData('product_height_attribute', $storeId);
+    }
+
+    /**
+     * getProductDepthAttribute
+     *
+     * Return attribute name
+     * @param $storeId
+     * @return string
+     */
+    public function getProductDepthAttribute($storeId = null): string
+    {
+        return $this->getConfigCarrierData('product_depth_attribute', $storeId);
+    }
+
+    /**
+     * getIdentificationAge
+     *
+     * Returns Identification Min Age for Verification
+     * @param $storeId
+     * @return int
+     */
+    public function getIdentificationAge($storeId = null): int
+    {
+        return (int)$this->getConfigCarrierData('verification_age', $storeId);
     }
 
     /**
@@ -245,10 +327,10 @@ class Data extends AbstractHelper
     public function buildRequestURL(string $endpoint, int|null $storeId = null): string
     {
         // Get Integration Mode
-        $productionMode = $this->isDebugEnabled($storeId);
+        $integrationMode = $this->getIntegrationMode($storeId);
 
         // Get Base URL
-        $basePath = $productionMode ? self::UBER_PRODUCTION_ENDPOINT : self::UBER_SANDBOX_ENDPOINT;
+        $basePath = $integrationMode ? self::UBER_PRODUCTION_ENDPOINT : self::UBER_SANDBOX_ENDPOINT;
         return vsprintf($basePath, [$endpoint]);
     }
 }

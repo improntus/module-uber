@@ -43,23 +43,6 @@ class Organization extends AbstractModel implements OrganizationInterface
     /**
      * @return array|mixed|null
      */
-    public function getOrganizationId()
-    {
-        return $this->getData(OrganizationInterface::ORGANIZATION_ID);
-    }
-
-    /**
-     * @param $organizationId
-     * @return Organization|mixed
-     */
-    public function setOrganizationId($organizationId)
-    {
-        return $this->setData(OrganizationInterface::ORGANIZATION_ID, $organizationId);
-    }
-
-    /**
-     * @return array|mixed|null
-     */
     public function getOrganizationName()
     {
         return $this->getData(OrganizationInterface::ORGANIZATION_NAME);
@@ -293,5 +276,24 @@ class Organization extends AbstractModel implements OrganizationInterface
     public function setOnboardingType(string $onboardingType)
     {
         return $this->setData(OrganizationInterface::ONBOARDING_TYPE, $onboardingType);
+    }
+
+    /**
+     * getUberOrganizationId
+     * @return mixed
+     */
+    public function getUberOrganizationId()
+    {
+        return $this->getData(OrganizationInterface::ORGANIZATION_ID);
+    }
+
+    /**
+     * setUberOrganizationId
+     * @param $organizationId
+     * @return mixed
+     */
+    public function setUberOrganizationId($organizationId)
+    {
+        return $this->setData(OrganizationInterface::ORGANIZATION_ID, $organizationId);
     }
 }

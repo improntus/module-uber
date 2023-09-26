@@ -6,11 +6,13 @@
 
 namespace Improntus\Uber\Model;
 
+use Exception;
 use Improntus\Uber\Api\Data\TokenInterface;
 use Improntus\Uber\Helper\Data;
 use Improntus\Uber\Model\ResourceModel\Token\Collection as TokenCollection;
 use Improntus\Uber\Model\ResourceModel\TokenFactory as TokenModelFactory;
 use Improntus\Uber\Model\Rest\Webservice;
+use Magento\Framework\DataObject;
 use Magento\Framework\Locale\Resolver;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
@@ -167,15 +169,113 @@ class Uber
         $createOrganizationEndpoint = $this->helper->buildRequestURL('direct/organizations');
 
         // Send Request
-        $uberResponse = $this->ws->doRequest($createOrganizationEndpoint, $requestData, "POST");
+        $uberRequest = $this->ws->doRequest($createOrganizationEndpoint, $requestData, "POST");
 
         // Get Body / Content
-        $responseBody = json_decode($uberResponse->getBody()->getContents(), true);
+        $responseBody = json_decode($uberRequest->getBody()->getContents(), true);
 
         // Opps...
-        if ($uberResponse->getStatusCode() !== 200) {
+        if ($uberRequest->getStatusCode() !== 200) {
             // TODO: Log message
             $this->helper->log(__("ERROR: Generate Uber Organization: %1", json_encode($responseBody)));
+        }
+
+        // Return Data
+        return $responseBody;
+    }
+
+    /**
+     * @param array $shippingData
+     * @param string $organizationId
+     * @param int $storeId
+     * @return mixed
+     * @throws Exception
+     */
+    public function createShipping(array $shippingData, string $organizationId, int $storeId): mixed
+    {
+        // Get Access Token
+        $token = $this->getAccessToken($storeId);
+
+        // Has data?
+        if (is_null($token)) {
+            throw new Exception(__("An error occurred while validating/generating token"));
+        }
+
+        // Prepare Request
+        $requestData = [];
+
+        // Add Header Credentials
+        $requestData['headers'] = [
+            "Content-Type" => "application/json",
+            "Authorization" => "Bearer {$token->getToken()}"
+        ];
+
+        // Add Body to RequestData
+        $requestData['body'] = json_encode($shippingData);
+
+        // Get endpoint URL
+        $createShippingEndpoint = $this->helper->buildRequestURL("customers/{$organizationId}/deliveries", $storeId);
+
+        // Send Request
+        $uberRequest = $this->ws->doRequest($createShippingEndpoint, $requestData, "POST");
+
+        // Get Body / Content
+        $responseBody = json_decode($uberRequest->getBody()->getContents(), true);
+
+        // Opps...
+        if ($uberRequest->getStatusCode() !== 200) {
+            // TODO: Log message
+            $this->helper->log(__("ERROR: Uber Shipping Create Request %1", json_encode($requestData)));
+            $this->helper->log(__("ERROR: Uber Shipping Create Response %1", json_encode($responseBody)));
+        }
+
+        // Return Data
+        return $responseBody;
+    }
+
+    /**
+     * getEstimateShipping
+     * @param array $shippingData
+     * @param string $organizationId
+     * @return mixed
+     * @throws Exception
+     */
+    public function getEstimateShipping(array $shippingData, string $organizationId, int $storeId): mixed
+    {
+        // Get Access Token
+        $token = $this->getAccessToken($storeId);
+
+        // Has data?
+        if (is_null($token)) {
+            throw new Exception(__("An error occurred while validating/generating token"));
+        }
+
+        // Prepare Request
+        $requestData = [];
+
+        // Add Header Credentials
+        $requestData['headers'] = [
+            "Content-Type" => "application/json",
+            "Authorization" => "Bearer {$token->getToken()}"
+        ];
+
+        // Add Body to RequestData
+        $requestData['body'] = json_encode($shippingData);
+
+        // Get endpoint URL
+        $shippingQuoteEndpoint = $this->helper->buildRequestURL("customers/{$organizationId}/delivery_quotes");
+
+        // Send Request
+        $uberRequest = $this->ws->doRequest($shippingQuoteEndpoint, $requestData, "POST");
+
+        // Get Body / Content
+        $responseBody = json_decode($uberRequest->getBody()->getContents(), true);
+
+        // Opps...
+        if ($uberRequest->getStatusCode() !== 200) {
+            // TODO: Log message
+            $this->helper->log(__("ERROR: Uber Delivery Quote Request %1", json_encode($requestData)));
+            $this->helper->log(__("ERROR: Uber Delivery Quote Response %1", json_encode($responseBody)));
         }
 
         // Return Data
@@ -186,6 +286,7 @@ class Uber
      * getAccessToken
      * @param int|null $storeId
      * @param string $scope
+     * @return Token|DataObject|null
      */
     public function getAccessToken(int|null $storeId = null, string $scope = self::SCOPE_TOKEN_DELIVERIES)
     {
@@ -249,13 +350,13 @@ class Uber
         ];
 
         // Send Request
-        $uberResponse = $this->ws->doRequest(self::UBER_AUTH_ENDPOINT, $requestData, "POST");
+        $uberRequest = $this->ws->doRequest(self::UBER_AUTH_ENDPOINT, $requestData, "POST");
 
         // Get Body / Content
-        $responseBody = json_decode($uberResponse->getBody()->getContents(), true);
+        $responseBody = json_decode($uberRequest->getBody()->getContents(), true);
 
         // Request ERROR
-        if ($uberResponse->getStatusCode() !== 200) {
+        if ($uberRequest->getStatusCode() !== 200) {
             // TODO: Log message
             $this->helper->log(__("ERROR: Get AccessToken: %1", json_encode($responseBody)));
             return null;
@@ -275,7 +376,7 @@ class Uber
                 ->setToken($responseBody['access_token'])
                 ->setScope($scope);
 
-            $tokenModel->
+            //$tokenModel-> TODO que paso aca
             $tokenResourceModel = $this->tokenModelFactory->create();
             $tokenResourceModel->save($tokenModel);
 

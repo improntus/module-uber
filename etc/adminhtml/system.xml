@@ -67,6 +67,14 @@
                     <source_model>Improntus\Uber\Model\Config\Source\Carrier\VerificationOption</source_model>
                     <comment>Verification steps that must be taken before the dropoff can be completed.</comment>
                 </field>
+                <field id="verification_age" translate="label" type="text" sortOrder="65" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Identification min age</label>
+                    <validate>required-entry validate-number</validate>
+                    <depends>
+                        <field id="verification_type">identification</field>
+                    </depends>
+                    <tooltip>Identification verification is required for restricted items. Restricted items encompass products like alcohol, tobacco, and prescription medications that have specific delivery regulations or restrictions. These limitations may be due to safety considerations or legal mandates.</tooltip>
+                </field>
                 <field id="cod" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Cash on Delivery</label>
                     <validate>required-entry</validate>

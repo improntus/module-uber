@@ -12,7 +12,7 @@ interface OrganizationInterface
 
     const ACTIVE = 'active';
 
-    const ORGANIZATION_ID = 'organization_id';
+    const ORGANIZATION_ID = 'uber_organization_id';
 
     const ORGANIZATION_NAME = 'organization_name';
 
@@ -41,26 +41,17 @@ interface OrganizationInterface
     const COUNTRY = 'country';
 
     /**
+     * getUberOrganizationId
      * @return mixed
      */
-    public function getEntityId();
+    public function getUberOrganizationId();
 
     /**
-     * @param int $entityId
-     * @return mixed
-     */
-    public function setEntityId(int $entityId);
-
-    /**
-     * @return mixed
-     */
-    public function getOrganizationId();
-
-    /**
+     * setUberOrganizationId
      * @param $organizationId
      * @return mixed
      */
-    public function setOrganizationId($organizationId);
+    public function setUberOrganizationId($organizationId);
 
     /**
      * @return mixed

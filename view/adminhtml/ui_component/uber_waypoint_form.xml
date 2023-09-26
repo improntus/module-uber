@@ -62,7 +62,7 @@
                 <visible>false</visible>
             </settings>
         </field>
-        <field name="active" formElement="checkbox" sortOrder="15">
+        <field name="active" formElement="checkbox" sortOrder="20">
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Active</label>
@@ -79,7 +79,7 @@
                 </checkbox>
             </formElements>
         </field>
-        <field name="store_id" formElement="select" sortOrder="20">
+        <field name="store_id" formElement="select" sortOrder="30">
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Store</label>
@@ -95,7 +95,7 @@
                 </select>
             </formElements>
         </field>
-        <field name="organization_id" formElement="select" sortOrder="25">
+        <field name="organization_id" formElement="select" sortOrder="40">
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Organization</label>
@@ -111,7 +111,7 @@
                 </select>
             </formElements>
         </field>
-        <field name="name" formElement="input" sortOrder="30">
+        <field name="name" formElement="input" sortOrder="50">
             <settings>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -120,7 +120,7 @@
                 <label translate="true">Name</label>
             </settings>
         </field>
-        <field name="address" formElement="input" sortOrder="35">
+        <field name="address" formElement="input" sortOrder="60">
             <settings>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -129,7 +129,7 @@
                 <label translate="true">Address</label>
             </settings>
         </field>
-        <field name="postcode" formElement="input" sortOrder="40">
+        <field name="postcode" formElement="input" sortOrder="70">
             <settings>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -138,7 +138,23 @@
                 <label translate="true">Postcode</label>
             </settings>
         </field>
-        <field name="region" formElement="input" sortOrder="45">
+        <field name="country" formElement="select" sortOrder="80">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Country</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\Directory\Model\Config\Source\Country"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="region" formElement="input" sortOrder="90">
             <settings>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -147,7 +163,7 @@
                 <label translate="true">Region</label>
             </settings>
         </field>
-        <field name="city" formElement="input" sortOrder="50">
+        <field name="city" formElement="input" sortOrder="100">
             <settings>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -156,7 +172,7 @@
                 <label translate="true">City</label>
             </settings>
         </field>
-        <field name="telephone" formElement="input" sortOrder="55">
+        <field name="telephone" formElement="input" sortOrder="110">
             <settings>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -165,13 +181,13 @@
                 <label translate="true">Telephone</label>
             </settings>
         </field>
-        <field name="instructions" formElement="input" sortOrder="60">
+        <field name="instructions" formElement="input" sortOrder="120">
             <settings>
                 <dataType>text</dataType>
                 <label translate="true">Instructions</label>
             </settings>
         </field>
-        <field name="latitude" formElement="input" sortOrder="65">
+        <field name="latitude" formElement="input" sortOrder="130">
             <settings>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -184,7 +200,7 @@
                 </tooltip>
             </settings>
         </field>
-        <field name="longitude" formElement="input" sortOrder="70">
+        <field name="longitude" formElement="input" sortOrder="140">
             <settings>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -199,7 +215,7 @@
         </field>
     </fieldset>
     <!-- Store Hours -->
-    <fieldset name="store_hours" sortOrder="20">
+    <fieldset name="store_hours" sortOrder="150">
         <settings>
             <label translate="true">Day and Hours availability</label>
             <collapsible>true</collapsible>

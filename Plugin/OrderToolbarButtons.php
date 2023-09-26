@@ -77,7 +77,7 @@ class OrderToolbarButtons
 
                     // Add when isAutoShipmentGenerationEnabled is False
                     if (!$this->helper->isAutomaticShipmentGenerationEnabled($order->getStoreId())) {
-                        $baseUrl = "#";//$this->urlInterface->getUrl('uber/shipment/create', ['order_id' => $order->getId()]);
+                        $baseUrl = $this->urlInterface->getUrl('uber/shipment/create', ['order_id' => $order->getId()]);
                         $buttonList->add(
                             'uber_ship',
                             [

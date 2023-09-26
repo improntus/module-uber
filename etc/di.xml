@@ -125,4 +125,10 @@
         <plugin name="orderToolbarButtons"
                 type="Improntus\Uber\Plugin\OrderToolbarButtons"/>
     </type>
+
+    <type name="Improntus\Uber\Model\Carrier\Uber">
+        <arguments>
+            <argument name="warehouseRepository" xsi:type="object">Improntus\Uber\Model\Warehouse\WarehouseRepository</argument>
+        </arguments>
+    </type>
 </config>

@@ -6,8 +6,10 @@
 
 namespace Improntus\Uber\Model\Carrier;
 
+use Exception;
+use Improntus\Uber\Api\WarehouseRepositoryInterface;
 use Improntus\Uber\Helper\Data as UberHelper;
-use Improntus\Uber\Model\WaypointRepository;
+use Improntus\Uber\Model\Uber as UberModel;
 use Magento\CatalogInventory\Api\StockRegistryInterface;
 use Magento\Directory\Helper\Data;
 use Magento\Directory\Model\CountryFactory;
@@ -23,11 +25,13 @@ use Magento\Quote\Model\Quote\Address\RateResult\Method;
 use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
 use Magento\Shipping\Model\Carrier\AbstractCarrierOnline;
 use Magento\Shipping\Model\Carrier\CarrierInterface;
+use Magento\Shipping\Model\Rate\Result;
 use Magento\Shipping\Model\Rate\ResultFactory;
 use Magento\Shipping\Model\Simplexml\ElementFactory;
 use Magento\Shipping\Model\Tracking\Result\StatusFactory;
-use Psr\Log\LoggerInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
+use Magento\Checkout\Model\Session as CheckoutSession;
 
 class Uber extends AbstractCarrierOnline implements CarrierInterface
 {
@@ -53,11 +57,6 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
     protected UberHelper $uberHelper;
 
     /**
-     * @var WaypointRepository $waypointRepository
-     */
-    protected WaypointRepository $waypointRepository;
-
-    /**
      * @var SearchCriteriaBuilder $searchCriteriaBuilder
      */
     protected SearchCriteriaBuilder $searchCriteriaBuilder;
@@ -68,6 +67,22 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
     protected StoreManagerInterface $storeManager;
 
     /**
+     * @var WarehouseRepositoryInterface $warehouseRepository
+     */
+    protected WarehouseRepositoryInterface $warehouseRepository;
+
+    /**
+     * @var UberModel $uber
+     */
+    protected UberModel $uber;
+
+    /**
+     * @var CheckoutSession $checkoutSession
+     */
+    protected CheckoutSession $checkoutSession;
+
+    /**
+     * @param UberModel $uber
      * @param ScopeConfigInterface $scopeConfig
      * @param ErrorFactory $rateErrorFactory
      * @param LoggerInterface $logger
@@ -84,12 +99,14 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
      * @param Data $directoryData
      * @param StockRegistryInterface $stockRegistry
      * @param UberHelper $uberHelper
-     * @param WaypointRepository $waypointRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param StoreManagerInterface $storeManager
+     * @param WarehouseRepositoryInterface $warehouseRepository
+     * @param CheckoutSession $checkoutSession
      * @param array $data
      */
     public function __construct(
+        UberModel $uber,
         ScopeConfigInterface $scopeConfig,
         ErrorFactory $rateErrorFactory,
         LoggerInterface $logger,
@@ -106,9 +123,10 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
         Data $directoryData,
         StockRegistryInterface $stockRegistry,
         UberHelper $uberHelper,
-        WaypointRepository $waypointRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         StoreManagerInterface $storeManager,
+        WarehouseRepositoryInterface $warehouseRepository,
+        CheckoutSession $checkoutSession,
         array $data = []
     ) {
         parent::__construct(
@@ -130,17 +148,20 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
             $data
         );
 
+        $this->uber = $uber;
         $this->uberHelper = $uberHelper;
-        $this->waypointRepository = $waypointRepository;
+        $this->storeManager = $storeManager;
+        $this->checkoutSession = $checkoutSession;
+        $this->warehouseRepository = $warehouseRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
 
     /**
      * Collect and get rates
      * @param RateRequest $request
-     * @return bool|null
+     * @return Result|bool
      */
-    public function collectRates(RateRequest $request)
+    public function collectRates(RateRequest $request): Result|bool
     {
         if (!$this->getConfigFlag('active')) {
             return false;
@@ -150,38 +171,88 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
         $result = $this->_rateFactory->create();
 
         try {
+            // Create Method Factory
+            $uberMethod = $this->createMethod();
+
             // Validate Street & Postcode / Zipcode
             if (empty($request->getDestStreet()) && empty($request->getDestPostcode())) {
                 // todo: Change Exception msg (Street & Postcode)
-                throw new \Exception(__('This shipping method is not available. Please specify the zip code.'));
+                throw new Exception(__('This shipping method is not available. Please specify the zip code.'));
             }
 
             // Validate Cart
-            $isValidCart = $this->isValidCart($request);
-            if (!$isValidCart) {
+            $cartValidation = $this->isValidCart($request);
+            if (!$cartValidation['isValidCart']) {
                 // todo: Change Exception msg (Invalid items)
-                throw new \Exception(__('The cart contains items that cannot be shipped with Uber'));
+                throw new Exception($cartValidation['validationMsg'] ?? __('This shipping method is not available'));
             }
 
             // Get Current StoreId
             $orderStoreId = $this->storeManager->getStore()->getStoreId();
 
-            // Get Waypoint / Source MSI
+            // Get Warehouses
+            $warehousesCollection = $this->warehouseRepository->getAvailableSources($orderStoreId, $cartValidation['cartItemsSku']);
 
+            // Get Geolocation of Client
+            //$customerGeolocation = ['latitude' => -38.715655, 'longitude' => -62.272307];
+            $customerGeolocation = ['latitude' => -34.606105, 'longitude' => -58.386335];
 
-            // Create Method Factory
-            $uberMethod = $this->createMethod();
+            // Determine the closest waypoint
+            $warehouse = $this->warehouseRepository->checkWarehouseClosest($customerGeolocation, $warehousesCollection);
 
-            // Free Ship?
+            // Has Results?
+            if (is_null($warehouse)) {
+                // todo: Not found Warehouse / Waypoint / Source
+                throw new Exception(__('This shipping method is not available'));
+            }
+
+            // Get Warehouse Address
+            $warehouseAddress = $this->warehouseRepository->getWarehouseAddressData($warehouse);
+
+            // Get Customer Region Name
+            $customerState = $this->_regionFactory->create()->load($request->getDestRegionId());
+
+            // Prepare Request Data
+            $shippingData = [
+                'pickup_address' => $warehouseAddress,
+                'dropoff_address' => json_encode([
+                    'street_address' => [$request->getDestStreet()],
+                    'city' => $request->getDestCity(),
+                    'state' => $customerState->getName(),
+                    'zip_code' => $request->getDestPostcode(),
+                    'country' => $request->getDestCountryId()
+                ], JSON_UNESCAPED_SLASHES)
+            ];
+
+            // Get Organization ID for Estimate
+            $organizationId = $this->warehouseRepository->getWarehouseOrganization($warehouse);
+
+            // Check Coverage
+            $estimateData = $this->uber->getEstimateShipping($shippingData, $organizationId, $orderStoreId);
+            if (is_null($estimateData)) {
+                // Todo: Shipping not available
+                throw new Exception(__('This shipping method is not available'));
+            }
+
+            // Apply Free Ship?
             $isFreeShipping = $this->getConfigFlag('free_shipping') && $request->getFreeShipping();
 
-            // Todo: Remove this split (Lol)
+            // Set Shipping Price
+            if (!$isFreeShipping) {
+                // Set Price
+                $uberMethod->setPrice($estimateData['fee']);
+            }
+
+            // Set Warehouse ID on Checkout Session
+            $warehouseId = $this->warehouseRepository->getWarehouseId($warehouse);
+            $this->checkoutSession->setUberWarehouseId($warehouseId);
+
+            // Append Rate
             $result->append($uberMethod);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Set error message
             $erroMsg = $e->getMessage() ?: __('No estimates available for the address entered');
-
-            // Show ERROR Method?
+            // Show method on error?
             if ($this->getConfigFlag('showmethod')) {
                 $error = $this->_rateErrorFactory->create();
                 $error->setCarrier($this->_code);
@@ -189,10 +260,12 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
                 $error->setErrorMessage($erroMsg);
                 $result->append($error);
             }
-
             // Log error?
+            if ($this->getConfigFlag('debug')) {
+                $this->uberHelper->log(__('Uber Estimate ERROR: %1', $erroMsg));
+            }
         }
-
+        // Return Rate
         return $result;
     }
 
@@ -204,15 +277,11 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
      */
     private function createMethod(): Method
     {
-        // Instance
         $method = $this->_rateMethodFactory->create();
-        // Set Carrier / Title
         $method->setCarrier($this->_code);
         $method->setCarrierTitle($this->getConfigData('title'));
-        // Set Method / Title
         $method->setMethod($this->_code);
         $method->setMethodTitle($this->getConfigData('description'));
-        // Set Method Position
         $method->setSortOrder($this->getConfigData('sort_order'));
         return $method;
     }
@@ -221,11 +290,14 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
      * isValidCart
      *
      * We check if the cart has items that cannot be sent with Uber
-     * @return bool
+     * @param RateRequest $request
+     * @return array
      */
-    private function isValidCart(RateRequest $request): bool
+    private function isValidCart(RateRequest $request): array
     {
+        $itemsSku = [];
         $cartValid = true;
+        $validationMsg = false;
         foreach ($request->getAllItems() as $_item) {
             // Exclude Configurable Items
             if ($_item->getProductType() == 'configurable') {
@@ -235,14 +307,24 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
             if ($_item->getParentItem()) {
                 $_item = $_item->getParentItem();
             }
+
             // Item can ship with Uber?
-            if (!$_product->getIsUberCanShip()) {
+            if (!$_product->getCanShipUber()) {
+                $validationMsg = __('The cart contains items that cannot be shipped with Uber');
                 $cartValid = false;
                 break;
             }
+
+            // Add Sku => Qty to Array
+            $itemsSku[$_product->getSku()] = $_item->getQty();
         }
-        // Return Cart Validation
-        return $cartValid;
+
+        // Return
+        return [
+            'isValidCart' => $cartValid,
+            'validationMsg' => $validationMsg,
+            'cartItemsSku' => $itemsSku
+        ];
     }
 
     /**
@@ -276,7 +358,7 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
      * @param DataObject $request
      * @return DataObject
      */
-    public function processAdditionalValidation(\Magento\Framework\DataObject $request)
+    public function processAdditionalValidation(DataObject $request): DataObject
     {
         return $request;
     }

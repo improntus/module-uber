@@ -18,6 +18,7 @@
                 <sallowspecific>0</sallowspecific>
                 <description>Uber Direct</description>
                 <preparation_time>15</preparation_time>
+                <verification_age>21</verification_age>
                 <webhooks_integration>0</webhooks_integration>
                 <model>Improntus\Uber\Model\Carrier\Uber</model>
                 <verification_type>signature_requirement</verification_type>

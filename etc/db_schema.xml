@@ -49,6 +49,28 @@
     </constraint>
   </table>
 
+  <table name="improntus_uber_organization" resource="default" comment="Uber MSI Data">
+    <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true" comment="Entity Id"/>
+    <column xsi:type="boolean" name="active" nullable="false" default="false" comment="Active"/>
+    <column xsi:type="varchar" name="uber_organization_id" nullable="false" length="255" comment="Organization Id"/>
+    <column xsi:type="varchar" name="organization_name" nullable="false" length="255" comment="Organization Name"/>
+    <column xsi:type="varchar" name="billing_type" nullable="false" length="255" comment="Billing Type"/>
+    <column xsi:type="varchar" name="merchant_type" nullable="false" length="255" comment="Merchant Type"/>
+    <column xsi:type="varchar" name="onboarding_type" nullable="false" length="255" comment="Onboarding Type"/>
+    <column xsi:type="varchar" name="email" nullable="false" length="255" comment="Email"/>
+    <column xsi:type="varchar" name="phone_number" nullable="false" length="255" comment="Phone Number"/>
+    <column xsi:type="varchar" name="phone_country_code" nullable="false" length="6" comment="Phone Country Code"/>
+    <column xsi:type="varchar" name="street" nullable="false" length="255" comment="Street"/>
+    <column xsi:type="varchar" name="street2" nullable="false" length="255" comment="Street 2"/>
+    <column xsi:type="varchar" name="city" nullable="false" length="255" comment="City"/>
+    <column xsi:type="varchar" name="state" nullable="false" length="255" comment="State"/>
+    <column xsi:type="varchar" name="postcode" nullable="false" length="255" comment="postcode"/>
+    <column xsi:type="varchar" name="country" nullable="false" length="255" comment="Country"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="entity_id"/>
+    </constraint>
+  </table>
+
   <table name="improntus_uber_waypoint" resource="default" comment="Uber Waypoints">
     <column xsi:type="int" name="waypoint_id" padding="11" unsigned="false" nullable="false" identity="true" comment="Waypoint Id"/>
     <column xsi:type="int" name="store_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Store Id"/>
@@ -59,6 +81,7 @@
     <column xsi:type="varchar" name="postcode" nullable="false" length="255" comment="Postcode"/>
     <column xsi:type="varchar" name="region" nullable="false" length="255" comment="Region"/>
     <column xsi:type="varchar" name="city" nullable="false" length="255" comment="City"/>
+    <column xsi:type="varchar" name="country" nullable="false" length="255" comment="Country"/>
     <column xsi:type="varchar" name="latitude" nullable="false" length="60" comment="Latitude"/>
     <column xsi:type="varchar" name="longitude" nullable="false" length="60" comment="Longitude"/>
     <column xsi:type="varchar" name="telephone" nullable="false" length="255" comment="Telephone"/>
@@ -79,28 +102,6 @@
     <column xsi:type="varchar" name="sunday_close" nullable="true" length="2" default="99" comment="Sunday - Close"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="waypoint_id"/>
-    </constraint>
-  </table>
-
-  <table name="improntus_uber_organization" resource="default" comment="Uber MSI Data">
-    <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true" comment="Entity Id"/>
-    <column xsi:type="boolean" name="active" nullable="false" default="false" comment="Active"/>
-    <column xsi:type="varchar" name="organization_id" nullable="false" length="255" comment="Organization Id"/>
-    <column xsi:type="varchar" name="organization_name" nullable="false" length="255" comment="Organization Name"/>
-    <column xsi:type="varchar" name="billing_type" nullable="false" length="255" comment="Billing Type"/>
-    <column xsi:type="varchar" name="merchant_type" nullable="false" length="255" comment="Merchant Type"/>
-    <column xsi:type="varchar" name="onboarding_type" nullable="false" length="255" comment="Onboarding Type"/>
-    <column xsi:type="varchar" name="email" nullable="false" length="255" comment="Email"/>
-    <column xsi:type="varchar" name="phone_number" nullable="false" length="255" comment="Phone Number"/>
-    <column xsi:type="varchar" name="phone_country_code" nullable="false" length="6" comment="Phone Country Code"/>
-    <column xsi:type="varchar" name="street" nullable="false" length="255" comment="Street"/>
-    <column xsi:type="varchar" name="street2" nullable="false" length="255" comment="Street 2"/>
-    <column xsi:type="varchar" name="city" nullable="false" length="255" comment="City"/>
-    <column xsi:type="varchar" name="state" nullable="false" length="255" comment="State"/>
-    <column xsi:type="varchar" name="postcode" nullable="false" length="255" comment="postcode"/>
-    <column xsi:type="varchar" name="country" nullable="false" length="255" comment="Country"/>
-    <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="entity_id"/>
     </constraint>
   </table>
 </schema>

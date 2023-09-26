@@ -74,7 +74,7 @@
                 </checkbox>
             </formElements>
         </field>
-        <field name="organization_id" formElement="input" sortOrder="20">
+        <field name="uber_organization_id" formElement="input" sortOrder="20">
             <settings>
                 <dataType>text</dataType>
                 <disabled>true</disabled>

@@ -480,4 +480,23 @@ class Waypoint extends AbstractModel implements WaypointInterface
     {
         return $this->getData(WaypointInterface::ORGANIZATION_ID);
     }
+
+    /**
+     * getCountry
+     * @return mixed
+     */
+    public function getCountry()
+    {
+        return $this->getData(WaypointInterface::COUNTRY);
+    }
+
+    /**
+     * setCountry
+     * @param string $country
+     * @return mixed
+     */
+    public function setCountry(string $country)
+    {
+        return $this->setData(WaypointInterface::COUNTRY, $country);
+    }
 }

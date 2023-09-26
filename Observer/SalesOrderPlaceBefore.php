@@ -69,15 +69,15 @@ class SalesOrderPlaceBefore implements ObserverInterface
         if ($order->getShippingMethod() == self::CARRIER_CODE && $this->helper->isModuleEnabled()) {
             try {
                 // Get Data from Checkout Session
-                $uberSourceMSI = $this->checkoutSession->getUberSourceMSI() ?: null;
-                $uberSourceWaypoint = $this->checkoutSession->getUberSourceWaypoint() ?: null;
+                $warehouseId = $this->checkoutSession->getUberWarehouseId() ?: null;
 
                 $orderShipping = $this->orderShipmentFactory->create();
-                if (!is_null($uberSourceMSI)) {
-                    $orderShipping->setSourceMsi($uberSourceMSI);
-                }
-                if (!is_null($uberSourceWaypoint)) {
-                    $orderShipping->setSourceWaypoint($uberSourceWaypoint);
+
+                // Warehouse is Waypoints or MSI
+                if ($this->helper->getSourceOrigin()) {
+                    $orderShipping->setSourceMsi($warehouseId);
+                } else {
+                    $orderShipping->setSourceWaypoint($warehouseId);
                 }
                 $orderShipping->setIncrementId($order->getIncrementId());
                 $orderShipping->setStatus("pending");

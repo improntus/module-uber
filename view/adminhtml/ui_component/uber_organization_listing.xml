@@ -75,10 +75,10 @@
                 <options class="Magento\Config\Model\Config\Source\Yesno"/>
             </settings>
         </column>
-        <column name="organization_id" sortOrder="30">
+        <column name="uber_organization_id" sortOrder="30">
             <settings>
                 <filter>text</filter>
-                <label translate="true">Organization Id</label>
+                <label translate="true">Uber Organization Id</label>
             </settings>
         </column>
         <column name="organization_name" sortOrder="40">

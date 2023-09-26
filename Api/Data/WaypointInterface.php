@@ -26,6 +26,8 @@ interface WaypointInterface
 
     const CITY = 'city';
 
+    const COUNTRY = 'country';
+
     const TELEPHONE = 'telephone';
 
     const LATITUDE = 'latitude';
@@ -366,4 +368,17 @@ interface WaypointInterface
      * @return mixed
      */
     public function getOrganizationId();
+
+    /**
+     * getCountry
+     * @return mixed
+     */
+    public function getCountry();
+
+    /**
+     * setCountry
+     * @param string $country
+     * @return mixed
+     */
+    public function setCountry(string $country);
 }

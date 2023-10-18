@@ -193,9 +193,14 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
             // Get Warehouses
             $warehousesCollection = $this->warehouseRepository->getAvailableSources($orderStoreId, $cartValidation['cartItemsSku']);
 
+            // Get Customer Region Name
+            $customerState = $this->_regionFactory->create()->load($request->getDestRegionId());
+
             // Get Geolocation of Client
             //$customerGeolocation = ['latitude' => -38.715655, 'longitude' => -62.272307];
-            $customerGeolocation = ['latitude' => -34.606105, 'longitude' => -58.386335];
+            //$customerGeolocation = ['latitude' => -34.606105, 'longitude' => -58.386335];
+            $customerAddress = "{$request->getDestStreet()}, {$request->getDestCity()}, {$customerState->getName()}, {$request->getDestCountryId()}, {$request->getDestPostcode()}";
+            $customerGeolocation = $this->getCustomerCoordinates($customerAddress);
 
             // Determine the closest waypoint
             $warehouse = $this->warehouseRepository->checkWarehouseClosest($customerGeolocation, $warehousesCollection);
@@ -208,9 +213,6 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
 
             // Get Warehouse Address
             $warehouseAddress = $this->warehouseRepository->getWarehouseAddressData($warehouse);
-
-            // Get Customer Region Name
-            $customerState = $this->_regionFactory->create()->load($request->getDestRegionId());
 
             // Prepare Request Data
             $shippingData = [
@@ -361,5 +363,17 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
     public function processAdditionalValidation(DataObject $request): DataObject
     {
         return $request;
+    }
+
+    /**
+     * TODO: TEMPORAL FUNCTION!
+     */
+    private function getCustomerCoordinates($customerAddress): array
+    {
+        $coordinates = $this->uber->getAddressCoordinates($customerAddress);
+        return [
+            'latitude'  => (float)sprintf("%.6f", $coordinates[0]['lat']),
+            'longitude' => (float)sprintf("%.6f", $coordinates[0]['lon'])
+        ];
     }
 }

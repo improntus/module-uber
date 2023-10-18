@@ -6,6 +6,9 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Webapi -->
+    <preference for="Improntus\Uber\Api\WebhookInterface" type="Improntus\Uber\Model\Api\Webhook"/>
+
     <!-- Organizations -->
     <preference for="Improntus\Uber\Api\OrganizationRepositoryInterface" type="Improntus\Uber\Model\OrganizationRepository"/>
     <preference for="Improntus\Uber\Api\Data\OrganizationInterface" type="Improntus\Uber\Model\Organization"/>
@@ -96,18 +99,22 @@
     </type>
 
     <!-- Logger -->
-    <virtualType name="UberLogger" type="Magento\Framework\Logger\Monolog">
+    <type name="Improntus\Uber\Logger\Handler\Base">
         <arguments>
-            <argument name="handlers" xsi:type="array">
-                <item name="info" xsi:type="object">Improntus\Uber\Logger\Handler\CustomHandler</item>
-            </argument>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
         </arguments>
-    </virtualType>
+    </type>
+    <type name="Improntus\Uber\Logger\Handler\Exceptions">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
     <type name="Improntus\Uber\Logger\Logger">
         <arguments>
             <argument name="name" xsi:type="string">uber</argument>
-            <argument name="handlers" xsi:type="array">
-                <item name="system" xsi:type="object">Improntus\Uber\Logger\Handler\CustomHandler</item>
+            <argument name="handlers"  xsi:type="array">
+                <item name="base" xsi:type="object">Improntus\Uber\Logger\Handler\Base</item>
+                <item name="exceptions" xsi:type="object">Improntus\Uber\Logger\Handler\Exceptions</item>
             </argument>
         </arguments>
     </type>

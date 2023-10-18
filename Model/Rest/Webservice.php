@@ -51,7 +51,8 @@ class Webservice
     ): Response {
         /** @var Client $client */
         $client = $this->clientFactory->create(['config' => [
-            'headers' => $params['headers']
+            'http_errors' => false,
+            'headers' => $params['headers'] ?? []
         ]]);
 
         // Unset Headers from Params
@@ -64,6 +65,7 @@ class Webservice
                 $endpoint,
                 $params
             );
+            $a = 1;
         } catch (GuzzleException $exception) {
             /** @var Response $response */
             $response = $this->responseFactory->create([

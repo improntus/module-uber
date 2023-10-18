@@ -10,9 +10,20 @@ use Exception;
 use Improntus\Uber\Helper\Data;
 use Improntus\Uber\Model\Carrier\Uber as UberCarrier;
 use Improntus\Uber\Model\Warehouse\WarehouseRepository;
-use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\DB\TransactionFactory;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\MailException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Shipment;
+use Magento\Sales\Model\Order\Shipment\TrackFactory;
 use Magento\Sales\Model\OrderRepository;
+use Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader;
+use Magento\Shipping\Model\ShipmentNotifier;
 
 class CreateShipment
 {
@@ -39,11 +50,6 @@ class CreateShipment
     protected WarehouseRepository $warehouseRepository;
 
     /**
-     * @var DateTime $dateTime
-     */
-    protected DateTime $dateTime;
-
-    /**
      * @var TimezoneInterface $timezone
      */
     protected TimezoneInterface $timezone;
@@ -53,24 +59,85 @@ class CreateShipment
      */
     protected Uber $uber;
 
+    /**
+     * @var OrderShipmentFactory $orderShipmentFactory
+     */
+    protected OrderShipmentFactory $orderShipmentFactory;
+
+    /**
+     * @var ShipmentLoader $shipmentLoader
+     */
+    protected ShipmentLoader $shipmentLoader;
+
+    /**
+     * @var TrackFactory $trackFactory
+     */
+    protected TrackFactory $trackFactory;
+
+    /**
+     * @var Registry $registry
+     */
+    protected Registry $registry;
+
+    /**
+     * @var ShipmentNotifier $shipmentNotifier
+     */
+    protected ShipmentNotifier $shipmentNotifier;
+
+    /**
+     * @var TransactionFactory $transactionFactory
+     */
+    protected TransactionFactory $transactionFactory;
+
+    /**
+     * @param Uber $uber
+     * @param Data $helper
+     * @param Registry $registry
+     * @param TrackFactory $trackFactory
+     * @param TimezoneInterface $timezone
+     * @param ShipmentLoader $shipmentLoader
+     * @param OrderRepository $orderRepository
+     * @param ShipmentNotifier $shipmentNotifier
+     * @param TransactionFactory $transactionFactory
+     * @param WarehouseRepository $warehouseRepository
+     * @param OrderShipmentFactory $orderShipmentFactory
+     * @param OrderShipmentRepository $orderShipmentRepository
+     */
     public function __construct(
         Uber $uber,
         Data $helper,
-        DateTime $dateTime,
+        Registry $registry,
+        TrackFactory $trackFactory,
         TimezoneInterface $timezone,
+        ShipmentLoader $shipmentLoader,
         OrderRepository $orderRepository,
+        ShipmentNotifier $shipmentNotifier,
+        TransactionFactory $transactionFactory,
         WarehouseRepository $warehouseRepository,
+        OrderShipmentFactory $orderShipmentFactory,
         OrderShipmentRepository $orderShipmentRepository
     ) {
         $this->uber = $uber;
         $this->helper = $helper;
-        $this->dateTime = $dateTime;
+        $this->registry = $registry;
         $this->timezone = $timezone;
+        $this->trackFactory = $trackFactory;
+        $this->shipmentLoader = $shipmentLoader;
         $this->orderRepository = $orderRepository;
+        $this->shipmentNotifier = $shipmentNotifier;
+        $this->transactionFactory = $transactionFactory;
         $this->warehouseRepository = $warehouseRepository;
+        $this->orderShipmentFactory = $orderShipmentFactory;
         $this->orderShipmentRepository = $orderShipmentRepository;
     }
 
+    /**
+     * create
+     * @param $orderId
+     * @return void
+     * @throws InputException
+     * @throws NoSuchEntityException
+     */
     public function create($orderId)
     {
         if ($this->helper->isModuleEnabled() && !is_null($orderId)) {
@@ -84,39 +151,65 @@ class CreateShipment
             // Validate Shipping Method
             if ($order->getShippingMethod() == self::CARRIER_CODE) {
                 // Get Shipping Data
-                $uberOrderShipment = $this->orderShipmentRepository->getByOrderId($orderId);
+                $uberOrderShipmentRepository = $this->orderShipmentRepository->getByOrderId($orderId);
 
                 // Get Warehouse
-                $warehouseId = $uberOrderShipment->getSourceWaypoint() ?? $uberOrderShipment->getSourceMsi();
+                $warehouseId = $uberOrderShipmentRepository->getSourceWaypoint() ?? $uberOrderShipmentRepository->getSourceMsi();
                 $warehouse = $this->warehouseRepository->getWarehouse($warehouseId);
 
                 // Generate DeliveryTime and Check Warehouse Work Schedule
-                $deliveryTime = $this->getDeliveryTime($order->getStoreId());
-                if (!$this->warehouseRepository->checkWarehouseWorkSchedule($warehouse, $deliveryTime)) {
+                $deliveryTimeLocal = $this->getDeliveryTime($order->getStoreId());
+                if (!$this->warehouseRepository->checkWarehouseWorkSchedule($warehouse, $deliveryTimeLocal)) {
                     // Todo MSG
                     throw new Exception(__('The preparation point is outside working hours'));
                 }
 
                 /**
-                 * Prepare Data
+                 * Prepare Delivery Data
                  */
                 $warehouseData = $this->warehouseRepository->getWarehousePickupData($warehouse);
                 $dropoffData = $this->getDropoffData($order);
                 $deliveryItems = $this->getDeliveryItems($order);
+
+                /**
+                 * Generate dates with minutes of differences required by Uber
+                 */
+                $pickupReady = $this->getDateTimeUTC($deliveryTimeLocal);
+                $pickupDeadLine = $this->getDateTimeUTC($pickupReady, 15); // Add 15 Minutes
+                $dropoffReady = $this->getDateTimeUTC($pickupDeadLine); // REQUIRED Same $pickupDeadLine
+                $dropoffDeadLine = $this->getDateTimeUTC($dropoffReady, 30); // Add 30 Minutes
+
                 $deliveryAdditionalData = [
-                    'pickup_ready_dt' => $deliveryTime->format('Y-m-d\TH:i:s.000\Z'),
+                    'pickup_ready_dt' => $pickupReady->format('Y-m-d\TH:i:s.000\Z'),
+                    'pickup_deadline_dt' => $pickupDeadLine->format('Y-m-d\TH:i:s.000\Z'),
+                    'dropoff_ready_dt' => $dropoffReady->format('Y-m-d\TH:i:s.000\Z'),
+                    'dropoff_deadline_dt' => $dropoffDeadLine->format('Y-m-d\TH:i:s.000\Z'),
                     'manifest_total_value' => (int)$order->getGrandTotal(),
-                    'manifest_reference' => 'Testea',
-                    'external_id' => 'TesteB',
-                    'return_verification' => [
-                        'picture' => true,
-                        'signature_requirement' => [
-                            'enabled' => true,
-                            'collect_signer_name' => true,
-                            'collect_signer_relationship' => true
-                        ]
-                    ]
+                    'manifest_reference' => $order->getIncrementId(),
+                    'external_id' => $order->getIncrementId(),
+                    'external_store_id' => $this->helper->getStoreName($order->getStoreId()),
+                    'undeliverable_action' => 'return'
                 ];
+
+                // Add Verification Methods
+                $deliveryAdditionalData['pickup_verification'] = $this->getVerificationMethod($order);
+                $deliveryAdditionalData['return_verification'] = $this->getVerificationMethod($order);
+
+                // Apply Cash on Delivery? TODO fake disable
+                if ($this->helper->isCashOnDeliveryEnabled($order->getStoreId()) &&
+                    $order->getPayment()->getMethod() === 'cashondeliveryq') {
+                    $deliveryAdditionalData['dropoff_payment']['requirements'] = [
+                          [
+                            'paying_party' => 'recipient',
+                            'amount' => (int)$order->getGrandTotal(),
+                            'payment_methods' => [
+                                'cash' => [
+                                    'enabled' => true
+                                ]
+                            ]
+                        ]
+                    ];
+                }
 
                 // Prepara Request
                 $shippingData = array_merge($warehouseData, $dropoffData, $deliveryItems, $deliveryAdditionalData);
@@ -126,13 +219,52 @@ class CreateShipment
 
                 // Send Request to Uber
                 $uberResponse = $this->uber->createShipping($shippingData, $organizationId, $order->getStoreId());
-                die;
-                return '';//$requestData;
+                if (!isset($uberResponse['id'])) {
+                    return false;
+                }
+
+                // Save Uber Shipping ID
+                try {
+                    $uberOrderShipmentRepository->setStatus('pending');
+                    $uberOrderShipmentRepository->setUberShippingId($uberResponse['id']);// Save Data
+                    $this->orderShipmentRepository->save($uberOrderShipmentRepository);
+                } catch (CouldNotSaveException $e) {
+                    throw new Exception($e->getMessage());
+                }
+
+                // Create Shipment / Track
+                try {
+                    $this->createShipment($order, $uberResponse);
+                } catch (MailException|LocalizedException $e) {
+                    throw new Exception($e->getMessage());
+                }
+
+                return $uberResponse;
             }
         }
     }
 
     /**
+     * getDateTimeUTC
+     *
+     * Return DateTime UTC
+     * @param $dateTime
+     * @param $interval
+     */
+    private function getDateTimeUTC($dateTime, $interval = null)
+    {
+        $dateTimeClone = clone $dateTime;
+        $dateTimeUTC = $dateTimeClone->setTimezone(new \DateTimeZone('UTC'));
+        if (!is_null($interval)) {
+            $dateTimeUTC->add(new \DateInterval("PT{$interval}M"));
+        }
+        return $dateTimeUTC;
+    }
+
+    /**
+     * getDeliveryItems
+     *
+     * Return all items
      * @param $order
      * @return array
      * @throws Exception
@@ -145,6 +277,7 @@ class CreateShipment
         $productWidthAttribute = $this->helper->getProductWidthAttribute($order->getStoreId());
         $productHeightAttribute = $this->helper->getProductHeightAttribute($order->getStoreId());
         $productDepthAttribute = $this->helper->getProductDepthAttribute($order->getStoreId());
+        $storeWeightUnit = $this->helper->getStoreWeightUnit($order->getStoreId());
 
         // Prepare Items
         foreach ($order->getAllItems() as $_item) {
@@ -162,20 +295,35 @@ class CreateShipment
                 throw new Exception(__('The cart contains items that cannot be shipped with Uber'));
             }
 
-            // Get Weight
-            $itemWeight = $_item->getQtyOrdered() * $_product->getWeight();
+            // Convert to Grams
+            if ($storeWeightUnit === 'lbs') {
+                // Lbs to Grams
+                $itemWeightGrams = $_product->getWeight() * 453.592;
+            } else {
+                // KG to Grams
+                $itemWeightGrams = $_product->getWeight() / 1000;
+            }
+
+            // Get Item Props
+            $itemQty = (int)$_item->getQty() ?: 1;
+            $itemName = $_item->getName();
+            $itemPrice = (int)$_item->getPrice();
+            $itemWeight = (int)($itemQty * $itemWeightGrams) ?: 1;
+            $itemDepth = (int)$_product->getData($productDepthAttribute) ?? 1;
+            $itemWidth = (int)$_product->getData($productWidthAttribute) ?? 1;
+            $itemHeight = (int)$_product->getData($productHeightAttribute) ?? 1;
 
             // Valid Item
             $uberItems[] = [
-                'name' => $_item->getName(),
-                'quantity' => (int)$_item->getQtyOrdered(),
-                'price' => (int)$_item->getPrice(),
+                'name' => $itemName,
+                'quantity' => $itemQty,
+                'price' => $itemPrice,
+                'weight' => $itemWeight,
                 'must_be_upright' => true,
-                'weight' => (float)$itemWeight,
                 'dimensions' => [
-                    'length' => (int)$_product->getData($productWidthAttribute),
-                    'height' => (int)$_product->getData($productHeightAttribute),
-                    'depth'  => (int)$_product->getData($productDepthAttribute)
+                    'length' => $itemWidth,
+                    'height' => $itemHeight,
+                    'depth'  => $itemDepth
                 ]
             ];
         }
@@ -185,6 +333,8 @@ class CreateShipment
 
     /**
      * getDropoffData
+     *
+     * Return array with DropOff Data
      * @param $order
      * @return array
      */
@@ -195,7 +345,7 @@ class CreateShipment
             'dropoff_name' => $order->getShippingAddress()->getName(),
             'dropoff_phone_number' => $order->getShippingAddress()->getTelephone(),
             'dropoff_business_name' => $order->getShippingAddress()->getName(),
-            'dropoff_verification' => $this->getDropoffVerification($order)
+            'dropoff_verification' => $this->getVerificationMethod($order)
         ];
 
         // Has Customer Notes?
@@ -218,6 +368,8 @@ class CreateShipment
 
     /**
      * getDeliveryTime
+     *
+     * Return Estimated shipping time based on store time zone
      * @param $storeId
      * @return \DateTime
      */
@@ -225,19 +377,19 @@ class CreateShipment
     {
         // Get Preparation Time (Window Delivery)
         $preparationTime = $this->helper->getPreparationTime($storeId);
-        // Get Current DateTime
         $currentTime = $this->timezone->date();
-        // Add Preparation Time
         $interval = new \DateInterval("PT{$preparationTime}M");
         return $currentTime->add($interval);
     }
 
     /**
-     * getDropoffVerification
+     * getVerificationMethod
+     *
+     * Return Verification Method
      * @param $order
      * @return array[]
      */
-    private function getDropoffVerification($order): array
+    private function getVerificationMethod($order): array
     {
         $verificationParams = [];
         $storeId = $order->getStoreId();
@@ -279,5 +431,89 @@ class CreateShipment
         }
 
         return $verificationParams;
+    }
+
+    /**
+     * createShipment
+     * @param $order
+     * @param array $uberData
+     * @return bool|Shipment
+     * @throws LocalizedException
+     * @throws MailException
+     */
+    private function createShipment($order, array $uberData)
+    {
+        $trackNumber = $this->formatTrackingNumber($uberData['uuid']);
+        $trackURL = $uberData['tracking_url'];
+        $carrierTitle = $this->helper->getShippingTitle($order->getStoreId()) ?: 'Uber Direct';
+
+        if ($order->canShip()) {
+            $items = [];
+            foreach ($order->getAllItems() as $orderItem) {
+                if (!$orderItem->getQtyToShip() || $orderItem->getIsVirtual()) {
+                    continue;
+                }
+                $items[$orderItem->getId()] = $orderItem->getQtyToShip();
+                /**
+                 * Set MSI Source?
+                 */
+                /*if ($this->helper->getSourceOrigin($order->getStoreId())) {
+                    $orderSourceMSI = "";
+                    $shipment->getExtensionAttributes()->setSourceCode($orderSourceMSI);
+                }*/
+            }
+            $this->shipmentLoader->setOrderId($order->getId());
+            $this->shipmentLoader->setShipmentId(null);
+            $this->shipmentLoader->setShipment(['items' => $items]);
+            $trackingInfo = null;
+            if ($trackNumber) {
+                $trackingInfo = [[
+                    'title'        => $carrierTitle,
+                    'number'       => $trackNumber,
+                    'carrier_code' => $order->getShippingMethod(),
+                ]];
+            }
+
+            $this->shipmentLoader->setTracking($trackingInfo);
+
+            /** If "current_shipment" is already registered, we need to unregister it. */
+            if ($this->registry->registry('current_shipment')) {
+                $this->registry->unregister('current_shipment');
+            }
+
+            $shipment = $this->shipmentLoader->load();
+            $shipment->register();
+            $shipment->getOrder()->setIsInProcess(true);
+            $transaction = $this->transactionFactory->create();
+            $transaction->addObject($shipment)->addObject($shipment->getOrder())->save();
+            if ($trackNumber) {
+                $this->shipmentNotifier->notify($shipment);
+            }
+        } else {
+            /** @var Order\Shipment $shipment */
+            $shipment = $order->getShipmentsCollection()->getFirstItem();
+            if ($trackNumber) {
+                $shipment->addTrack(
+                    $this->trackFactory->create()
+                        ->setNumber($trackNumber)
+                        ->setCarrierCode($shipment->getOrder()->getShippingMethod())
+                        ->setTitle($carrierTitle)
+                        ->setUrl($trackURL)
+                );
+            }
+        }
+        return $shipment;
+    }
+
+    /**
+     * formatTrackingNumber
+     *
+     * Return TrackNumber formatted
+     * @param string $trackingNumber
+     * @return string
+     */
+    private function formatTrackingNumber(string $trackingNumber): string
+    {
+        return preg_replace('/^([\da-f]{8})([\da-f]{4})([\da-f]{4})([\da-f]{4})([\da-f]{12})$/i', '$1-$2-$3-$4-$5', $trackingNumber);
     }
 }

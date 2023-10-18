@@ -179,7 +179,7 @@ class WarehouseRepository implements WarehouseRepositoryInterface
     public function getWarehouseOrganization($warehouse): mixed
     {
         $organizationId = $warehouse->getOrganizationId();
-        if ($organizationId === 0) {
+        if ($organizationId == 0) {
             // Use ROOT Organization from Shipping Configuration
             return $this->helper->getCustomerId();
         }

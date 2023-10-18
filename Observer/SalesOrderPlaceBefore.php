@@ -80,7 +80,6 @@ class SalesOrderPlaceBefore implements ObserverInterface
                     $orderShipping->setSourceWaypoint($warehouseId);
                 }
                 $orderShipping->setIncrementId($order->getIncrementId());
-                $orderShipping->setStatus("pending");
                 $this->orderShipmentRepositoryInterface->save($orderShipping);
             } catch (\Exception $e) {
                 // TODO Logger message

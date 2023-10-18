@@ -8,6 +8,7 @@ namespace Improntus\Uber\Plugin;
 
 use Improntus\Uber\Helper\Data;
 use Improntus\Uber\Model\Carrier\Uber;
+use Improntus\Uber\Model\OrderShipmentRepository;
 use Magento\Backend\Block\Widget\Button\ButtonList;
 use Magento\Backend\Block\Widget\Button\Toolbar;
 use Magento\Backend\Model\UrlInterface;
@@ -37,6 +38,11 @@ class OrderToolbarButtons
     protected UrlInterface $urlInterface;
 
     /**
+     * @var OrderShipmentRepository $orderShipmentRepository
+     */
+    protected OrderShipmentRepository $orderShipmentRepository;
+
+    /**
      * @param Data $helper
      * @param UrlInterface $urlInterface
      * @param OrderRepository $orderRepository
@@ -44,11 +50,13 @@ class OrderToolbarButtons
     public function __construct(
         Data $helper,
         UrlInterface $urlInterface,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        OrderShipmentRepository $orderShipmentRepository
     ) {
         $this->helper = $helper;
         $this->urlInterface = $urlInterface;
         $this->orderRepository = $orderRepository;
+        $this->orderShipmentRepository = $orderShipmentRepository;
     }
 
     /**
@@ -89,14 +97,22 @@ class OrderToolbarButtons
                     }
                 }
 
-                // Add Recall Shipping Button
+                // Add Re-call / Cancel / Verification Buttons
                 if ($orderData->getShipmentsCollection()->getSize() !== 0) {
-                    $baseUrl = "#";//$this->urlInterface->getUrl('uber/shipment/cancel', ['order_id' => $order->getId()]);
+                    $uberOrderShipmentRepository = $this->orderShipmentRepository->getByOrderId($order->getId());
+
+                    // Button data
+                    $buttonAction = $this->urlInterface->getUrl('uber/shipment/cancel', ['order_id' => $order->getId()]);
+                    $buttonLabel = __('Cancel Driver');
+                    if (is_null($uberOrderShipmentRepository->getUberShippingId())) {
+                        $buttonLabel = __('Re-call Driver');
+                        $buttonAction = $this->urlInterface->getUrl('uber/shipment/create', ['order_id' => $order->getId()]);
+                    }
                     $buttonList->add(
                         'uber_ship',
                         [
-                            'label' => __('Re-call Driver'),
-                            'onclick' => "location.href='{$baseUrl}'",
+                            'label' => $buttonLabel,
+                            'onclick' => "location.href='{$buttonAction}'",
                             'class' => 'uber-button'
                         ]
                     );

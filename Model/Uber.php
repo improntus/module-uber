@@ -100,6 +100,7 @@ class Uber
     /**
      * createOrganization
      * @param $userData
+     * @throws Exception
      */
     public function createOrganization($userData)
     {
@@ -108,7 +109,7 @@ class Uber
 
         // Has data?
         if (is_null($token)) {
-            throw new \Exception(__("An error occurred while validating/generating token"));
+            throw new Exception(__("An error occurred while validating/generating token"));
         }
 
         // Prepare Request
@@ -178,6 +179,7 @@ class Uber
         if ($uberRequest->getStatusCode() !== 200) {
             // TODO: Log message
             $this->helper->log(__("ERROR: Generate Uber Organization: %1", json_encode($responseBody)));
+            throw new Exception($responseBody['code']);
         }
 
         // Return Data
@@ -219,18 +221,92 @@ class Uber
         // Send Request
         $uberRequest = $this->ws->doRequest($createShippingEndpoint, $requestData, "POST");
 
-        // Get Body / Content
-        $responseBody = json_decode($uberRequest->getBody()->getContents(), true);
+        // Get Response
+        $responseBody = $uberRequest->getBody()->getContents();
 
         // Opps...
         if ($uberRequest->getStatusCode() !== 200) {
             // TODO: Log message
-            $this->helper->log(__("ERROR: Uber Shipping Create Request %1", json_encode($requestData)));
-            $this->helper->log(__("ERROR: Uber Shipping Create Response %1", json_encode($responseBody)));
+            $error = json_decode($responseBody);
+            $this->helper->log("ERROR: Uber Shipping Create Request: " . json_encode($requestData));
+
+            /**
+             * There are errors that return an invalid json and can generate an error.
+             * That is why if $error is null I use the 'raw' body
+             */
+            if (is_null($error)) {
+                $logMsg = $responseBody;
+            } else {
+                $logMsg = json_encode($error);
+            }
+
+            $this->helper->log("ERROR: Uber Shipping Create Response: $logMsg");
+            $exceptionMsg = $error['code'] ?? $error['error'] ?? $uberRequest->getReasonPhrase();
+            throw new Exception($exceptionMsg, $uberRequest->getStatusCode());
         }
 
         // Return Data
-        return $responseBody;
+        return json_decode($responseBody, true);
+    }
+
+    /**
+     * cancelShipping
+     * @param string $shippingId
+     * @param string $organizationId
+     * @param int $storeId
+     * @return mixed
+     * @throws Exception
+     */
+    public function cancelShipping(string $shippingId, string $organizationId, int $storeId): mixed
+    {
+        // Get Access Token
+        $token = $this->getAccessToken($storeId);
+
+        // Has data?
+        if (is_null($token)) {
+            throw new Exception(__("An error occurred while validating/generating token"));
+        }
+
+        // Prepare Request
+        $requestData = [];
+
+        // Add Header Credentials
+        $requestData['headers'] = [
+            "Authorization" => "Bearer {$token->getToken()}"
+        ];
+
+        // Get endpoint URL
+        $createShippingEndpoint = $this->helper->buildRequestURL("customers/{$organizationId}/deliveries/{$shippingId}/cancel", $storeId);
+
+        // Send Request
+        $uberRequest = $this->ws->doRequest($createShippingEndpoint, $requestData, "POST");
+
+        // Get Response
+        $responseBody = $uberRequest->getBody()->getContents();
+
+        // Opps...
+        if ($uberRequest->getStatusCode() !== 200) {
+            // TODO: Log message
+            $error = json_decode($responseBody, true);
+            $this->helper->log("ERROR: Uber Shipping Cancel Request: " . json_encode($requestData));
+
+            /**
+             * There are errors that return an invalid json and can generate an error.
+             * That is why if $error is null I use the 'raw' body
+             */
+            if (is_null($error)) {
+                $logMsg = $responseBody;
+            } else {
+                $logMsg = json_encode($error);
+            }
+
+            $this->helper->log("ERROR: Uber Shipping Cancel Response: $logMsg");
+            $exceptionMsg = $error['code'] ?? $error['error'] ?? $uberRequest->getReasonPhrase();
+            throw new Exception($exceptionMsg, $uberRequest->getStatusCode());
+        }
+
+        // Return Data
+        return json_decode($responseBody, true);
     }
 
     /**
@@ -276,6 +352,7 @@ class Uber
             // TODO: Log message
             $this->helper->log(__("ERROR: Uber Delivery Quote Request %1", json_encode($requestData)));
             $this->helper->log(__("ERROR: Uber Delivery Quote Response %1", json_encode($responseBody)));
+            throw new Exception($responseBody['code']);
         }
 
         // Return Data
@@ -318,6 +395,31 @@ class Uber
 
         // Return
         return $tokenData;
+    }
+
+    /**
+     * getAddressCoordinates
+     *
+     * Return Coordinates from Address
+     * @param $street
+     * @return mixed|null
+     */
+    public function getAddressCoordinates($address)
+    {
+        // Send Request
+        $uberRequest = $this->ws->doRequest('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=' . $address, [], "GET");
+
+        // Get Body / Content
+        $responseBody = json_decode($uberRequest->getBody()->getContents(), true);
+
+        // Request ERROR
+        if ($uberRequest->getStatusCode() !== 200) {
+            // TODO: Log message
+            $this->helper->log(__("ERROR: Get Street Coords: %1", json_encode($responseBody)));
+            return null;
+        }
+
+        return $responseBody;
     }
 
     /**

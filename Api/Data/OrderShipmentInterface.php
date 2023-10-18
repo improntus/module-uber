@@ -20,6 +20,8 @@ interface OrderShipmentInterface
 
     const STATUS = 'status';
 
+    const UBER_SHIPPING_ID = 'uber_shipping_id';
+
     /**
      * @return mixed
      */
@@ -85,4 +87,16 @@ interface OrderShipmentInterface
      * @return mixed
      */
     public function setIncrementId(string $incrementId);
+
+    /**
+     * getUberShippingId
+     * @return mixed
+     */
+    public function getUberShippingId();
+
+    /**
+     * setUberShippingId
+     * @return mixed
+     */
+    public function setUberShippingId($uberShippingId);
 }

@@ -61,7 +61,7 @@ class CreateUberProductAttribute implements DataPatchInterface
             'backend' => \Magento\Catalog\Model\Product\Attribute\Backend\Boolean::class,
             'source' => \Magento\Eav\Model\Entity\Attribute\Source\Boolean::class,
             'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
-            'default' => 1,
+            'default' => true,
             'visible' => true,
             'required' => false,
             'user_defined' => true,

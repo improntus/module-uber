@@ -11,9 +11,9 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Encryption\EncryptorInterface;
+use Magento\Framework\Module\ModuleListInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Framework\Module\ModuleListInterface;
 
 class Data extends AbstractHelper
 {
@@ -26,6 +26,10 @@ class Data extends AbstractHelper
     const UBER_SHIPPING_CONFIG_PATH = 'shipping/uber/%s';
 
     const PAYMENT_COD_CONFIG_PATH = 'payment/cashondelivery/%s';
+
+    const STORE_WEIGHT_UNIT_CONFIG_PATH = 'general/locale/weight_unit';
+
+    const STORE_NAME_CONFIG_PATH = 'general/store_information/name';
 
     const CLIENT_SECRET = 'client_secret';
 
@@ -221,6 +225,45 @@ class Data extends AbstractHelper
     }
 
     /**
+     * getShippingTitle
+     *
+     * Return Carrier Title
+     * @param $storeId
+     * @return string
+     */
+    public function getShippingTitle($storeId = null): string
+    {
+        return $this->getConfigCarrierData('title', $storeId);
+    }
+
+    /**
+     * getStoreWeightUnit
+     * @param $storeId
+     * @return mixed
+     */
+    public function getStoreWeightUnit($storeId = null): mixed
+    {
+        return $this->scopeConfig->getValue(self::STORE_WEIGHT_UNIT_CONFIG_PATH, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * getStoreName
+     *
+     * Returns store name. If not set, generate one from the URL
+     * @param $storeId
+     * @return string
+     */
+    public function getStoreName($storeId = null): string
+    {
+        $storeName = $this->scopeConfig->getValue(self::STORE_NAME_CONFIG_PATH, ScopeInterface::SCOPE_STORE, $storeId);
+        if (is_null($storeName)) {
+            $storeUrl = $this->scopeConfig->getValue('web/unsecure/base_url', ScopeInterface::SCOPE_STORE, $storeId) ?? "M2";
+            $storeName = "$storeUrl - Uber Direct";
+        }
+        return $storeName;
+    }
+
+    /**
      * isPaymentCashOnDeliveryEnabled
      * @param $storeId
      * @return bool
@@ -309,7 +352,6 @@ class Data extends AbstractHelper
     public function log($message, string $type = 'debug'): void
     {
         if ($this->isDebugEnabled()) {
-            $this->logger->setName('Uber');
             if ($type !== 'debug') {
                 $this->logger->info($message);
             } else {

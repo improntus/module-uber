@@ -12,7 +12,7 @@
                 <mode>0</mode>
                 <debug>0</debug>
                 <active>0</active>
-                <title>Uber</title>
+                <title>Uber Direct</title>
                 <sort_order>0</sort_order>
                 <free_shipping>0</free_shipping>
                 <sallowspecific>0</sallowspecific>
@@ -22,6 +22,9 @@
                 <webhooks_integration>0</webhooks_integration>
                 <model>Improntus\Uber\Model\Carrier\Uber</model>
                 <verification_type>signature_requirement</verification_type>
+                <product_width_attribute>uber_width</product_width_attribute>
+                <product_depth_attribute>product_depth</product_depth_attribute>
+                <product_height_attribute>uber_height</product_height_attribute>
             </uber>
         </carriers>
     </default>

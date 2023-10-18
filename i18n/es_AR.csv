@@ -1,30 +1,192 @@
+Save,Save
+"Delete Waypoint","Delete Waypoint"
+"Are you sure you want to do this?","Are you sure you want to do this?"
+Organizations,Organizations
+"New Organization","New Organization"
+"Edit Organization: %1","Edit Organization: %1"
+"There was a problem creating the Organization in UBER","There was a problem creating the Organization in UBER"
+"The Organization has been saved.","The Organization has been saved."
+"There was a problem saving the Organization","There was a problem saving the Organization"
+"Order ID parameter is required","Order ID parameter is required"
+"Shipment successfully canceled","Shipment successfully canceled"
+"<strong>Uber Cancellation ERROR</strong>: %1","<strong>Uber Cancellation ERROR</strong>: %1"
+"Uber Shipping Cancel ERROR: %1","Uber Shipping Cancel ERROR: %1"
+"<strong>Uber Cancellation ID</strong>: %1","<strong>Uber Cancellation ID</strong>: %1"
+"Shipment generated successfully","Shipment generated successfully"
+"<strong>Uber Shipping Create ERROR</strong>: %1","<strong>Uber Shipping Create ERROR</strong>: %1"
+"Uber Shipping Create ERROR: %1","Uber Shipping Create ERROR: %1"
+"<strong>Uber Shipping ID</strong>: %1","<strong>Uber Shipping ID</strong>: %1"
+Waypoints,Waypoints
+"New Waypoint","New Waypoint"
+"Edit Waypoint: %1","Edit Waypoint: %1"
+"The Waypoint has been saved.","The Waypoint has been saved."
+"There was a problem saving the Waypoint","There was a problem saving the Waypoint"
+"The requested Order does not exist","The requested Order does not exist"
+"This shipping method is not available. Please specify the zip code.","This shipping method is not available. Please specify the zip code."
+"This shipping method is not available","This shipping method is not available"
+"No estimates available for the address entered","No estimates available for the address entered"
+"Uber Estimate ERROR: %1","Uber Estimate ERROR: %1"
+"The cart contains items that cannot be shipped with Uber","The cart contains items that cannot be shipped with Uber"
+"-- Select --","-- Select --"
+"-- Select Mode --","-- Select Mode --"
+Production,Production
+Sandbox,Sandbox
+"-- Select Source --","-- Select Source --"
+MSI,MSI
+Signature,Signature
+Barcodes,Barcodes
+"Pin Code","Pin Code"
+Identification,Identification
+Picture,Picture
 "Google Maps","Google Maps"
 "Nominatim (OpenStreetMap)","Nominatim (OpenStreetMap)"
-Production,"Producción"
-Sandbox,"Pruebas"
-"No Available","No Disponible"
-Uber Direct,Uber Direct
-Configuration,"Configuration"
-"Shipping Methods","Shipping Methods"
-Waypoints,Waypoints
-"<span class=""uber-brand"">Uber</span> Uber Configuration","<span class=""uber-brand"">Uber</span> Uber Configuración"
-"Geocoding Service","Geocoding Service"
-"Google API Key","Google API Key"
+"-- Select Billing --","-- Select Billing --"
+Centralized,Centralized
+Decentralized,Decentralized
+"-- Select Merchant --","-- Select Merchant --"
+Restaurant,Restaurant
+Groery,Groery
+Liquor,Liquor
+Retail,Retail
+Essentials,Essentials
+Pharmacy,Pharmacy
+"Specialty Food","Specialty Food"
+Flower,Flower
+"Pet Supply","Pet Supply"
+"-- Select Onboarding --","-- Select Onboarding --"
+"Do not send instructions","Do not send instructions"
+"Send instructions","Send instructions"
+"Use Root Organization","Use Root Organization"
+"Use Base Organization","Use Base Organization"
+Admin,Admin
+Employee,Employee
+Small,Small
+Medium,Medium
+Large,Large
+Xlarge,Xlarge
+"No Available","No Available"
+"The preparation point is outside working hours","The preparation point is outside working hours"
+"Could not save the OrderShipment: %1","Could not save the OrderShipment: %1"
+"Requested OrderShipment doesn't exist","Requested OrderShipment doesn't exist"
+"Unable to Delete OrderShipment %1","Unable to Delete OrderShipment %1"
+"Could not save the Organization: %1","Could not save the Organization: %1"
+"Requested Organization doesn't exist","Requested Organization doesn't exist"
+"Unable to Delete Organization %1","Unable to Delete Organization %1"
+"Could not save the Token: %1","Could not save the Token: %1"
+"Requested Token doesn't exist","Requested Token doesn't exist"
+"Unable to Delete Token %1","Unable to Delete Token %1"
+"An error occurred while validating/generating token","An error occurred while validating/generating token"
+"ERROR: Generate Uber Organization: %1","ERROR: Generate Uber Organization: %1"
+"ERROR: Uber Delivery Quote Request %1","ERROR: Uber Delivery Quote Request %1"
+"ERROR: Uber Delivery Quote Response %1","ERROR: Uber Delivery Quote Response %1"
+"Uber Delete Expired Token ERROR: %1","Uber Delete Expired Token ERROR: %1"
+"ERROR: Get Street Coords: %1","ERROR: Get Street Coords: %1"
+"ERROR: Get AccessToken: %1","ERROR: Get AccessToken: %1"
+"Missing Organization","Missing Organization"
+"Could not save the Waypoint: %1","Could not save the Waypoint: %1"
+"Requested Waypoint doesn't exist","Requested Waypoint doesn't exist"
+"Unable to Delete Waypoint %1","Unable to Delete Waypoint %1"
+"UBER ERROR LOG SalesOrderSaveAfter: %1","UBER ERROR LOG SalesOrderSaveAfter: %1"
+"Request Driver","Request Driver"
+"Cancel Driver","Cancel Driver"
+"Re-call Driver","Re-call Driver"
+"Uber Order View Toolbar ERROR: %1","Uber Order View Toolbar ERROR: %1"
+"Shipping With Uber","Shipping With Uber"
+"Uber Product Size","Uber Product Size"
+"Uber Product Width","Uber Product Width"
+"Expressed in centimeters","Expressed in centimeters"
+"Uber Product Height","Uber Product Height"
+"Uber Product Depth","Uber Product Depth"
+"Click here to validate address with Uber","Click here to validate address with Uber"
+"Field ","Field "
+" is required."," is required."
+"Waypoint was deleted","Waypoint was deleted"
+"The Waypoint you are trying to delete does not exist","The Waypoint you are trying to delete does not exist"
+"There was a problem deleting the Waypoint","There was a problem deleting the Waypoint"
+"Uber Direct","Uber Direct"
+Configuration,Configuration
+"Delivery Method","Delivery Method"
+"Manage Organizations","Manage Organizations"
+"<span class=""uber-brand"">Uber</span> Uber Configuration","<span class=""uber-brand"">Uber</span> Uber Configuration"
 "Customer ID","Customer ID"
 "Client ID","Client ID"
 "Client Secret","Client Secret"
-"Monday Opening","Lunes Apertura"
-"Monday Closing","Lunes Cierre"
-"Tuesday Opening","Martes Apertura"
-"Tuesday Closing","Martes Cierre"
-"Wednesday Opening","Miércoles Apertura"
-"Wednesday Closing","Miércoles Cierre"
-"Thursday Opening","Jueves Apertura"
-"Thursday Closing","Jueves Cierre"
-"Friday Opening","Viernes Apertura"
-"Friday Closing","Viernes Cierre"
-"Saturday Opening","Sábado Apertura"
-"Saturday Closing","Sábado Cierre"
-"Sunday Opening","Domingo Apertura"
-"Sunday Closing","Domingo Cierre"
-"Day and Hours availability", "Horarios Disponible"
+Enabled,Enabled
+"Integration Mode","Integration Mode"
+"Debug Mode","Debug Mode"
+Warehouse,Warehouse
+"Free Shipping","Free Shipping"
+"Verification Type","Verification Type"
+"Identification min age","Identification min age"
+"Cash on Delivery","Cash on Delivery"
+"Automatic Status Update","Automatic Status Update"
+"Webhook Signing Key","Webhook Signing Key"
+"Window Delivery","Window Delivery"
+Title,Title
+Description,Description
+"Sort Order","Sort Order"
+"Show Method if Not Applicable","Show Method if Not Applicable"
+"Product Width Attribute","Product Width Attribute"
+"Product Height Attribute","Product Height Attribute"
+"Product Depth Attribute","Product Depth Attribute"
+"Automatic Shipment Generation","Automatic Shipment Generation"
+"Status for automatic shipping creation","Status for automatic shipping creation"
+Organization,Organization
+"Monday Opening","Monday Opening"
+"Monday Closing","Monday Closing"
+"Tuesday Opening","Tuesday Opening"
+"Tuesday Closing","Tuesday Closing"
+"Wednesday Opening","Wednesday Opening"
+"Wednesday Closing","Wednesday Closing"
+"Thursday Opening","Thursday Opening"
+"Thursday Closing","Thursday Closing"
+"Friday Opening","Friday Opening"
+"Friday Closing","Friday Closing"
+"Saturday Opening","Saturday Opening"
+"Saturday Closing","Saturday Closing"
+"Sunday Opening","Sunday Opening"
+"Sunday Closing","Sunday Closing"
+Back,Back
+"Save Organization","Save Organization"
+"Organization Information","Organization Information"
+Active,Active
+"Organization Id","Organization Id"
+"This field is automatically completed when creating the organization","This field is automatically completed when creating the organization"
+"Organization Name","Organization Name"
+"Billing Type","Billing Type"
+"Merchant Type","Merchant Type"
+Email,Email
+Onboarding,Onboarding
+"Phone Country Code","Phone Country Code"
+"Phone Number","Phone Number"
+"Address Data","Address Data"
+Street,Street
+"The street detail if needed, for example 2000 Tustin Ave.","The street detail if needed, for example 2000 Tustin Ave."
+"Postcode / Zipcode","Postcode / Zipcode"
+"Additional Street","Additional Street"
+"Additional street detail if needed","Additional street detail if needed"
+City,City
+"The city detail for the address, for example “Irvine”","The city detail for the address, for example “Irvine”"
+State,State
+"The state detail for the address, for example “CA” for California","The state detail for the address, for example “CA” for California"
+Country,Country
+"Add Organization","Add Organization"
+Id,Id
+"Uber Organization Id","Uber Organization Id"
+Waypoint,Waypoint
+Reset,Reset
+"Save Waypoint","Save Waypoint"
+"Waypoint Information","Waypoint Information"
+Store,Store
+Name,Name
+Address,Address
+Postcode,Postcode
+Region,Region
+Telephone,Telephone
+Instructions,Instructions
+Latitude,Latitude
+"To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>","To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>"
+Longitude,Longitude
+"Day and Hours availability","Day and Hours availability"
+"Add Waypoint","Add Waypoint"
+ID,ID

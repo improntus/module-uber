@@ -124,4 +124,22 @@ class OrderShipment extends AbstractModel implements OrderShipmentInterface
     {
         return $this->setData(OrderShipmentInterface::INCREMENT_ID, $incrementId);
     }
+
+    /**
+     * getUberShippingId
+     * @return mixed
+     */
+    public function getUberShippingId()
+    {
+        return $this->getData(OrderShipmentInterface::UBER_SHIPPING_ID);
+    }
+
+    /**
+     * setUberShippingId
+     * @return mixed
+     */
+    public function setUberShippingId($uberShippingId)
+    {
+        return $this->setData(OrderShipmentInterface::UBER_SHIPPING_ID, $uberShippingId);
+    }
 }

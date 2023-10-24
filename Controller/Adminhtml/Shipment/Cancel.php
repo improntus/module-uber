@@ -75,7 +75,7 @@ class Cancel extends Action
             $this->cancelShipment->cancel($orderId);
             $this->messageManager->addSuccessMessage(__('Shipment successfully canceled'));
         } catch (Exception $e) {
-            $this->messageManager->addErrorMessage(__($e->getMessage()));
+            $this->messageManager->addErrorMessage('Uber: ' . __($e->getMessage()));
             $this->addCommentCancelError($orderId, __($e->getMessage()));
         }
 

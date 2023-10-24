@@ -1,7 +1,7 @@
 <?php
 /**
- * @author Improntus Dev Team
- * @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
+ *  @author Improntus Dev Team
+ *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Controller\Adminhtml\Shipment;
@@ -63,7 +63,6 @@ class Create extends Action
     {
         $orderId = $this->getRequest()->getParam('order_id');
         if (is_null($orderId)) {
-            // Todo: ERROR MSG
             $this->messageManager->addErrorMessage(__('Order ID parameter is required'));
         }
 
@@ -71,11 +70,10 @@ class Create extends Action
          * Create Shipping
          */
         try {
-            $shippingResponse = $this->createShipment->create($orderId);
-            $this->addCommentConfirmation($orderId, $shippingResponse);
+            $this->createShipment->create($orderId);
             $this->messageManager->addSuccessMessage(__('Shipment generated successfully'));
         } catch (Exception $e) {
-            $this->messageManager->addErrorMessage($e->getMessage());
+            $this->messageManager->addErrorMessage('Uber: ' . __($e->getMessage()));
             $this->addCommentShippingError($orderId, $e->getMessage());
         }
 
@@ -100,40 +98,11 @@ class Create extends Action
 
         try {
             $order->addCommentToStatusHistory(
-                __('<strong>Uber Shipping Create ERROR</strong>: %1', $msgError)
+                __('<strong>Uber Shipping Create ERROR</strong>: %1', __($msgError))
             );
-
             $this->orderRepository->save($order);
-            return true;
         } catch (Exception $e) {
             $this->helper->log(__("Uber Shipping Create ERROR: %1", $e->getMessage()));
-        }
-    }
-
-    /**
-     * addCommentConfirmation
-     * @param int $orderId
-     * @param array $cancellationData
-     * @return void
-     * @throws InputException
-     * @throws NoSuchEntityException
-     */
-    private function addCommentConfirmation(int $orderId, array $cancellationData): void
-    {
-        $order = $this->orderRepository->get($orderId);
-        if (is_null($order->getEntityId())) {
-            return;
-        }
-
-        try {
-            $order->addCommentToStatusHistory(
-                __('<strong>Uber Shipping ID</strong>: %1', $cancellationData['id']),
-                'uber_pending'
-            );
-
-            $this->orderRepository->save($order);
-        } catch (Exception $e) {
-            $this->helper->log(__("Uber Shipping Cancel ERROR: %1", $e->getMessage()));
         }
     }
 }

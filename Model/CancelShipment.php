@@ -1,7 +1,7 @@
 <?php
 /**
- * @author Improntus Dev Team
- * @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
+ *  @author Improntus Dev Team
+ *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Model;
@@ -86,7 +86,6 @@ class CancelShipment
             // Get Order
             $order = $this->orderRepository->get($orderId);
             if (is_null($order->getId())) {
-                // Todo MSG
                 throw new Exception(__('The requested Order does not exist'));
             }
 
@@ -121,8 +120,40 @@ class CancelShipment
                     throw new Exception($e->getMessage());
                 }
 
+                // Add Comment to Order
+                try {
+                    $this->addCommentConfirmationCancel($orderId, $uberResponse);
+                } catch (Exception $e) {
+                    throw new Exception($e->getMessage());
+                }
+
                 return $uberResponse;
             }
+        }
+    }
+
+    /**
+     * addCommentConfirmationCancel
+     * @param int $orderId
+     * @param array $cancellationData
+     * @return void
+     * @throws InputException
+     * @throws NoSuchEntityException
+     */
+    private function addCommentConfirmationCancel(int $orderId, array $cancellationData): void
+    {
+        $order = $this->orderRepository->get($orderId);
+        if (is_null($order->getEntityId())) {
+            return;
+        }
+        try {
+            $order->addCommentToStatusHistory(
+                __('<strong>Uber Cancellation ID</strong>: %1', $cancellationData['id']),
+                'uber_canceled'
+            );
+            $this->orderRepository->save($order);
+        } catch (Exception $e) {
+            $this->helper->log(__("Uber Shipping Cancel ERROR: %1", $e->getMessage()));
         }
     }
 }

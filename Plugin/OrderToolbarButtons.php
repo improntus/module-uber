@@ -1,7 +1,7 @@
 <?php
 /**
- * @author Improntus Dev Team
- * @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
+ *  @author Improntus Dev Team
+ *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Plugin;
@@ -82,19 +82,15 @@ class OrderToolbarButtons
 
                 // Create Shipping Button
                 if ($orderData->getShipmentsCollection()->getSize() === 0 && !$order->hasShipments()) {
-
-                    // Add when isAutoShipmentGenerationEnabled is False
-                    if (!$this->helper->isAutomaticShipmentGenerationEnabled($order->getStoreId())) {
-                        $baseUrl = $this->urlInterface->getUrl('uber/shipment/create', ['order_id' => $order->getId()]);
-                        $buttonList->add(
-                            'uber_ship',
-                            [
-                                'label' => __('Request Driver'),
-                                'onclick' => "location.href='{$baseUrl}'",
-                                'class' => 'uber-button'
-                            ]
-                        );
-                    }
+                    $baseUrl = $this->urlInterface->getUrl('uber/shipment/create', ['order_id' => $order->getId()]);
+                    $buttonList->add(
+                        'uber_ship',
+                        [
+                            'label' => __('Request Driver'),
+                            'onclick' => "location.href='{$baseUrl}'",
+                            'class' => 'uber-button'
+                        ]
+                    );
                 }
 
                 // Add Re-call / Cancel / Verification Buttons
@@ -108,14 +104,23 @@ class OrderToolbarButtons
                         $buttonLabel = __('Re-call Driver');
                         $buttonAction = $this->urlInterface->getUrl('uber/shipment/create', ['order_id' => $order->getId()]);
                     }
-                    $buttonList->add(
-                        'uber_ship',
-                        [
-                            'label' => $buttonLabel,
-                            'onclick' => "location.href='{$buttonAction}'",
-                            'class' => 'uber-button'
-                        ]
-                    );
+
+                    // Show button
+                    if ($uberOrderShipmentRepository->getStatus() === 'delivered' &&
+                        !is_null($uberOrderShipmentRepository->getVerification())) {
+                        // Show POD Retrieval Button
+                        // TODO Lol
+                    } else {
+                        // Default Action
+                        $buttonList->add(
+                            'uber_ship',
+                            [
+                                'label' => $buttonLabel,
+                                'onclick' => "location.href='{$buttonAction}'",
+                                'class' => 'uber-button'
+                            ]
+                        );
+                    }
                 }
             } catch (InputException|NoSuchEntityException $e) {
                 // TODO Logger msg

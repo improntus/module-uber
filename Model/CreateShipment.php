@@ -1,7 +1,7 @@
 <?php
 /**
- * @author Improntus Dev Team
- * @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
+ *  @author Improntus Dev Team
+ *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Model;
@@ -28,6 +28,8 @@ use Magento\Shipping\Model\ShipmentNotifier;
 class CreateShipment
 {
     protected const CARRIER_CODE = UberCarrier::CARRIER_CODE . '_' . UberCarrier::CARRIER_CODE;
+
+    protected const DEFAULT_UBER_STATUS = 'uber_pending';
 
     /**
      * @var OrderRepository $orderRepository
@@ -144,7 +146,6 @@ class CreateShipment
             // Get Order
             $order = $this->orderRepository->get($orderId);
             if (is_null($order->getId())) {
-                // Todo MSG
                 throw new Exception(__('The requested Order does not exist'));
             }
 
@@ -153,6 +154,12 @@ class CreateShipment
                 // Get Shipping Data
                 $uberOrderShipmentRepository = $this->orderShipmentRepository->getByOrderId($orderId);
 
+                // Has active delivery? or Complete?
+                if (!is_null($uberOrderShipmentRepository->getUberShippingId())
+                    && $uberOrderShipmentRepository->getStatus() === 'delivered') {
+                    throw new Exception(__('There is already a shipment in progress / completed.'));
+                }
+
                 // Get Warehouse
                 $warehouseId = $uberOrderShipmentRepository->getSourceWaypoint() ?? $uberOrderShipmentRepository->getSourceMsi();
                 $warehouse = $this->warehouseRepository->getWarehouse($warehouseId);
@@ -160,7 +167,6 @@ class CreateShipment
                 // Generate DeliveryTime and Check Warehouse Work Schedule
                 $deliveryTimeLocal = $this->getDeliveryTime($order->getStoreId());
                 if (!$this->warehouseRepository->checkWarehouseWorkSchedule($warehouse, $deliveryTimeLocal)) {
-                    // Todo MSG
                     throw new Exception(__('The preparation point is outside working hours'));
                 }
 
@@ -175,9 +181,9 @@ class CreateShipment
                  * Generate dates with minutes of differences required by Uber
                  */
                 $pickupReady = $this->getDateTimeUTC($deliveryTimeLocal);
-                $pickupDeadLine = $this->getDateTimeUTC($pickupReady, 15); // Add 15 Minutes
+                $pickupDeadLine = $this->getDateTimeUTC($pickupReady, 20); // Add 20 Minutes
                 $dropoffReady = $this->getDateTimeUTC($pickupDeadLine); // REQUIRED Same $pickupDeadLine
-                $dropoffDeadLine = $this->getDateTimeUTC($dropoffReady, 30); // Add 30 Minutes
+                $dropoffDeadLine = $this->getDateTimeUTC($dropoffReady, 40); // Add 40 Minutes
 
                 $deliveryAdditionalData = [
                     'pickup_ready_dt' => $pickupReady->format('Y-m-d\TH:i:s.000\Z'),
@@ -195,9 +201,9 @@ class CreateShipment
                 $deliveryAdditionalData['pickup_verification'] = $this->getVerificationMethod($order);
                 $deliveryAdditionalData['return_verification'] = $this->getVerificationMethod($order);
 
-                // Apply Cash on Delivery? TODO fake disable
+                // Apply Cash on Delivery?
                 if ($this->helper->isCashOnDeliveryEnabled($order->getStoreId()) &&
-                    $order->getPayment()->getMethod() === 'cashondeliveryq') {
+                    $order->getPayment()->getMethod() === 'cashondelivery') {
                     $deliveryAdditionalData['dropoff_payment']['requirements'] = [
                           [
                             'paying_party' => 'recipient',
@@ -239,6 +245,14 @@ class CreateShipment
                     throw new Exception($e->getMessage());
                 }
 
+                // Add Comment to Order
+                try {
+                    $this->addCommentConfirmation($orderId, $uberResponse);
+                } catch (Exception $e) {
+                    throw new Exception($e->getMessage());
+                }
+
+                // Return Response
                 return $uberResponse;
             }
         }
@@ -364,6 +378,34 @@ class CreateShipment
 
         // Return DropOff data
         return $dropoffData;
+    }
+
+    /**
+     * addCommentConfirmation
+     * @param int $orderId
+     * @param array $confirmationData
+     * @return void
+     * @throws InputException
+     * @throws NoSuchEntityException
+     */
+    private function addCommentConfirmation(int $orderId, array $confirmationData): void
+    {
+        $order = $this->orderRepository->get($orderId);
+        if (is_null($order->getEntityId())) {
+            return;
+        }
+
+        try {
+            $orderComment = __('<b>Uber Shipping ID</b>: %1', $confirmationData['id']) . '<br>';
+            $orderComment .= __('<b>Tracking URL</b>: <a href="%1">%1</a>', $confirmationData['tracking_url']) . '<br>';
+            $order->addCommentToStatusHistory(
+                $orderComment,
+                self::DEFAULT_UBER_STATUS
+            );
+            $this->orderRepository->save($order);
+        } catch (Exception $e) {
+            $this->helper->log(__("Uber Shipping Cancel ERROR: %1", $e->getMessage()));
+        }
     }
 
     /**

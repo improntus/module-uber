@@ -1,7 +1,7 @@
 <?php
 /**
- * @author Improntus Dev Team
- * @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
+ *  @author Improntus Dev Team
+ *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Model;
@@ -141,5 +141,23 @@ class OrderShipment extends AbstractModel implements OrderShipmentInterface
     public function setUberShippingId($uberShippingId)
     {
         return $this->setData(OrderShipmentInterface::UBER_SHIPPING_ID, $uberShippingId);
+    }
+
+    /**
+     * getVerification
+     * @return mixed
+     */
+    public function getVerification()
+    {
+        return $this->getData(OrderShipmentInterface::VERIFICATION);
+    }
+
+    /**
+     * setVerification
+     * @return mixed
+     */
+    public function setVerification($verification)
+    {
+        return $this->setData(OrderShipmentInterface::VERIFICATION, $verification);
     }
 }

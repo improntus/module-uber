@@ -1,7 +1,7 @@
 <?php
 /**
- * @author Improntus Dev Team
- * @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
+ *  @author Improntus Dev Team
+ *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Helper;
@@ -87,6 +87,30 @@ class Data extends AbstractHelper
     public function isDebugEnabled($storeId = null): bool
     {
         return (bool)$this->getConfigCarrierData('debug', $storeId);
+    }
+
+    /**
+     * isWebhooksEnabled
+     * @param $storeId
+     * @return bool
+     */
+    public function isWebhooksEnabled($storeId = null): bool
+    {
+        return (bool)$this->getConfigCarrierData('webhooks_integration', $storeId);
+    }
+
+    /**
+     * getWebhookSignature
+     * @param $storeId
+     * @return string
+     */
+    public function getWebhookSignature($storeId = null): string
+    {
+        $webhookSignatureKey = $this->getConfigCarrierData('webhook_signing', $storeId);
+        if (!is_null($webhookSignatureKey)) {
+            return $this->encryptor->decrypt($webhookSignatureKey);
+        }
+        return '';
     }
 
     /**
@@ -220,7 +244,7 @@ class Data extends AbstractHelper
      */
     public function getAutomaticShipmentGenerationStatus($storeId = null): array
     {
-        $automaticShipmentGenerationStatus = $this->getConfigCarrierData('automatic_shipment', $storeId) ?: [];
+        $automaticShipmentGenerationStatus = $this->getConfigCarrierData('status_allowed', $storeId) ?: [];
         return explode(",", $automaticShipmentGenerationStatus);
     }
 

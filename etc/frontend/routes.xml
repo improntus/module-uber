@@ -1,4 +1,9 @@
 <?xml version="1.0"?>
+<!--
+   @author Improntus Dev Team
+   @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+  -->
+
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
     <router id="standard">

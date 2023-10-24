@@ -1,7 +1,7 @@
 <?php
 /**
- * @author Improntus Dev Team
- * @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
+ *  @author Improntus Dev Team
+ *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Model;
@@ -226,9 +226,7 @@ class Uber
 
         // Opps...
         if ($uberRequest->getStatusCode() !== 200) {
-            // TODO: Log message
-            $error = json_decode($responseBody);
-            $this->helper->log("ERROR: Uber Shipping Create Request: " . json_encode($requestData));
+            $error = json_decode($responseBody, true);
 
             /**
              * There are errors that return an invalid json and can generate an error.
@@ -240,8 +238,21 @@ class Uber
                 $logMsg = json_encode($error);
             }
 
+            // Write log
+            $this->helper->log("ERROR: Uber Shipping Create Request: " . json_encode($requestData));
             $this->helper->log("ERROR: Uber Shipping Create Response: $logMsg");
-            $exceptionMsg = $error['code'] ?? $error['error'] ?? $uberRequest->getReasonPhrase();
+
+            /**
+             * If the error is invalid_params and metadata exists, return that message
+             */
+            if ((isset($error['code']) && $error['code'] === "invalid_params") && isset($error['metadata'])) {
+                $metadataValues = array_values($error['metadata']);
+                $exceptionMsg = $metadataValues[0] ?? $uberRequest->getReasonPhrase();
+            } else {
+                $exceptionMsg = $error['message'] ?? $error['code'] ?? $uberRequest->getReasonPhrase();
+            }
+
+            // Create Exception
             throw new Exception($exceptionMsg, $uberRequest->getStatusCode());
         }
 
@@ -301,7 +312,7 @@ class Uber
             }
 
             $this->helper->log("ERROR: Uber Shipping Cancel Response: $logMsg");
-            $exceptionMsg = $error['code'] ?? $error['error'] ?? $uberRequest->getReasonPhrase();
+            $exceptionMsg = $error['message'] ?? $error['code'] ?? $error['error'] ?? $uberRequest->getReasonPhrase();
             throw new Exception($exceptionMsg, $uberRequest->getStatusCode());
         }
 

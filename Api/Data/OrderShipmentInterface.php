@@ -1,7 +1,7 @@
 <?php
 /**
- * @author Improntus Dev Team
- * @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
+ *  @author Improntus Dev Team
+ *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Api\Data;
@@ -19,6 +19,8 @@ interface OrderShipmentInterface
     const SOURCE_MSI = 'source_msi';
 
     const STATUS = 'status';
+
+    const VERIFICATION = 'verification';
 
     const UBER_SHIPPING_ID = 'uber_shipping_id';
 
@@ -99,4 +101,16 @@ interface OrderShipmentInterface
      * @return mixed
      */
     public function setUberShippingId($uberShippingId);
+
+    /**
+     * getVerification
+     * @return mixed
+     */
+    public function getVerification();
+
+    /**
+     * setVerification
+     * @return mixed
+     */
+    public function setVerification($verification);
 }

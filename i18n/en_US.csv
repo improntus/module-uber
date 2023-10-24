@@ -1,7 +1,6 @@
-Save,Save
 "Delete Waypoint","Delete Waypoint"
 "Are you sure you want to do this?","Are you sure you want to do this?"
-Organizations,Organizations
+"Organizations","Organizations"
 "New Organization","New Organization"
 "Edit Organization: %1","Edit Organization: %1"
 "There was a problem creating the Organization in UBER","There was a problem creating the Organization in UBER"
@@ -16,7 +15,7 @@ Organizations,Organizations
 "<strong>Uber Shipping Create ERROR</strong>: %1","<strong>Uber Shipping Create ERROR</strong>: %1"
 "Uber Shipping Create ERROR: %1","Uber Shipping Create ERROR: %1"
 "<strong>Uber Shipping ID</strong>: %1","<strong>Uber Shipping ID</strong>: %1"
-Waypoints,Waypoints
+"Waypoints","Waypoints"
 "New Waypoint","New Waypoint"
 "Edit Waypoint: %1","Edit Waypoint: %1"
 "The Waypoint has been saved.","The Waypoint has been saved."
@@ -29,41 +28,39 @@ Waypoints,Waypoints
 "The cart contains items that cannot be shipped with Uber","The cart contains items that cannot be shipped with Uber"
 "-- Select --","-- Select --"
 "-- Select Mode --","-- Select Mode --"
-Production,Production
-Sandbox,Sandbox
+"Production","Production"
+"Sandbox","Sandbox"
 "-- Select Source --","-- Select Source --"
-MSI,MSI
-Signature,Signature
-Barcodes,Barcodes
+"MSI","MSI"
+"Signature","Signature"
+"Barcodes","Barcodes"
 "Pin Code","Pin Code"
-Identification,Identification
-Picture,Picture
-"Google Maps","Google Maps"
-"Nominatim (OpenStreetMap)","Nominatim (OpenStreetMap)"
+"Identification","Identification"
+"Picture","Picture"
 "-- Select Billing --","-- Select Billing --"
-Centralized,Centralized
-Decentralized,Decentralized
+"Centralized","Centralized"
+"Decentralized","Decentralized"
 "-- Select Merchant --","-- Select Merchant --"
-Restaurant,Restaurant
-Groery,Groery
-Liquor,Liquor
-Retail,Retail
-Essentials,Essentials
-Pharmacy,Pharmacy
+"Restaurant","Restaurant"
+"Groery","Groery"
+"Liquor","Liquor"
+"Retail","Retail"
+"Essentials","Essentials"
+"Pharmacy","Pharmacy"
 "Specialty Food","Specialty Food"
-Flower,Flower
+"Flower","Flower"
 "Pet Supply","Pet Supply"
 "-- Select Onboarding --","-- Select Onboarding --"
 "Do not send instructions","Do not send instructions"
 "Send instructions","Send instructions"
 "Use Root Organization","Use Root Organization"
 "Use Base Organization","Use Base Organization"
-Admin,Admin
-Employee,Employee
-Small,Small
-Medium,Medium
-Large,Large
-Xlarge,Xlarge
+"Admin","Admin"
+"Employee","Employee"
+"Small","Small"
+"Medium","Medium"
+"Large","Large"
+"Xlarge","Xlarge"
 "No Available","No Available"
 "The preparation point is outside working hours","The preparation point is outside working hours"
 "Could not save the OrderShipment: %1","Could not save the OrderShipment: %1"
@@ -104,17 +101,17 @@ Xlarge,Xlarge
 "The Waypoint you are trying to delete does not exist","The Waypoint you are trying to delete does not exist"
 "There was a problem deleting the Waypoint","There was a problem deleting the Waypoint"
 "Uber Direct","Uber Direct"
-Configuration,Configuration
+"Configuration","Configuration"
 "Delivery Method","Delivery Method"
 "Manage Organizations","Manage Organizations"
 "<span class=""uber-brand"">Uber</span> Uber Configuration","<span class=""uber-brand"">Uber</span> Uber Configuration"
 "Customer ID","Customer ID"
 "Client ID","Client ID"
 "Client Secret","Client Secret"
-Enabled,Enabled
+"Enabled","Enabled"
 "Integration Mode","Integration Mode"
 "Debug Mode","Debug Mode"
-Warehouse,Warehouse
+"Warehouse,","Warehouse,"
 "Free Shipping","Free Shipping"
 "Verification Type","Verification Type"
 "Identification min age","Identification min age"
@@ -122,8 +119,8 @@ Warehouse,Warehouse
 "Automatic Status Update","Automatic Status Update"
 "Webhook Signing Key","Webhook Signing Key"
 "Window Delivery","Window Delivery"
-Title,Title
-Description,Description
+"Title","Title"
+"Description","Description"
 "Sort Order","Sort Order"
 "Show Method if Not Applicable","Show Method if Not Applicable"
 "Product Width Attribute","Product Width Attribute"
@@ -131,7 +128,7 @@ Description,Description
 "Product Depth Attribute","Product Depth Attribute"
 "Automatic Shipment Generation","Automatic Shipment Generation"
 "Status for automatic shipping creation","Status for automatic shipping creation"
-Organization,Organization
+"Organization","Organization"
 "Monday Opening","Monday Opening"
 "Monday Closing","Monday Closing"
 "Tuesday Opening","Tuesday Opening"
@@ -146,47 +143,105 @@ Organization,Organization
 "Saturday Closing","Saturday Closing"
 "Sunday Opening","Sunday Opening"
 "Sunday Closing","Sunday Closing"
-Back,Back
 "Save Organization","Save Organization"
 "Organization Information","Organization Information"
-Active,Active
 "Organization Id","Organization Id"
 "This field is automatically completed when creating the organization","This field is automatically completed when creating the organization"
 "Organization Name","Organization Name"
 "Billing Type","Billing Type"
 "Merchant Type","Merchant Type"
-Email,Email
-Onboarding,Onboarding
+"Onboarding","Onboarding"
 "Phone Country Code","Phone Country Code"
 "Phone Number","Phone Number"
 "Address Data","Address Data"
-Street,Street
+"Street","Street"
 "The street detail if needed, for example 2000 Tustin Ave.","The street detail if needed, for example 2000 Tustin Ave."
 "Postcode / Zipcode","Postcode / Zipcode"
 "Additional Street","Additional Street"
 "Additional street detail if needed","Additional street detail if needed"
-City,City
+"City","City"
 "The city detail for the address, for example “Irvine”","The city detail for the address, for example “Irvine”"
-State,State
+"State","State"
 "The state detail for the address, for example “CA” for California","The state detail for the address, for example “CA” for California"
-Country,Country
+"Country","Country"
 "Add Organization","Add Organization"
-Id,Id
 "Uber Organization Id","Uber Organization Id"
-Waypoint,Waypoint
-Reset,Reset
+"Waypoint","Waypoint"
+"Reset","Reset"
 "Save Waypoint","Save Waypoint"
 "Waypoint Information","Waypoint Information"
-Store,Store
-Name,Name
-Address,Address
-Postcode,Postcode
-Region,Region
-Telephone,Telephone
-Instructions,Instructions
-Latitude,Latitude
+"Store","Store"
+"Name","Name"
+"Address","Address"
+Postcode,"Postcode"
+"Region","Region"
+"Telephone","Telephone"
+"Instructions","Instructions"
+"Latitude","Latitude"
 "To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>","To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>"
-Longitude,Longitude
+"Longitude","Longitude"
 "Day and Hours availability","Day and Hours availability"
 "Add Waypoint","Add Waypoint"
-ID,ID
+"Marchant cancelled","Marchant cancelled"
+"Courier doesn't have a safe area to deliver the product","Courier doesn't have a safe area to deliver the product"
+"Customer wasn't available to receive the delivery","Customer wasn't available to receive the delivery"
+"Customer refused to receive the delivery","Customer refused to receive the delivery"
+"Courier can't find the correct Customer's address","Courier can't find the correct Customer's address"
+"The Customer's address is wrong","The Customer's address is wrong"
+"The Customer's dropoff location is not in an accessible area","The Customer's dropoff location is not in an accessible area"
+"The Customer isn't sober to receive the delivery","The Customer isn't sober to receive the delivery"
+"The Customer's ID doesn't match with the one required","The Customer's ID doesn't match with the one required"
+"The Customer is not overage to receive the delivery","The Customer is not overage to receive the delivery"
+"Courier waited until the timeout to deliver the product","Courier waited until the timeout to deliver the product"
+"Courier wasn't able to find the pickup point","Courier wasn't able to find the pickup point"
+"Merchant store was closed","Merchant store was closed"
+"Merchant refused to deliver the product","Merchant refused to deliver the product"
+"Items too big to complete the pickup","Items too big to complete the pickup"
+"Other reasons","Other reasons"
+"Items were lost in the return trip process","Items were lost in the return trip process"
+"Uber Cancellation","Uber Cancellation"
+"Uber tried to allocate a courier but the delivery reached timeout","Uber tried to allocate a courier but the delivery reached timeout"
+"Uber wasn't able to allocate a courier to complete the delivery","Uber wasn't able to allocate a courier to complete the delivery"
+"Uber internal operational issues","Uber internal operational issues"
+"Courier was involved in an accident","Courier was involved in an accident"
+"Customer cancelled","Customer cancelled"
+"Cancelled party not detected","Cancelled party not detected"
+"Uber Notification","Uber Notification"
+"<b>Canceled shipment:</b> %1","<b>Canceled shipment:</b> %1"
+"Delivery status has changed to <b>%1</b>","Delivery status has changed to <b>%1</b>"
+"<b>Driver Name:</b> %1","<b>Driver Name:</b> %1"
+"<b>Vehicle Type:</b> %1","<b>Vehicle Type:</b> %1"
+"<b>Pickup estimated time:</b> %1","<b>Pickup estimated time:</b> %1"
+"<b>Dropoff estimated time:</b> %1","<b>Dropoff estimated time:</b> %1"
+"The specified location is not in a deliverable area.","The specified location is not in a deliverable area."
+"We have experienced a problem.","We have experienced a problem."
+"The pickup ready time cannot be in the past.","The pickup ready time cannot be in the past."
+"The dropoff deadline needs to be at least 20 minutes after the dropoff ready time.","The dropoff deadline needs to be at least 20 minutes after the dropoff ready time."
+"The dropoff deadline needs to be after the pickup deadline.","The dropoff deadline needs to be after the pickup deadline."
+"Your account is not allowed to create Cash deliveries. Please contact Uber for support.","Your account is not allowed to create Cash deliveries. Please contact Uber for support."
+"The specified location was not understood.","The specified location was not understood."
+"Invalid OAuth 2.0 credentials provided.","Invalid OAuth 2.0 credentials provided."
+"The pickup window needs to be at least 10 minutes long.","The pickup window needs to be at least 10 minutes long."
+"The pickup deadline time needs to be at least 15 minutes from now.","The pickup deadline time needs to be at least 15 minutes from now."
+"The price quote specified has been used.","The price quote specified has been used."
+"organization has no billing policy","Organization has no billing policy"
+"The price quote specified has expired.","The price quote specified has expired."
+"cannot determine pickup address","Cannot determine pickup address"
+"Phone number is not valid","Phone number is not valid"
+"undeliverable_action is not compatible with requested Signature or ID requirements","Undeliverable_action is not compatible with requested Signature or ID requirements"
+"delivery location changed","Delivery location changed"
+"This field is required","This field is required"
+"dropoff_notes limit is 280 characters","Dropoff_notes limit is 280 characters"
+"Pickup Address and provided Long/Lat distance too far","Pickup Address and provided Long/Lat distance too far"
+"pickup_notes limit is 280 characters","Pickup_notes limit is 280 characters"
+"Phone number is not valid.","Phone number is not valid."
+"One of the item exceeds max weight of 23000 grams","One of the item exceeds max weight of 23000 grams"
+"quantity value is missing or non-positive","Quantity value is missing or non-positive"
+"unable to resolve provided address through geocoding","Unable to resolve provided address through geocoding"
+"weight value should positive","Weight value should positive"
+"weight is required when dimensions(length, depth, height) are provided","Weight is required when dimensions(length, depth, height) are provided"
+"invalid dropoff contact","Invalid dropoff contact"
+"your application is now blocked due to an outstanding balance. Please reach out to directbilling-group@uber.com to resolve","Your application is now blocked due to an outstanding balance. Please reach out to directbilling-group@uber.com to resolve"
+"duplicate_delivery","Duplicate delivery"
+"Could not parse json","Could not parse json"
+"dropoff phone number is not valid.", "Dropoff phone number is not valid."

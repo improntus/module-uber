@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
-  ~ @author Improntus Dev Team
-  ~ @copyright Copyright (c) 2023 Improntus (http://www.improntus.com/)
+   @author Improntus Dev Team
+   @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
   -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
@@ -24,11 +24,6 @@
                                                                 </item>
                                                             </item>
                                                         </item>
-                                                    </item>
-                                                </item>
-                                                <item name="shippingAddress" xsi:type="array">
-                                                    <item name="config" xsi:type="array">
-                                                        <item name="shippingMethodItemTemplate" xsi:type="string">Improntus_Uber/uber-method-list-template</item>
                                                     </item>
                                                 </item>
                                             </item>

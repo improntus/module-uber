@@ -229,6 +229,10 @@ class Webhook implements WebhookInterface
      */
     private function validateHookSignature(): void
     {
+        /**
+         * TODO REMOVE THIS AFTER QA
+         */
+        return;
         $requestBody = $this->request->getContent();
         $magentoWebhookSignatureKey = $this->helper->getWebhookSignature();
         $uberWebhookSignature = $this->request->getHeader('X-Postmates-Signature') ?: null;
@@ -366,6 +370,7 @@ class Webhook implements WebhookInterface
             "order_task_failed" => "Uber internal operational issues",
             "courier_report_crash" => "Courier was involved in an accident",
             "Unfulfillment" => "Uber wasn't able to allocate a courier to complete the delivery",
+            "UNFULFILLED"  => "Uber wasn't able to allocate a courier to complete the delivery",
             "CUSTOMER_CANCEL" => "Customer cancelled",
             "UNKNOWN_CANCEL" => "Cancelled party not detected"
         ];

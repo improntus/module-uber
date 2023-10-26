@@ -74,6 +74,22 @@
                 </checkbox>
             </formElements>
         </field>
+        <field name="store_id" formElement="select" sortOrder="16">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Store</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\Config\Model\Config\Source\Store"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
         <field name="uber_organization_id" formElement="input" sortOrder="20">
             <settings>
                 <dataType>text</dataType>

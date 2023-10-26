@@ -369,12 +369,30 @@ class Data extends AbstractHelper
 
     /**
      * log
+     *
+     * This method will log CRITICAL errors even if Debug Mode is not active
      * @param $message
      * @param string $type
      * @return void
      */
     public function log($message, string $type = 'debug'): void
     {
+        if ($type !== 'debug') {
+            $this->logger->info($message);
+        } else {
+            $this->logger->debug($message);
+        }
+    }
+
+    /**
+     * logDebug
+     *
+     * This method will log errors ONLY when Debug Mode is active
+     * @param $message
+     * @param string $type
+     * @return void
+     */
+    public function logDebug($message, string $type = 'debug'){
         if ($this->isDebugEnabled()) {
             if ($type !== 'debug') {
                 $this->logger->info($message);

@@ -64,6 +64,7 @@ class Create extends Action
         $orderId = $this->getRequest()->getParam('order_id');
         if (is_null($orderId)) {
             $this->messageManager->addErrorMessage(__('Order ID parameter is required'));
+            $this->helper->logDebug(__('UBER Create Shipment ERROR. OrderID is Required'));
         }
 
         /**
@@ -73,6 +74,7 @@ class Create extends Action
             $this->createShipment->create($orderId);
             $this->messageManager->addSuccessMessage(__('Shipment generated successfully'));
         } catch (Exception $e) {
+            $this->helper->log(__('UBER Create Shipment ERROR. OrderId %1 - Details: %2', [$orderId, $e->getMessage()]));
             $this->messageManager->addErrorMessage('Uber: ' . __($e->getMessage()));
             $this->addCommentShippingError($orderId, $e->getMessage());
         }

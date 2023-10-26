@@ -9,6 +9,7 @@ namespace Improntus\Uber\Controller\Adminhtml\Waypoint;
 use Improntus\Uber\Api\WaypointRepositoryInterface;
 use Improntus\Uber\Api\Data\WaypointInterface;
 use Improntus\Uber\Api\Data\WaypointInterfaceFactory;
+use Improntus\Uber\Helper\Data;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Api\DataObjectHelper;
@@ -53,6 +54,11 @@ class Save extends Action
     protected $waypointRepository;
 
     /**
+     * @var Data $helper
+     */
+    protected Data $helper;
+
+    /**
      * @param Context $context
      * @param WaypointInterfaceFactory $waypointFactory
      * @param WaypointRepositoryInterface $waypointRepository
@@ -60,6 +66,7 @@ class Save extends Action
      * @param DataObjectHelper $dataObjectHelper
      * @param DataPersistorInterface $dataPersistor
      * @param Registry $registry
+     * @param Data $helper
      */
     public function __construct(
         Context $context,
@@ -68,7 +75,8 @@ class Save extends Action
         DataObjectProcessor $dataObjectProcessor,
         DataObjectHelper $dataObjectHelper,
         DataPersistorInterface $dataPersistor,
-        Registry $registry
+        Registry $registry,
+        Data $helper
     ) {
         $this->waypointFactory = $waypointFactory;
         $this->waypointRepository = $waypointRepository;
@@ -76,6 +84,7 @@ class Save extends Action
         $this->dataObjectHelper = $dataObjectHelper;
         $this->dataPersistor = $dataPersistor;
         $this->registry = $registry;
+        $this->helper = $helper;
         parent::__construct($context);
     }
 
@@ -107,10 +116,12 @@ class Save extends Action
                 $resultRedirect->setPath('*/*');
             }
         } catch (LocalizedException $e) {
+            $this->helper->log(__('UBER Save Waypoint ERROR: %1', $e->getMessage()));
             $this->messageManager->addErrorMessage($e->getMessage());
             $this->dataPersistor->set('uber_waypoint', $postData);
             $resultRedirect->setPath('*/*/edit', ['waypoint_id' => $id]);
         } catch (\Exception $e) {
+            $this->helper->log(__('UBER Save Waypoint ERROR: %1', $e->getMessage()));
             $this->messageManager->addErrorMessage(__('There was a problem saving the Waypoint'));
             $this->dataPersistor->set('improntus\uber_waypoint', $postData);
             $resultRedirect->setPath('*/*/edit', ['waypoint_id' => $id]);

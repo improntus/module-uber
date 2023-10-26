@@ -161,9 +161,8 @@ class WarehouseRepository implements WarehouseRepositoryInterface
             'city' => $warehouse->getCity(),
             'state' => $warehouse->getRegion(),
             'zip_code' => $warehouse->getPostcode(),
-            'country' => 'AR'
+            'country' => $warehouse->getCountry()
         ];
-        // TODO Country ID!
         return json_encode($address, JSON_UNESCAPED_SLASHES);
     }
 
@@ -187,8 +186,7 @@ class WarehouseRepository implements WarehouseRepositoryInterface
         // Get from Organization
         $organizationModel = $this->organizationRepository->get($organizationId);
         if (is_null($organizationModel->getId())) {
-            // TODO change this
-            throw new Exception(__("Missing Organization"));
+            throw new Exception(__("Warehouse Repository Missing Organization"));
         }
 
         return $organizationModel->getUberOrganizationId();

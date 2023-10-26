@@ -6,6 +6,7 @@
 
 namespace Improntus\Uber\Model\Config\Source;
 
+use Improntus\Uber\Helper\Data;
 use Improntus\Uber\Model\OrganizationRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Data\OptionSourceInterface;
@@ -24,13 +25,21 @@ class OrganizationOption implements OptionSourceInterface
     protected OrganizationRepository $organizationRepository;
 
     /**
+     * @var Data $helper
+     */
+    protected Data $helper;
+
+    /**
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param OrganizationRepository $organizationRepository
+     * @param Data $helper
      */
     public function __construct(
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        OrganizationRepository $organizationRepository
+        OrganizationRepository $organizationRepository,
+        Data $helper
     ) {
+        $this->helper = $helper;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->organizationRepository = $organizationRepository;
     }
@@ -59,8 +68,7 @@ class OrganizationOption implements OptionSourceInterface
                 ];
             }
         } catch (LocalizedException $e) {
-            // TODO
-            die("REPLACE WITH LOGGER");
+            $this->helper->log('Uber Getting organizations option ERROR: %1', $e->getMessage());
         }
 
         // Return Options

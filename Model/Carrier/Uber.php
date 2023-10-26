@@ -197,8 +197,6 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
             $customerState = $this->_regionFactory->create()->load($request->getDestRegionId());
 
             // Get Geolocation of Client
-            //$customerGeolocation = ['latitude' => -38.715655, 'longitude' => -62.272307];
-            //$customerGeolocation = ['latitude' => -34.606105, 'longitude' => -58.386335];
             $customerAddress = "{$request->getDestStreet()}, {$request->getDestCity()}, {$customerState->getName()}, {$request->getDestCountryId()}, {$request->getDestPostcode()}";
             $customerGeolocation = $this->getCustomerCoordinates($customerAddress);
 
@@ -207,7 +205,6 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
 
             // Has Results?
             if (is_null($warehouse)) {
-                // todo: Not found Warehouse / Waypoint / Source
                 throw new Exception(__('This shipping method is not available'));
             }
 
@@ -232,7 +229,6 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
             // Check Coverage
             $estimateData = $this->uber->getEstimateShipping($shippingData, $organizationId, $orderStoreId);
             if (is_null($estimateData)) {
-                // Todo: Shipping not available
                 throw new Exception(__('This shipping method is not available'));
             }
 

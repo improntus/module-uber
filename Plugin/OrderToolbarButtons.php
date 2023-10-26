@@ -105,11 +105,26 @@ class OrderToolbarButtons
                         $buttonAction = $this->urlInterface->getUrl('uber/shipment/create', ['order_id' => $order->getId()]);
                     }
 
-                    // Show button
+                    // Show buttons
                     if ($uberOrderShipmentRepository->getStatus() === 'delivered' &&
                         !is_null($uberOrderShipmentRepository->getVerification())) {
                         // Show POD Retrieval Button
-                        // TODO Lol
+                        $buttonOptions = json_encode([
+                           'order_id' => $order->getId(),
+                           'url' => $this->urlInterface->getUrl('uber/order/pod')
+                        ]);
+                        $onclickJs = "jQuery('#uber_pod').orderUberPod($buttonOptions).orderUberPod('showPOD');";
+                        $buttonList->add(
+                            'uber_pod',
+                            [
+                                'label' => __('Proof of Delivery'),
+                                'class' => 'uber-button',
+                                'onclick' => $onclickJs,
+                                'data_attribute' => [
+                                    'mage-init' => '{"orderUberPod":{}}',
+                                ]
+                            ]
+                        );
                     } else {
                         // Default Action
                         $buttonList->add(
@@ -123,7 +138,6 @@ class OrderToolbarButtons
                     }
                 }
             } catch (InputException|NoSuchEntityException $e) {
-                // TODO Logger msg
                 $this->helper->log(__('Uber Order View Toolbar ERROR: %1', $e->getMessage()));
             }
         }

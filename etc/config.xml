@@ -23,7 +23,7 @@
                 <model>Improntus\Uber\Model\Carrier\Uber</model>
                 <verification_type>signature_requirement</verification_type>
                 <product_width_attribute>uber_width</product_width_attribute>
-                <product_depth_attribute>product_depth</product_depth_attribute>
+                <product_depth_attribute>uber_depth</product_depth_attribute>
                 <product_height_attribute>uber_height</product_height_attribute>
             </uber>
         </carriers>

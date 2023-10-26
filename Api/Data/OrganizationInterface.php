@@ -40,6 +40,8 @@ interface OrganizationInterface
 
     const COUNTRY = 'country';
 
+    const STORE_ID = 'store_id';
+
     /**
      * getUberOrganizationId
      * @return mixed
@@ -206,4 +208,15 @@ interface OrganizationInterface
      * @return mixed
      */
     public function setOnboardingType(string $onboardingType);
+
+    /**
+     * @return mixed
+     */
+    public function getStoreId();
+
+    /**
+     * @param int $storeId
+     * @return mixed
+     */
+    public function setStoreId(int $storeId);
 }

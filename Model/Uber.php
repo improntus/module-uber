@@ -102,10 +102,10 @@ class Uber
      * @param $userData
      * @throws Exception
      */
-    public function createOrganization($userData)
+    public function createOrganization($userData, int|null $storeId)
     {
         // Get Access Token
-        $token = $this->getAccessToken(null, self::SCOPE_TOKEN_ORGANIZATION);
+        $token = $this->getAccessToken($storeId, self::SCOPE_TOKEN_ORGANIZATION);
 
         // Has data?
         if (is_null($token)) {
@@ -151,7 +151,7 @@ class Uber
         ];
 
         // Populate Hierarchy Info
-        $parentOrganizationId = $this->helper->getCustomerId();
+        $parentOrganizationId = $this->helper->getCustomerId($storeId);
         $body['hierarchy_info'] = [
             'parent_organization_id' => $parentOrganizationId
         ];
@@ -297,7 +297,6 @@ class Uber
 
         // Opps...
         if ($uberRequest->getStatusCode() !== 200) {
-            // TODO: Log message
             $error = json_decode($responseBody, true);
             $this->helper->log("ERROR: Uber Shipping Cancel Request: " . json_encode($requestData));
 
@@ -310,7 +309,6 @@ class Uber
             } else {
                 $logMsg = json_encode($error);
             }
-
             $this->helper->log("ERROR: Uber Shipping Cancel Response: $logMsg");
             $exceptionMsg = $error['message'] ?? $error['code'] ?? $error['error'] ?? $uberRequest->getReasonPhrase();
             throw new Exception($exceptionMsg, $uberRequest->getStatusCode());
@@ -360,9 +358,65 @@ class Uber
 
         // Opps...
         if ($uberRequest->getStatusCode() !== 200) {
-            // TODO: Log message
-            $this->helper->log(__("ERROR: Uber Delivery Quote Request %1", json_encode($requestData)));
-            $this->helper->log(__("ERROR: Uber Delivery Quote Response %1", json_encode($responseBody)));
+            $this->helper->logDebug(__("ERROR: Uber Delivery Quote Request: %1", json_encode($requestData)));
+            $this->helper->logDebug(__("ERROR: Uber Delivery Quote Response: %1", json_encode($responseBody)));
+            throw new Exception($responseBody['code']);
+        }
+
+        // Return Data
+        return $responseBody;
+    }
+
+    /**
+     * getProofOfDelivery
+     *
+     * @param string $shippingId
+     * @param string $organizationId
+     * @param int $storeId
+     * @return mixed
+     * @throws Exception
+     */
+    public function getProofOfDelivery(string $shippingId, string $organizationId, int $storeId): mixed
+    {
+        // Get Access Token
+        $token = $this->getAccessToken($storeId);
+
+        // Has data?
+        if (is_null($token)) {
+            throw new Exception(__("An error occurred while validating/generating token"));
+        }
+
+        // Get Verification Type
+        $verificationType = $this->helper->getVerificationType($storeId) ?? 'picture';
+
+        // Prepare Request
+        $requestData = [];
+
+        // Add Header Credentials
+        $requestData['headers'] = [
+            "Content-Type" => "application/json",
+            "Authorization" => "Bearer {$token->getToken()}"
+        ];
+
+        // Add Body to RequestData
+        $requestData['body'] = json_encode([
+            "waypoint" => "dropoff",
+            "type" => $verificationType
+        ]);
+
+        // Get endpoint URL
+        $shippingPOD = $this->helper->buildRequestURL("customers/{$organizationId}/deliveries/{$shippingId}/proof-of-delivery");
+
+        // Send Request
+        $uberRequest = $this->ws->doRequest($shippingPOD, $requestData, "POST");
+
+        // Get Body / Content
+        $responseBody = json_decode($uberRequest->getBody()->getContents(), true);
+
+        // Opps...
+        if ($uberRequest->getStatusCode() !== 200) {
+            $this->helper->logDebug(__("ERROR: Uber Proof Of Delivery Request: %1", json_encode($requestData)));
+            $this->helper->logDebug(__("ERROR: Uber Proof Of Delivery Quote Response: %1", json_encode($responseBody)));
             throw new Exception($responseBody['code']);
         }
 
@@ -395,7 +449,6 @@ class Uber
                     $tokenResourceModel = $this->tokenModelFactory->create();
                     $tokenResourceModel->delete($tokenData);
                 } catch (\Exception $e) {
-                    // TODO: Log message
                     $this->helper->log(__("Uber Delete Expired Token ERROR: %1", $e->getMessage()));
                 }
             }
@@ -410,9 +463,9 @@ class Uber
 
     /**
      * getAddressCoordinates
-     *
+     * TODO Waiting Uber confirmation
      * Return Coordinates from Address
-     * @param $street
+     * @param $address
      * @return mixed|null
      */
     public function getAddressCoordinates($address)
@@ -425,7 +478,6 @@ class Uber
 
         // Request ERROR
         if ($uberRequest->getStatusCode() !== 200) {
-            // TODO: Log message
             $this->helper->log(__("ERROR: Get Street Coords: %1", json_encode($responseBody)));
             return null;
         }
@@ -470,7 +522,6 @@ class Uber
 
         // Request ERROR
         if ($uberRequest->getStatusCode() !== 200) {
-            // TODO: Log message
             $this->helper->log(__("ERROR: Get AccessToken: %1", json_encode($responseBody)));
             return null;
         }
@@ -488,15 +539,12 @@ class Uber
                 ->setExpirationDate($tokenExpiration)
                 ->setToken($responseBody['access_token'])
                 ->setScope($scope);
-
-            //$tokenModel-> TODO que paso aca
             $tokenResourceModel = $this->tokenModelFactory->create();
             $tokenResourceModel->save($tokenModel);
 
             // Return
             return $tokenModel;
         } catch (\Exception $e) {
-            // TODO: Log message
             $this->helper->log($e->getMessage());
             return null;
         }

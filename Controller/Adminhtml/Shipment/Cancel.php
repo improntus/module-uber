@@ -16,7 +16,6 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\OrderRepository;
-use const _PHPStan_582a9cb8b\__;
 
 class Cancel extends Action
 {
@@ -64,7 +63,7 @@ class Cancel extends Action
     {
         $orderId = $this->getRequest()->getParam('order_id');
         if (is_null($orderId)) {
-            // Todo: ERROR MSG
+            $this->helper->logDebug(__('Order ID parameter is required'));
             $this->messageManager->addErrorMessage(__('Order ID parameter is required'));
         }
 
@@ -75,6 +74,7 @@ class Cancel extends Action
             $this->cancelShipment->cancel($orderId);
             $this->messageManager->addSuccessMessage(__('Shipment successfully canceled'));
         } catch (Exception $e) {
+            $this->helper->log(__('UBER Cancellation Shipment ERROR. OrderId %1 - Details: %2', [$orderId, $e->getMessage()]));
             $this->messageManager->addErrorMessage('Uber: ' . __($e->getMessage()));
             $this->addCommentCancelError($orderId, __($e->getMessage()));
         }

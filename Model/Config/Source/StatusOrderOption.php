@@ -32,7 +32,6 @@ class StatusOrderOption implements OptionSourceInterface
     {
         $statuses = $this->statusCollectionFactory->create()->toOptionArray();
         array_unshift($statuses, ['value' => '', 'label' => '']);
-
         return $statuses;
     }
 }

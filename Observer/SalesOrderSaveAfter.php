@@ -73,8 +73,7 @@ class SalesOrderSaveAfter implements ObserverInterface
                 $orderShipment->setOrderId($order->getId());
                 $this->orderShipmentRepository->save($orderShipment);
             } catch (NoSuchEntityException $e) {
-                // TODO Logger message
-                $this->helper->log(__("UBER ERROR LOG SalesOrderSaveAfter: %1", $e->getMessage()));
+                $this->helper->log(__("UBER ERROR SalesOrderSaveAfter: %1", $e->getMessage()));
             }
 
             /**
@@ -86,6 +85,7 @@ class SalesOrderSaveAfter implements ObserverInterface
                     try {
                         $this->createShipment->create($order->getId());
                     } catch (\Exception $e) {
+                        $this->helper->log(__("UBER ERROR SalesOrderSaveAfter: %1", $e->getMessage()));
                         $order->addCommentToStatusHistory(
                             __('<b>Uber Automatic Shipping Create ERROR</b>: %1', $e->getMessage()),
                             'uber_pending'

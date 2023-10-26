@@ -296,4 +296,21 @@ class Organization extends AbstractModel implements OrganizationInterface
     {
         return $this->setData(OrganizationInterface::ORGANIZATION_ID, $organizationId);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStoreId()
+    {
+        return $this->getData(OrganizationInterface::STORE_ID);
+    }
+
+    /**
+     * @param int $storeId
+     * @return mixed
+     */
+    public function setStoreId(int $storeId)
+    {
+        return $this->setData(OrganizationInterface::STORE_ID, $storeId);
+    }
 }

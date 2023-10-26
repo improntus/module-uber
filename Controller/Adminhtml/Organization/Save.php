@@ -113,13 +113,13 @@ class Save extends Action
         if (empty($data['uber_organization_id'])) {
             try {
                 // Create Organization
-                $uberResult = $this->uber->createOrganization($data);
+                $uberResult = $this->uber->createOrganization($data, $data['store_id']);
 
                 // Set Organization Id
                 if (isset($uberResult["organization_id"])) {
                     $data['uber_organization_id'] = $uberResult["organization_id"];
                 } else {
-                    // ERROR todo
+                    $this->helper->logDebug(__('There was a problem creating the Organization in UBER. DATA: %1', json_encode($data)));
                     $this->messageManager->addErrorMessage(__('There was a problem creating the Organization in UBER'));
                 }
             } catch (\Exception $e) {
@@ -145,6 +145,7 @@ class Save extends Action
                 $resultRedirect->setPath('*/*');
             }
         } catch (LocalizedException $e) {
+            $this->helper->logDebug(__('There was a problem saving the Organization. ERROR: %1 DATA: %2', [$e->getMessage(), json_encode($data)]));
             $this->messageManager->addErrorMessage($e->getMessage());
             $this->dataPersistor->set('uber_organization', $postData);
             $resultRedirect->setPath('*/*/edit', ['entity_id' => $id]);

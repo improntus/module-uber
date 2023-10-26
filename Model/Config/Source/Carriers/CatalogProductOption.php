@@ -36,12 +36,10 @@ class CatalogProductOption implements ArrayInterface
 
     /**
      * @return array
-     * TODO: REFACTOR - COPY PASTE FROM PEYA
      */
     public function toOptionArray()
     {
         $options = ['label' => __('-- Select --'), 'value' => ''];
-
         $entityType = $this->_eavTypeFactory->create()->loadByCode('catalog_product');
         $collection = $this->_attributeFactory->create()
             ->getCollection()

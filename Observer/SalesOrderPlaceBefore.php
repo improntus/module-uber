@@ -82,11 +82,9 @@ class SalesOrderPlaceBefore implements ObserverInterface
                 $orderShipping->setIncrementId($order->getIncrementId());
                 $this->orderShipmentRepositoryInterface->save($orderShipping);
             } catch (\Exception $e) {
-                // TODO Logger message
                 $this->helper->log(__("UBER ERROR LOG SalesOrderSaveAfter: %1", $e->getMessage()));
             }
         }
-
         return $this;
     }
 }

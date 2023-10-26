@@ -43,7 +43,7 @@
                 <field id="mode" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Integration Mode</label>
                     <validate>required-entry</validate>
-                    <source_model>Improntus\Uber\Model\Config\Source\Carrier\IntegrationModeOption</source_model>
+                    <source_model>Improntus\Uber\Model\Config\Source\Carriers\IntegrationModeOption</source_model>
                 </field>
                 <field id="debug" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Debug Mode</label>
@@ -53,7 +53,7 @@
                 <field id="source" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Warehouse</label>
                     <validate>required-entry</validate>
-                    <source_model>Improntus\Uber\Model\Config\Source\Carrier\SourceOption</source_model>
+                    <source_model>Improntus\Uber\Model\Config\Source\Carriers\SourceOption</source_model>
                 </field>
                 <field id="free_shipping" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Free Shipping</label>
@@ -64,7 +64,7 @@
                 <field id="verification_type" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Verification Type</label>
                     <validate>required-entry</validate>
-                    <source_model>Improntus\Uber\Model\Config\Source\Carrier\VerificationOption</source_model>
+                    <source_model>Improntus\Uber\Model\Config\Source\Carriers\VerificationOption</source_model>
                     <comment>Verification steps that must be taken before the dropoff can be completed.</comment>
                 </field>
                 <field id="verification_age" translate="label" type="text" sortOrder="65" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
@@ -124,17 +124,17 @@
                 <field id="product_width_attribute" translate="label" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Product Width Attribute</label>
                     <validate>required-entry</validate>
-                    <source_model>Improntus\Uber\Model\Config\Source\Carrier\CatalogProductOption</source_model>
+                    <source_model>Improntus\Uber\Model\Config\Source\Carriers\CatalogProductOption</source_model>
                 </field>
                 <field id="product_height_attribute" translate="label" type="select" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Product Height Attribute</label>
                     <validate>required-entry</validate>
-                    <source_model>Improntus\Uber\Model\Config\Source\Carrier\CatalogProductOption</source_model>
+                    <source_model>Improntus\Uber\Model\Config\Source\Carriers\CatalogProductOption</source_model>
                 </field>
                 <field id="product_depth_attribute" translate="label" type="select" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Product Depth Attribute</label>
                     <validate>required-entry</validate>
-                    <source_model>Improntus\Uber\Model\Config\Source\Carrier\CatalogProductOption</source_model>
+                    <source_model>Improntus\Uber\Model\Config\Source\Carriers\CatalogProductOption</source_model>
                 </field>
                 <field id="automatic_shipment" translate="label" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Automatic Shipment Generation</label>

@@ -229,8 +229,6 @@ class Webhook implements WebhookInterface
      */
     private function validateHookSignature(): void
     {
-        // TODO REMOVE THIS RETURN
-        return;
         $requestBody = $this->request->getContent();
         $magentoWebhookSignatureKey = $this->helper->getWebhookSignature();
         $uberWebhookSignature = $this->request->getHeader('X-Postmates-Signature') ?: null;

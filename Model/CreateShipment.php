@@ -149,6 +149,13 @@ class CreateShipment
                 throw new Exception(__('The requested Order does not exist'));
             }
 
+            // Validate Order Status
+            $statusAllowed = $this->helper->getAutomaticShipmentGenerationStatus($order->getStoreId());
+            if (($order->getStatus() === Order::STATE_CANCELED or $order->getStatus() === Order::STATE_CLOSED) &&
+                !in_array($order->getStatus(), $statusAllowed)) {
+                throw new Exception(__('The order status does not allow generating a shipment'));
+            }
+
             // Validate Shipping Method
             if ($order->getShippingMethod() == self::CARRIER_CODE) {
                 // Get Shipping Data

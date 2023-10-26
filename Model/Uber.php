@@ -297,6 +297,7 @@ class Uber
 
         // Opps...
         if ($uberRequest->getStatusCode() !== 200) {
+            // TODO: Log message
             $error = json_decode($responseBody, true);
             $this->helper->log("ERROR: Uber Shipping Cancel Request: " . json_encode($requestData));
 

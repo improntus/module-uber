@@ -230,7 +230,7 @@ class Webhook implements WebhookInterface
     private function validateHookSignature(): void
     {
         /**
-         * TODO REMOVE THIS AFTER QA
+         * TODO REMOVE THIS
          */
         return;
         $requestBody = $this->request->getContent();

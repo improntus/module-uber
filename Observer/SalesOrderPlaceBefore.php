@@ -80,6 +80,7 @@ class SalesOrderPlaceBefore implements ObserverInterface
                     $orderShipping->setSourceWaypoint($warehouseId);
                 }
                 $orderShipping->setIncrementId($order->getIncrementId());
+                $orderShipping->setStatus('pending');
                 $this->orderShipmentRepositoryInterface->save($orderShipping);
             } catch (\Exception $e) {
                 $this->helper->log(__("UBER ERROR LOG SalesOrderSaveAfter: %1", $e->getMessage()));

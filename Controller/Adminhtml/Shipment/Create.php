@@ -100,7 +100,7 @@ class Create extends Action
 
         try {
             $order->addCommentToStatusHistory(
-                __('<strong>Uber Shipping Create ERROR</strong>: %1', __($msgError))
+                __('<b>Uber Shipping Create ERROR:</b> %1', __($msgError))
             );
             $this->orderRepository->save($order);
         } catch (Exception $e) {

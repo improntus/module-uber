@@ -99,7 +99,7 @@ class Cancel extends Action
         }
         try {
             $order->addCommentToStatusHistory(
-                __('<strong>Uber Cancellation ERROR</strong>: %1', $msgError)
+                __('<b>Uber Cancellation ERROR</b>: %1', $msgError)
             );
             $this->orderRepository->save($order);
             return true;

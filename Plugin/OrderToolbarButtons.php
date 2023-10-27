@@ -101,7 +101,7 @@ class OrderToolbarButtons
                     $buttonAction = $this->urlInterface->getUrl('uber/shipment/cancel', ['order_id' => $order->getId()]);
                     $buttonLabel = __('Cancel Driver');
                     if (is_null($uberOrderShipmentRepository->getUberShippingId())) {
-                        $buttonLabel = __('Re-call Driver');
+                        $buttonLabel = __('Re Request Driver');
                         $buttonAction = $this->urlInterface->getUrl('uber/shipment/create', ['order_id' => $order->getId()]);
                     }
 

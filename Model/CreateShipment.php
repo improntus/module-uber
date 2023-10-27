@@ -149,22 +149,18 @@ class CreateShipment
                 throw new Exception(__('The requested Order does not exist'));
             }
 
-            // Validate Order Status
-            $statusAllowed = $this->helper->getAutomaticShipmentGenerationStatus($order->getStoreId());
-            if (($order->getStatus() === Order::STATE_CANCELED or $order->getStatus() === Order::STATE_CLOSED) &&
-                !in_array($order->getStatus(), $statusAllowed)) {
-                throw new Exception(__('The order status does not allow generating a shipment'));
-            }
-
             // Validate Shipping Method
             if ($order->getShippingMethod() == self::CARRIER_CODE) {
                 // Get Shipping Data
                 $uberOrderShipmentRepository = $this->orderShipmentRepository->getByOrderId($orderId);
 
-                // Has active delivery? or Complete?
-                if (!is_null($uberOrderShipmentRepository->getUberShippingId())
-                    && $uberOrderShipmentRepository->getStatus() === 'delivered') {
-                    throw new Exception(__('There is already a shipment in progress / completed.'));
+                // Validate Order Status
+                $orderStatus = $order->getStatus();
+                $uberStatusAllowed = ['pending', 'canceled'];
+                $uberShipmentStatus = $uberOrderShipmentRepository->getStatus();
+                $statusNotAllowed = [Order::STATE_CANCELED, Order::STATE_CLOSED, Data::UBER_DELIVERED_STATUS];
+                if (in_array($orderStatus, $statusNotAllowed) or !in_array($uberShipmentStatus, $uberStatusAllowed)) {
+                    throw new Exception(__('The order status does not allow generating a shipment'));
                 }
 
                 // Get Warehouse

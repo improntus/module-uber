@@ -148,7 +148,7 @@ class CancelShipment
         }
         try {
             $order->addCommentToStatusHistory(
-                __('<strong>Uber Cancellation ID</strong>: %1', $cancellationData['id']),
+                __('<b>Uber Cancellation ID</b>: %1', $cancellationData['id']),
                 'uber_canceled'
             );
             $this->orderRepository->save($order);

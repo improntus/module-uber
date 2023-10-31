@@ -315,9 +315,9 @@ class Webhook implements WebhookInterface
 
         // Signature
         if (isset($data['signature']) && !empty($data['signature']['image_url'])) {
-            $verificationInfo .= __('Signer name: <b>%1</b>', $data['signature']['signer_name'] ?? 'n/a') . '<br>';
+            $verificationInfo .= __('Signer Name: <b>%1</b>', $data['signature']['signer_name'] ?? 'n/a') . '<br>';
             $verificationInfo .= __('Signer Relationship: <b>%1</b>', $data['signature']['signer_relationship'] ?? 'n/a') . '<br>';
-            $verificationInfo .= __('<a href="%1" target="_blank">View Signature</a>', $data['signature']['image_url']);
+            $verificationInfo .= '<a href="' . $data['signature']['image_url'] . '" target="_blank">' . __('View Signature') . '</a>';
             $verificationMethod = __('Signature');
         }
 

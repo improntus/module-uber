@@ -11,6 +11,7 @@ use Improntus\Uber\Api\WarehouseRepositoryInterface;
 use Improntus\Uber\Helper\Data as UberHelper;
 use Improntus\Uber\Model\Uber as UberModel;
 use Magento\CatalogInventory\Api\StockRegistryInterface;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Directory\Helper\Data;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Directory\Model\CurrencyFactory;
@@ -31,7 +32,6 @@ use Magento\Shipping\Model\Simplexml\ElementFactory;
 use Magento\Shipping\Model\Tracking\Result\StatusFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
-use Magento\Checkout\Model\Session as CheckoutSession;
 
 class Uber extends AbstractCarrierOnline implements CarrierInterface
 {
@@ -367,6 +367,9 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
     private function getCustomerCoordinates($customerAddress): array
     {
         $coordinates = $this->uber->getAddressCoordinates($customerAddress);
+        if (count($coordinates) === 0 or !is_array($coordinates)) {
+            throw new Exception(__('We could not locate this address. Please verify the data entered.'));
+        }
         return [
             'latitude'  => (float)sprintf("%.6f", $coordinates[0]['lat']),
             'longitude' => (float)sprintf("%.6f", $coordinates[0]['lon'])

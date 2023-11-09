@@ -9,7 +9,7 @@ namespace Improntus\Uber\Model;
 use Exception;
 use Improntus\Uber\Helper\Data;
 use Improntus\Uber\Model\Carrier\Uber as UberCarrier;
-use Improntus\Uber\Model\Warehouse\WarehouseRepository;
+use Improntus\Uber\Api\WarehouseRepositoryInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -35,9 +35,9 @@ class CancelShipment
     protected Data $helper;
 
     /**
-     * @var WarehouseRepository $warehouseRepository
+     * @var WarehouseRepositoryInterface $warehouseRepository
      */
-    protected WarehouseRepository $warehouseRepository;
+    protected WarehouseRepositoryInterface $warehouseRepository;
 
     /**
      * @var Uber $uber
@@ -53,7 +53,7 @@ class CancelShipment
      * @param Uber $uber
      * @param Data $helper
      * @param OrderRepository $orderRepository
-     * @param WarehouseRepository $warehouseRepository
+     * @param WarehouseRepositoryInterface $warehouseRepository
      * @param OrderShipmentFactory $orderShipmentFactory
      * @param OrderShipmentRepository $orderShipmentRepository
      */
@@ -61,7 +61,7 @@ class CancelShipment
         Uber $uber,
         Data $helper,
         OrderRepository $orderRepository,
-        WarehouseRepository $warehouseRepository,
+        WarehouseRepositoryInterface $warehouseRepository,
         OrderShipmentFactory $orderShipmentFactory,
         OrderShipmentRepository $orderShipmentRepository
     ) {
@@ -95,7 +95,11 @@ class CancelShipment
                 $uberOrderShipmentRepository = $this->orderShipmentRepository->getByOrderId($orderId);
 
                 // Get Warehouse
-                $warehouseId = $uberOrderShipmentRepository->getSourceWaypoint() ?? $uberOrderShipmentRepository->getSourceMsi();
+                $warehouseId = $uberOrderShipmentRepository->getSourceWaypoint();
+                if (is_null($warehouseId)) {
+                    // Get Source Code MSI
+                    $warehouseId = $uberOrderShipmentRepository->getSourceMsi();
+                }
                 $warehouse = $this->warehouseRepository->getWarehouse($warehouseId);
                 $warehouseData = $this->warehouseRepository->getWarehousePickupData($warehouse);
 
@@ -106,15 +110,19 @@ class CancelShipment
                 $uberShippingId = $uberOrderShipmentRepository->getUberShippingId();
 
                 // Send Request to Uber
-                $uberResponse = $this->uber->cancelShipping($uberShippingId, $organizationId, $order->getStoreId());
-                if (!isset($uberResponse['id'])) {
-                    return false;
+                try {
+                    $uberResponse = $this->uber->cancelShipping($uberShippingId, $organizationId, $order->getStoreId());
+                    if (!isset($uberResponse['id'])) {
+                        return;
+                    }
+                } catch (Exception $e) {
+                    throw new Exception($e->getMessage());
                 }
 
                 // Update Uber Shipment
                 try {
                     $uberOrderShipmentRepository->setStatus('canceled');
-                    $uberOrderShipmentRepository->setUberShippingId(null);// Save Data
+                    $uberOrderShipmentRepository->setUberShippingId(null);
                     $this->orderShipmentRepository->save($uberOrderShipmentRepository);
                 } catch (CouldNotSaveException $e) {
                     throw new Exception($e->getMessage());

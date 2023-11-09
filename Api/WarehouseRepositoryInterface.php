@@ -9,19 +9,13 @@ namespace Improntus\Uber\Api;
 interface WarehouseRepositoryInterface
 {
     /**
-     * checkStockAvailability
-     * @param string $sourceCode
-     * @return bool
-     */
-    public function checkStockAvailability(string $sourceCode): bool;
-
-    /**
      * getAvailableSources
      * @param int $storeId
      * @param array $cartItemsSku
+     * @param string $countryId
      * @return mixed
      */
-    public function getAvailableSources(int $storeId, array $cartItemsSku);
+    public function getAvailableSources(int $storeId, array $cartItemsSku, string $countryId);
 
     /**
      * checkWarehouseWorkSchedule
@@ -64,10 +58,10 @@ interface WarehouseRepositoryInterface
 
     /**
      * getWarehouse
-     * @param $warehouseId
+     * @param int|string $warehouseId
      * @return mixed
      */
-    public function getWarehouse($warehouseId);
+    public function getWarehouse(int|string $warehouseId);
 
     /**
      * getWarehousePickupData

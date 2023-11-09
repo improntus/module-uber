@@ -14,7 +14,7 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 
-class pod extends Action
+class POD extends Action
 {
 
     /**
@@ -55,8 +55,8 @@ class pod extends Action
         $resultJson = $this->jsonFactory->create();
         $orderId = $this->getRequest()->getParam('order_id');
         if (is_null($orderId)) {
-            $this->helper->logDebug(__('POF: OrderID is required'));
-            return $resultJson->setData(['error' => true, 'msg' => __('POF: OrderID is required')]);
+            $this->helper->logDebug(__('Proof of Delivery: OrderID is required'));
+            return $resultJson->setData(['error' => true, 'msg' => __('Proof of Delivery: OrderID is required')]);
         }
 
         if (!$this->helper->isModuleEnabled()) {

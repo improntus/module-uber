@@ -7,14 +7,14 @@
 namespace Improntus\Uber\Model;
 
 use Exception;
+use Improntus\Uber\Api\WarehouseRepositoryInterface;
 use Improntus\Uber\Helper\Data;
 use Improntus\Uber\Model\Carrier\Uber as UberCarrier;
-use Improntus\Uber\Model\Warehouse\WarehouseRepository;
+use Improntus\Uber\Model\OrderShipmentRepository as UberOrderShipmentRepository;
 use Magento\Framework\DB\TransactionFactory;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\MailException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
@@ -22,8 +22,8 @@ use Magento\Sales\Model\Convert\Order as Converter;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Shipment;
 use Magento\Sales\Model\Order\Shipment\TrackFactory;
+use Magento\Sales\Model\Order\ShipmentRepository;
 use Magento\Sales\Model\OrderRepository;
-use Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader;
 use Magento\Shipping\Model\ShipmentNotifier;
 
 class CreateShipment
@@ -48,9 +48,9 @@ class CreateShipment
     protected Data $helper;
 
     /**
-     * @var WarehouseRepository $warehouseRepository
+     * @var WarehouseRepositoryInterface $warehouseRepository
      */
-    protected WarehouseRepository $warehouseRepository;
+    protected WarehouseRepositoryInterface $warehouseRepository;
 
     /**
      * @var TimezoneInterface $timezone
@@ -63,19 +63,14 @@ class CreateShipment
     protected Uber $uber;
 
     /**
-     * @var OrderShipmentFactory $orderShipmentFactory
+     * @var ShipmentRepository $shipmentRepository
      */
-    protected OrderShipmentFactory $orderShipmentFactory;
+    protected ShipmentRepository $shipmentRepository;
 
     /**
-     * @var ShipmentLoader $shipmentLoader
+     * @var UberOrderShipmentRepository $uberOrderShipmentRepository
      */
-    protected ShipmentLoader $shipmentLoader;
-
-    /**
-     * @var TrackFactory $trackFactory
-     */
-    protected TrackFactory $trackFactory;
+    protected UberOrderShipmentRepository $uberOrderShipmentRepository;
 
     /**
      * @var Registry $registry
@@ -97,6 +92,11 @@ class CreateShipment
      */
     protected Converter $converter;
 
+    /**
+     * @var TrackFactory $trackFactory
+     */
+    protected TrackFactory $trackFactory;
+
     public function __construct(
         Uber $uber,
         Data $helper,
@@ -104,13 +104,13 @@ class CreateShipment
         Converter $converter,
         TrackFactory $trackFactory,
         TimezoneInterface $timezone,
-        ShipmentLoader $shipmentLoader,
         OrderRepository $orderRepository,
         ShipmentNotifier $shipmentNotifier,
         TransactionFactory $transactionFactory,
-        WarehouseRepository $warehouseRepository,
-        OrderShipmentFactory $orderShipmentFactory,
-        OrderShipmentRepository $orderShipmentRepository
+        ShipmentRepository $shipmentRepository,
+        OrderShipmentRepository $orderShipmentRepository,
+        WarehouseRepositoryInterface $warehouseRepository,
+        UberOrderShipmentRepository $uberOrderShipmentRepository
     ) {
         $this->uber = $uber;
         $this->helper = $helper;
@@ -118,13 +118,13 @@ class CreateShipment
         $this->timezone = $timezone;
         $this->converter = $converter;
         $this->trackFactory = $trackFactory;
-        $this->shipmentLoader = $shipmentLoader;
         $this->orderRepository = $orderRepository;
         $this->shipmentNotifier = $shipmentNotifier;
         $this->transactionFactory = $transactionFactory;
+        $this->shipmentRepository = $shipmentRepository;
         $this->warehouseRepository = $warehouseRepository;
-        $this->orderShipmentFactory = $orderShipmentFactory;
         $this->orderShipmentRepository = $orderShipmentRepository;
+        $this->uberOrderShipmentRepository = $uberOrderShipmentRepository;
     }
 
     /**
@@ -133,6 +133,7 @@ class CreateShipment
      * @return void
      * @throws InputException
      * @throws NoSuchEntityException
+     * @throws Exception
      */
     public function create($orderId)
     {
@@ -158,7 +159,11 @@ class CreateShipment
                 }
 
                 // Get Warehouse
-                $warehouseId = $uberOrderShipmentRepository->getSourceWaypoint() ?? $uberOrderShipmentRepository->getSourceMsi();
+                $warehouseId = $uberOrderShipmentRepository->getSourceWaypoint();
+                if (is_null($warehouseId)) {
+                    // Get Source Code MSI
+                    $warehouseId = $uberOrderShipmentRepository->getSourceMsi();
+                }
                 $warehouse = $this->warehouseRepository->getWarehouse($warehouseId);
 
                 // Generate DeliveryTime and Check Warehouse Work Schedule
@@ -231,9 +236,13 @@ class CreateShipment
                 $organizationId = $this->warehouseRepository->getWarehouseOrganization($warehouse);
 
                 // Send Request to Uber
-                $uberResponse = $this->uber->createShipping($shippingData, $organizationId, $order->getStoreId());
-                if (!isset($uberResponse['id'])) {
-                    return false;
+                try {
+                    $uberResponse = $this->uber->createShipping($shippingData, $organizationId, $order->getStoreId());
+                    if (!isset($uberResponse['id'])) {
+                        return;
+                    }
+                } catch (Exception $e) {
+                    throw new Exception($e->getMessage());
                 }
 
                 // Save Uber Shipping ID
@@ -247,8 +256,8 @@ class CreateShipment
 
                 // Create Shipment / Track
                 try {
-                    $this->createMagentoShipment($order, $uberResponse);
-                } catch (MailException|LocalizedException $e) {
+                    $this->createMagentoShipment($orderId, $uberResponse);
+                } catch (Exception $e) {
                     throw new Exception($e->getMessage());
                 }
 
@@ -263,6 +272,89 @@ class CreateShipment
                 return $uberResponse;
             }
         }
+    }
+
+    /**
+     * createMagentoShipment
+     *
+     * @param int $orderId
+     * @param array $uberData
+     */
+    protected function createMagentoShipment(int $orderId, array $uberData)
+    {
+        $order = $this->orderRepository->get($orderId);
+        $shipment = $this->prepareShipment($order);
+        try {
+            $this->shipmentRepository->save($shipment);
+        } catch (\Exception $e) {
+            throw new Exception(__($e->getMessage()));
+        }
+
+        // Add Tracking to Shipment
+        try {
+            $this->addTrackingToShipment($order, $this->formatTrackingNumber($uberData['uuid']), $uberData['tracking_url'], $shipment);
+        } catch (\Exception $e) {
+            $this->helper->log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
+        $this->shipmentNotifier->notify($shipment);
+    }
+
+    /**
+     * @param $order
+     * @return false|Shipment
+     * @throws LocalizedException
+     */
+    private function prepareShipment($order)
+    {
+        if (!$order->canShip()) {
+            return false;
+        }
+
+        $shipment = $this->converter->toShipment($order);
+        foreach ($order->getAllItems() as $orderItem) {
+            if (!$orderItem->getQtyToShip() || $orderItem->getIsVirtual()) {
+                continue;
+            }
+            $qtyShipped = $orderItem->getQtyToShip();
+            $shipmentItem = $this->converter->itemToShipmentItem($orderItem)->setQty($qtyShipped);
+            $shipment->addItem($shipmentItem);
+        }
+
+        /**
+         * Multi Source Inventory Logic
+         */
+        if ($this->helper->hasMsiInstalled() && $this->helper->getSourceOrigin($order->getStoreId())) {
+            // Get Source Code from UberOrderShipmentRepository
+            $uberOrderShipmentRepository = $this->uberOrderShipmentRepository->getByOrderId($order->getId());
+            if (!is_null($uberOrderShipmentRepository->getSourceMsi())) {
+                $sourceCode = $uberOrderShipmentRepository->getSourceMsi();
+                $shipment->getExtensionAttributes()->setSourceCode($sourceCode);
+            }
+        }
+        $shipment->register();
+        return $shipment;
+    }
+
+    /**
+     * addTrackingToShipment
+     *
+     * @param $order
+     * @param $trackNumber
+     * @param $trackURL
+     * @param $shipment
+     */
+    protected function addTrackingToShipment($order, $trackNumber, $trackURL, $shipment)
+    {
+        $carrierTitle = $this->helper->getShippingTitle($order->getStoreId()) ?: 'Uber Direct';
+        $shipment->addTrack(
+            $this->trackFactory->create()
+                ->setNumber($trackNumber)
+                ->setCarrierCode(self::CARRIER_CODE)
+                ->setTitle($carrierTitle)
+                ->setUrl($trackURL)
+        );
+        $shipment->save();
     }
 
     /**
@@ -401,7 +493,6 @@ class CreateShipment
         if (is_null($order->getEntityId())) {
             return;
         }
-
         try {
             $orderComment = __('<b>Uber Shipping ID</b>: %1', $confirmationData['id']) . '<br>';
             $orderComment .= __('<b>Tracking URL</b>: <a href="%1">%1</a>', $confirmationData['tracking_url']) . '<br>';
@@ -480,84 +571,6 @@ class CreateShipment
         }
 
         return $verificationParams;
-    }
-
-    /**
-     * createMagentoShipment
-     * @param $order
-     * @param array $uberData
-     * @return bool|Shipment
-     * @throws LocalizedException
-     * @throws MailException
-     */
-    protected function createMagentoShipment($order, array $uberData)
-    {
-        if (!$order->canShip()) {
-            return false;
-        }
-
-        $shipment = $this->converter->toShipment($order);
-        foreach ($order->getAllItems() as $orderItem) {
-            if (!$orderItem->getQtyToShip() || $orderItem->getIsVirtual()) {
-                continue;
-            }
-            $qtyShipped = $orderItem->getQtyToShip();
-            $shipmentItem = $this->converter->itemToShipmentItem($orderItem)->setQty($qtyShipped);
-            $shipment->addItem($shipmentItem);
-        }
-        $shipment->register();
-        $shipment->getOrder()->setIsInProcess(true);
-
-        /**
-         * Generate Shipment
-         */
-        try {
-            $this->generateShipment($order, $uberData, $shipment);
-            $shipment->save();
-            $shipment->getOrder()->save();
-        } catch (\Exception $e) {
-            $this->helper->log($e->getMessage());
-            throw new Exception($e->getMessage());
-        }
-
-        return $shipment;
-    }
-
-    /**
-     * @param $order
-     * @param $uberData
-     * @param $shipment
-     * @return void
-     * @throws MailException
-     */
-    protected function generateShipment($order, $uberData, $shipment)
-    {
-        $orderShipment = $this->orderShipmentFactory->create();
-        $orderShipment->setData('order_id', $order->getId());
-        $orderShipment->setData('shipment_data', json_encode($uberData));
-        $orderShipment->save();
-        $this->addTrackingToShipment($shipment, $order, $this->formatTrackingNumber($uberData['uuid']), $uberData['tracking_url']);
-        $shipment->save();
-        $this->shipmentNotifier->notify($shipment);
-    }
-
-    /**
-     * @param $shipment
-     * @param $order
-     * @param $trackNumber
-     * @param $trackURL
-     * @return void
-     */
-    protected function addTrackingToShipment($shipment, $order, $trackNumber, $trackURL)
-    {
-        $carrierTitle = $this->helper->getShippingTitle($order->getStoreId()) ?: 'Uber Direct';
-        $shipment->addTrack(
-            $this->trackFactory->create()
-                ->setNumber($trackNumber)
-                ->setUrl($trackURL)
-                ->setCarrierCode(self::CARRIER_CODE)
-                ->setTitle($carrierTitle)
-        );
     }
 
     /**

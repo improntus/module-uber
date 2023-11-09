@@ -70,22 +70,13 @@ class WarehouseRepository implements WarehouseRepositoryInterface
      * Return Available Sources
      * @param int $storeId
      * @param array $cartItemsSku
+     * @param string $countryId
      */
-    public function getAvailableSources(int $storeId, array $cartItemsSku): array
+    public function getAvailableSources(int $storeId, array $cartItemsSku, string $countryId): array
     {
         // Uber Waypoint
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('store_id', $storeId)->create();
         return $this->waypointRepository->getList($searchCriteria)->getItems();
-    }
-
-    /**
-     * checkStockAvailability
-     * @param string $sourceCode
-     * @return bool
-     */
-    public function checkStockAvailability(string $sourceCode): bool
-    {
-        return true;
     }
 
     /**
@@ -122,7 +113,7 @@ class WarehouseRepository implements WarehouseRepositoryInterface
     {
         // Init Vars
         $closestDistance = PHP_FLOAT_MAX;
-        $closestWarehouse = false;
+        $closestWarehouse = null;
 
         // Get Customer Coordinates
         $customerLatitude = deg2rad($customerCoords['latitude']);
@@ -143,12 +134,13 @@ class WarehouseRepository implements WarehouseRepositoryInterface
                 $closestWarehouse = $warehouse;
             }
         }
-
         return $closestWarehouse;
     }
 
     /**
      * getWarehouseAddressData
+     *
+     * Returns json with the warehouse address
      * @param $warehouse
      * @return string
      * @throws Exception
@@ -194,6 +186,8 @@ class WarehouseRepository implements WarehouseRepositoryInterface
 
     /**
      * getWarehouseId
+     *
+     * Return Uber WaypointID
      * @param $warehouse
      * @return mixed
      */
@@ -204,18 +198,23 @@ class WarehouseRepository implements WarehouseRepositoryInterface
 
     /**
      * getWarehouse
-     * @param $warehouseId
+     *
+     * Returns Uber Waypoint information
+     * @param int|string $warehouseId
      * @return mixed
+     * @throws NoSuchEntityException
      */
-    public function getWarehouse($warehouseId)
+    public function getWarehouse(int|string $warehouseId)
     {
         return $this->waypointRepository->get($warehouseId);
     }
 
     /**
      * getWarehousePickupData
+     *
+     * Returns json with the waypoint information
      * @param $warehouse
-     * @return mixed
+     * @return array
      */
     public function getWarehousePickupData($warehouse)
     {

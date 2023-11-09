@@ -5,7 +5,7 @@
 Official module [Uber](https://uber.com/) for Magento 2. The module was developed using Uber API documentation [API Docs](https://developer.uber.com/docs/deliveries/overview).
 
 ### Installation
-The module requires Magento 2.0.x or higher for its correct operation. It will need to be installed using the Magento console commands.
+The module requires Magento 2.3.x or higher for its correct operation. It will need to be installed using the Magento console commands.
 
 ```sh
 composer require improntus/module-uber-magento-2

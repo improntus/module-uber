@@ -191,7 +191,11 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
             $orderStoreId = $this->storeManager->getStore()->getStoreId();
 
             // Get Warehouses
-            $warehousesCollection = $this->warehouseRepository->getAvailableSources($orderStoreId, $cartValidation['cartItemsSku']);
+            $warehousesCollection = $this->warehouseRepository->getAvailableSources($orderStoreId, $cartValidation['cartItemsSku'], $request->getDestCountryId());
+            if (is_null($warehousesCollection)) {
+                $this->uberHelper->logDebug('There are no warehouses available to process the order');
+                throw new Exception(__('The cart contains products that are out of stock for express delivery'));
+            }
 
             // Get Customer Region Name
             $customerState = $this->_regionFactory->create()->load($request->getDestRegionId());
@@ -205,6 +209,7 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
 
             // Has Results?
             if (is_null($warehouse)) {
+                $this->uberHelper->logDebug('There are no deposits near the customer');
                 throw new Exception(__('This shipping method is not available'));
             }
 

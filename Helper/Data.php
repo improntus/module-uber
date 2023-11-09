@@ -10,7 +10,6 @@ use Improntus\Uber\Logger\Logger;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Module\ModuleListInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -31,21 +30,12 @@ class Data extends AbstractHelper
 
     const STORE_NAME_CONFIG_PATH = 'general/store_information/name';
 
-    const CLIENT_SECRET = 'client_secret';
-
-    const CLIENT_ID = 'client_id';
-
     const UBER_DELIVERED_STATUS = 'uber_delivered';
 
     /**
      * @var Logger $logger
      */
     protected Logger $logger;
-
-    /**
-     * @var EncryptorInterface $encryptor
-     */
-    protected EncryptorInterface $encryptor;
 
     /**
      * @var StoreManagerInterface $storeManager
@@ -58,7 +48,6 @@ class Data extends AbstractHelper
     protected ModuleListInterface $moduleList;
 
     /**
-     * @param EncryptorInterface $encryptor
      * @param ScopeConfigInterface $scopeConfig
      * @param Logger $logger
      * @param StoreManagerInterface $storeManager
@@ -66,7 +55,6 @@ class Data extends AbstractHelper
      * @param ModuleListInterface $moduleList
      */
     public function __construct(
-        EncryptorInterface $encryptor,
         ScopeConfigInterface $scopeConfig,
         Logger $logger,
         StoreManagerInterface $storeManager,
@@ -75,7 +63,6 @@ class Data extends AbstractHelper
     ) {
         $this->storeManager = $storeManager;
         $this->logger = $logger;
-        $this->encryptor = $encryptor;
         $this->scopeConfig = $scopeConfig;
         $this->moduleList = $moduleList;
         parent::__construct($context);
@@ -108,11 +95,7 @@ class Data extends AbstractHelper
      */
     public function getWebhookSignature($storeId = null): string
     {
-        $webhookSignatureKey = $this->getConfigCarrierData('webhook_signing', $storeId);
-        if (!is_null($webhookSignatureKey)) {
-            return $this->encryptor->decrypt($webhookSignatureKey);
-        }
-        return '';
+        return $this->getConfigCarrierData('webhook_signing', $storeId) ?: '';
     }
 
     /**
@@ -302,11 +285,13 @@ class Data extends AbstractHelper
 
     /**
      * hasMsiInstalled
+     *
+     * Returns true if the requirements to implement MSI are met
      * @return bool
      */
     public function hasMsiInstalled(): bool
     {
-        return $this->moduleList->has('Magento_Inventory');
+        return $this->moduleList->has('Magento_Inventory') && $this->moduleList->has('Improntus_UberInventory');
     }
 
     /**
@@ -348,9 +333,6 @@ class Data extends AbstractHelper
     public function getConfigShippingData($configPath, $storeId = null): mixed
     {
         $path = vsprintf(self::UBER_SHIPPING_CONFIG_PATH, [$configPath]);
-        if ($configPath === self::CLIENT_SECRET || $configPath === self::CLIENT_ID) {
-            return $this->encryptor->decrypt($this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, $storeId) ?? '');
-        }
         return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, $storeId) ?? '';
     }
 
@@ -363,9 +345,6 @@ class Data extends AbstractHelper
     public function getConfigCarrierData($configPath, $storeId = null): mixed
     {
         $path = vsprintf(self::UBER_CARRIER_CONFIG_PATH, [$configPath]);
-        if ($configPath === self::CLIENT_SECRET || $configPath === self::CLIENT_ID) {
-            return $this->encryptor->decrypt($this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, $storeId) ?? '');
-        }
         return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, $storeId) ?? '';
     }
 

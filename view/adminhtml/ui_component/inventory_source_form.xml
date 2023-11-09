@@ -4,6 +4,41 @@
    @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
   -->
 <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="general" sortOrder="10">
+        <settings>
+            <label translate="true">General</label>
+            <collapsible>true</collapsible>
+            <opened>true</opened>
+            <dataScope>general</dataScope>
+        </settings>
+        <field name="latitude" formElement="input" sortOrder="50">
+            <settings>
+                <validation>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>number</dataType>
+                <label translate="true">Latitude</label>
+                <tooltip>
+                    <link>https://support.google.com/maps/answer/18539</link>
+                    <description translate="true"><![CDATA[To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>]]></description>
+                </tooltip>
+            </settings>
+        </field>
+        <field name="longitude" formElement="input" sortOrder="60">
+            <settings>
+                <validation>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>number</dataType>
+                <label translate="true">Longitude</label>
+                <tooltip>
+                    <link>https://support.google.com/maps/answer/18539</link>
+                    <description translate="true"><![CDATA[To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>]]></description>
+                </tooltip>
+            </settings>
+        </field>
+    </fieldset>
+
     <fieldset name="uber_waypoint" sortOrder="15">
         <settings>
             <label translate="true">Uber Direct</label>

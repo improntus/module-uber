@@ -26,9 +26,9 @@ class SalesOrderSaveAfter implements ObserverInterface
     protected Data $helper;
 
     /**
-     * @var OrderShipmentRepositoryInterface $orderShipmentRepository
+     * @var OrderShipmentRepositoryInterface $uberOrderShipmentRepository
      */
-    protected OrderShipmentRepositoryInterface $orderShipmentRepository;
+    protected OrderShipmentRepositoryInterface $uberOrderShipmentRepository;
 
     /**
      * @var CreateShipment $createShipment
@@ -44,18 +44,18 @@ class SalesOrderSaveAfter implements ObserverInterface
      * @param Data $data
      * @param CreateShipment $createShipment
      * @param OrderRepository $orderRepository
-     * @param OrderShipmentRepositoryInterface $orderShipmentRepository
+     * @param OrderShipmentRepositoryInterface $uberOrderShipmentRepository
      */
     public function __construct(
         Data $data,
         CreateShipment $createShipment,
         OrderRepository $orderRepository,
-        OrderShipmentRepositoryInterface $orderShipmentRepository
+        OrderShipmentRepositoryInterface $uberOrderShipmentRepository
     ) {
         $this->helper = $data;
         $this->createShipment = $createShipment;
         $this->orderRepository = $orderRepository;
-        $this->orderShipmentRepository = $orderShipmentRepository;
+        $this->uberOrderShipmentRepository = $uberOrderShipmentRepository;
     }
 
     /**
@@ -69,31 +69,35 @@ class SalesOrderSaveAfter implements ObserverInterface
         if ($order->getShippingMethod() == self::CARRIER_CODE && $this->helper->isModuleEnabled()) {
             try {
                 // Get Order by IncrementalId and Update OrderId
-                $orderShipment = $this->orderShipmentRepository->getByIncrementId($order->getIncrementId());
-                $orderShipment->setOrderId($order->getId());
-                $this->orderShipmentRepository->save($orderShipment);
-            } catch (NoSuchEntityException $e) {
-                $this->helper->log(__("UBER ERROR SalesOrderSaveAfter: %1", $e->getMessage()));
-            }
+                $uberOrderShipment = $this->uberOrderShipmentRepository->getByIncrementId($order->getIncrementId());
+                if (is_null($uberOrderShipment->getOrderId())) {
+                    $uberOrderShipment->setOrderId($order->getId());
+                    $this->uberOrderShipmentRepository->save($uberOrderShipment);
+                }
 
-            /**
-             * Is Enabled Automatic Shipping?
-             */
-            if ($this->helper->isAutomaticShipmentGenerationEnabled($order->getStoreId())) {
-                $statusAllowed = $this->helper->getAutomaticShipmentGenerationStatus($order->getStoreId());
-                if (count($statusAllowed) > 0 && in_array($order->getStatus(), $statusAllowed)) {
-                    try {
-                        $this->createShipment->create($order->getId());
-                    } catch (\Exception $e) {
-                        $this->helper->log(__("UBER ERROR SalesOrderSaveAfter: %1", $e->getMessage()));
-                        $order->addCommentToStatusHistory(
-                            __('<b>Uber Automatic Shipping Create ERROR</b>: %1', $e->getMessage()),
-                            'uber_pending'
-                        );
-                        // Save Order
-                        $order->save();
+                /**
+                 * Is Enabled Automatic Shipping?
+                 */
+                if ($this->helper->isAutomaticShipmentGenerationEnabled($order->getStoreId())) {
+                    $statusAllowed = $this->helper->getAutomaticShipmentGenerationStatus($order->getStoreId());
+                    if (count($statusAllowed) > 0 && in_array($order->getStatus(), $statusAllowed) &&
+                        is_null($uberOrderShipment->getUberShippingId())
+                    ) {
+                        try {
+                            $this->createShipment->create($order->getId());
+                        } catch (\Exception $e) {
+                            $this->helper->log("UBER ERROR SalesOrderSaveAfter: " . $e->getMessage());
+                            $order->addCommentToStatusHistory(
+                                __('<b>Uber Automatic Shipping Create ERROR</b>: %1', $e->getMessage()),
+                                'uber_pending'
+                            );
+                            // Save Order
+                            $order->save();
+                        }
                     }
                 }
+            } catch (NoSuchEntityException $e) {
+                $this->helper->log("UBER ERROR SalesOrderSaveAfter: " . $e->getMessage());
             }
         }
     }

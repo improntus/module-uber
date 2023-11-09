@@ -239,6 +239,7 @@ class Uber
             }
 
             // Write log
+            $this->helper->log("ERROR: Uber Shipping Create Request - CustomerID / OrganizationID: $organizationId");
             $this->helper->log("ERROR: Uber Shipping Create Request: " . json_encode($requestData));
             $this->helper->log("ERROR: Uber Shipping Create Response: $logMsg");
 
@@ -299,6 +300,7 @@ class Uber
         if ($uberRequest->getStatusCode() !== 200) {
             // TODO: Log message
             $error = json_decode($responseBody, true);
+            $this->helper->log("ERROR: Uber Shipping Cancel - CustomerID / OrganizationID:  $organizationId");
             $this->helper->log("ERROR: Uber Shipping Cancel Request: " . json_encode($requestData));
 
             /**
@@ -359,9 +361,10 @@ class Uber
 
         // Opps...
         if ($uberRequest->getStatusCode() !== 200) {
-            $this->helper->logDebug(__("ERROR: Uber Delivery Quote Request: %1", json_encode($requestData)));
-            $this->helper->logDebug(__("ERROR: Uber Delivery Quote Response: %1", json_encode($responseBody)));
-            throw new Exception($responseBody['code']);
+            $this->helper->logDebug("ERROR: Uber Delivery Quote CustomerID / OrganizationID: " . $organizationId);
+            $this->helper->logDebug("ERROR: Uber Delivery Quote Request: " . json_encode($requestData));
+            $this->helper->logDebug("ERROR: Uber Delivery Quote Response: " . json_encode($responseBody));
+            throw new Exception($responseBody['message']);
         }
 
         // Return Data
@@ -416,8 +419,9 @@ class Uber
 
         // Opps...
         if ($uberRequest->getStatusCode() !== 200) {
-            $this->helper->logDebug(__("ERROR: Uber Proof Of Delivery Request: %1", json_encode($requestData)));
-            $this->helper->logDebug(__("ERROR: Uber Proof Of Delivery Quote Response: %1", json_encode($responseBody)));
+            $this->helper->logDebug("ERROR: Uber Proof Of Delivery CustomerID / OrganizationID: " . $organizationId);
+            $this->helper->logDebug("ERROR: Uber Proof Of Delivery Request: " . json_encode($requestData));
+            $this->helper->logDebug("ERROR: Uber Proof Of Delivery Quote Response: " . json_encode($responseBody));
             throw new Exception($responseBody['code']);
         }
 
@@ -450,7 +454,7 @@ class Uber
                     $tokenResourceModel = $this->tokenModelFactory->create();
                     $tokenResourceModel->delete($tokenData);
                 } catch (\Exception $e) {
-                    $this->helper->log(__("Uber Delete Expired Token ERROR: %1", $e->getMessage()));
+                    $this->helper->log("Uber Delete Expired Token ERROR: " . $e->getMessage());
                 }
             }
 
@@ -479,7 +483,7 @@ class Uber
 
         // Request ERROR
         if ($uberRequest->getStatusCode() !== 200) {
-            $this->helper->log(__("ERROR: Get Street Coords: %1", json_encode($responseBody)));
+            $this->helper->log("ERROR: Get Street Coords: " . json_encode($responseBody));
             return null;
         }
 
@@ -523,7 +527,7 @@ class Uber
 
         // Request ERROR
         if ($uberRequest->getStatusCode() !== 200) {
-            $this->helper->log(__("ERROR: Get AccessToken: %1", json_encode($responseBody)));
+            $this->helper->log("ERROR: Get AccessToken: " . json_encode($responseBody));
             return null;
         }
 

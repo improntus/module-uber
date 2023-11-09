@@ -25,6 +25,9 @@
                 <product_width_attribute>uber_width</product_width_attribute>
                 <product_depth_attribute>uber_depth</product_depth_attribute>
                 <product_height_attribute>uber_height</product_height_attribute>
+                <client_id backend_model="Magento\Config\Model\Config\Backend\Encrypted"/>
+                <client_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted"/>
+                <webhook_signing backend_model="Magento\Config\Model\Config\Backend\Encrypted"/>
             </uber>
         </carriers>
     </default>

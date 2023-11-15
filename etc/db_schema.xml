@@ -4,24 +4,6 @@
    @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
   -->
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-  <table name="inventory_source" resource="default">
-    <column xsi:type="int" name="organization_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Organization Id"/>
-    <column xsi:type="varchar" name="monday_open" nullable="false" length="2" default="99" comment="Monday - Open"/>
-    <column xsi:type="varchar" name="monday_close" nullable="false" length="2" default="99" comment="Monday - Close"/>
-    <column xsi:type="varchar" name="tuesday_open" nullable="false" length="2" default="99" comment="Tuesday - Open"/>
-    <column xsi:type="varchar" name="tuesday_close" nullable="false" length="2" default="99" comment="Tuesday - Close"/>
-    <column xsi:type="varchar" name="wednesday_open" nullable="false" length="2" default="99" comment="Wednesday - Open"/>
-    <column xsi:type="varchar" name="wednesday_close" nullable="false" length="2" default="99" comment="Wednesday - Close"/>
-    <column xsi:type="varchar" name="thursday_open" nullable="false" length="2" default="99" comment="Thursday - Open"/>
-    <column xsi:type="varchar" name="thursday_close" nullable="false" length="2" default="99" comment="Thursday - Close"/>
-    <column xsi:type="varchar" name="friday_open" nullable="false" length="2" default="99" comment="Friday - Open"/>
-    <column xsi:type="varchar" name="friday_close" nullable="false" length="2" default="99" comment="Friday - Close"/>
-    <column xsi:type="varchar" name="saturday_open" nullable="false" length="2" default="99" comment="Saturday - Open"/>
-    <column xsi:type="varchar" name="saturday_close" nullable="false" length="2" default="99" comment="Saturday - Close"/>
-    <column xsi:type="varchar" name="sunday_open" nullable="false" length="2" default="99" comment="Sunday - Open"/>
-    <column xsi:type="varchar" name="sunday_close" nullable="false" length="2" default="99" comment="Sunday - Close"/>
-  </table>
-
   <table name="improntus_uber_order_shipment" resource="default" comment="Uber Shipment Data">
     <column xsi:type="int" name="entity_id" unsigned="false" nullable="false" identity="true" comment="Entity ID"/>
     <column xsi:type="int" name="order_id" unsigned="true" nullable="true" comment="Order ID"/>

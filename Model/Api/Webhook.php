@@ -109,18 +109,18 @@ class Webhook implements WebhookInterface
             }
 
             $incrementId = $data['external_id'];
-            $orderId = $this->getOrderId($incrementId);
-            if (is_null($orderId)) {
+            $order = $this->getOrderData($incrementId);
+            if (is_null($order['orderId'])) {
                 throw new Exception(__('Order not found'));
             }
 
             /**
              * Validate Webhook Signature
              */
-            $this->validateHookSignature();
+            $this->validateHookSignature($order['orderStore']);
 
             // Get Order
-            $order = $this->orderRepository->get($orderId);
+            $order = $this->orderRepository->get($order['orderId']);
             $orderStatus = $order->getStatus();
 
             /**
@@ -208,29 +208,33 @@ class Webhook implements WebhookInterface
     }
 
     /**
-     * getOrderId
+     * getOrderData
      *
      * Return OrderId from IncrementId
      * @param $incrementId
      * @return mixed
      */
-    protected function getOrderId($incrementId): mixed
+    protected function getOrderData($incrementId): mixed
     {
         $orderModel = $this->orderFactory->create();
         $order = $orderModel->loadByIncrementId($incrementId);
-        return $order->getId();
+        return [
+            'orderId' => $order->getId(),
+            'orderStore' => $order->getStoreId()
+        ];
     }
 
     /**
      * validateHookSignature
      *
      * Check if the webhook is genuine or not
+     * @param int $storeId
      * @throws Exception
      */
-    private function validateHookSignature(): void
+    private function validateHookSignature(int $storeId): void
     {
         $requestBody = $this->request->getContent();
-        $magentoWebhookSignatureKey = $this->helper->getWebhookSignature();
+        $magentoWebhookSignatureKey = $this->helper->getWebhookSignature($storeId);
         $uberWebhookSignature = $this->request->getHeader('X-Postmates-Signature') ?: null;
         if (is_null($magentoWebhookSignatureKey) or is_null($uberWebhookSignature)) {
             throw new Exception(__('Missing Webhook Signature'));

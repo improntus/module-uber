@@ -104,8 +104,7 @@ class Data extends AbstractHelper
      */
     public function getWebhookSignature($storeId = null): string
     {
-        $webhookSignatureKey = $this->getConfigCarrierData('webhook_signing', $storeId);
-        return !is_null($webhookSignatureKey) ? $this->encryptor->decrypt($webhookSignatureKey) : '';
+        return $this->getConfigCarrierData('webhook_signing', $storeId) ?: '';
     }
 
     /**

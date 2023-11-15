@@ -527,7 +527,8 @@ class Uber
 
         // Request ERROR
         if ($uberRequest->getStatusCode() !== 200) {
-            $this->helper->log("ERROR: Get AccessToken: " . json_encode($responseBody));
+            $this->helper->log("ERROR: Get AccessToken Request: " . json_encode($requestData));
+            $this->helper->log("ERROR: Get AccessToken Response: " . json_encode($responseBody));
             return null;
         }
 

@@ -10,6 +10,7 @@ use Improntus\Uber\Logger\Logger;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Module\ModuleListInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -48,6 +49,12 @@ class Data extends AbstractHelper
     protected ModuleListInterface $moduleList;
 
     /**
+     * @var EncryptorInterface $encryptor
+     */
+    protected EncryptorInterface $encryptor;
+
+    /**
+     * @param EncryptorInterface $encryptor
      * @param ScopeConfigInterface $scopeConfig
      * @param Logger $logger
      * @param StoreManagerInterface $storeManager
@@ -55,6 +62,7 @@ class Data extends AbstractHelper
      * @param ModuleListInterface $moduleList
      */
     public function __construct(
+        EncryptorInterface $encryptor,
         ScopeConfigInterface $scopeConfig,
         Logger $logger,
         StoreManagerInterface $storeManager,
@@ -63,6 +71,7 @@ class Data extends AbstractHelper
     ) {
         $this->storeManager = $storeManager;
         $this->logger = $logger;
+        $this->encryptor = $encryptor;
         $this->scopeConfig = $scopeConfig;
         $this->moduleList = $moduleList;
         parent::__construct($context);
@@ -95,7 +104,8 @@ class Data extends AbstractHelper
      */
     public function getWebhookSignature($storeId = null): string
     {
-        return $this->getConfigCarrierData('webhook_signing', $storeId) ?: '';
+        $webhookSignatureKey = $this->getConfigCarrierData('webhook_signing', $storeId);
+        return !is_null($webhookSignatureKey) ? $this->encryptor->decrypt($webhookSignatureKey) : '';
     }
 
     /**
@@ -311,7 +321,8 @@ class Data extends AbstractHelper
      */
     public function getClientId($storeId = null): mixed
     {
-        return $this->getConfigShippingData('client_id', $storeId);
+        $clienteId = $this->getConfigShippingData('client_id', $storeId);
+        return !is_null($clienteId) ? $this->encryptor->decrypt($clienteId) : '';
     }
 
     /**
@@ -321,7 +332,8 @@ class Data extends AbstractHelper
      */
     public function getClientSecret($storeId = null): mixed
     {
-        return $this->getConfigShippingData('client_secret', $storeId);
+        $clientSecret = $this->getConfigShippingData('client_secret', $storeId);
+        return !is_null($clientSecret) ? $this->encryptor->decrypt($clientSecret) : '';
     }
 
     /**
@@ -373,7 +385,8 @@ class Data extends AbstractHelper
      * @param string $type
      * @return void
      */
-    public function logDebug($message, string $type = 'debug'){
+    public function logDebug($message, string $type = 'debug')
+    {
         if ($this->isDebugEnabled()) {
             if ($type !== 'debug') {
                 $this->logger->info($message);

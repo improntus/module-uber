@@ -284,20 +284,24 @@ class CreateShipment
     {
         $order = $this->orderRepository->get($orderId);
         $shipment = $this->prepareShipment($order);
-        try {
-            $this->shipmentRepository->save($shipment);
-        } catch (\Exception $e) {
-            throw new Exception(__($e->getMessage()));
+        if (!is_null($shipment)) {
+            try {
+                $this->shipmentRepository->save($shipment);
+            } catch (\Exception $e) {
+                throw new Exception(__($e->getMessage()));
+            }
         }
 
         // Add Tracking to Shipment
         try {
             $this->addTrackingToShipment($order, $this->formatTrackingNumber($uberData['uuid']), $uberData['tracking_url'], $shipment);
+            if (!is_null($shipment)) {
+                $this->shipmentNotifier->notify($shipment);
+            }
         } catch (\Exception $e) {
             $this->helper->log($e->getMessage());
             throw new Exception($e->getMessage());
         }
-        $this->shipmentNotifier->notify($shipment);
     }
 
     /**
@@ -308,7 +312,7 @@ class CreateShipment
     private function prepareShipment($order)
     {
         if (!$order->canShip()) {
-            return false;
+            return null;
         }
 
         $shipment = $this->converter->toShipment($order);
@@ -344,17 +348,26 @@ class CreateShipment
      * @param $trackURL
      * @param $shipment
      */
-    protected function addTrackingToShipment($order, $trackNumber, $trackURL, $shipment)
+    protected function addTrackingToShipment($order, $trackNumber, $trackURL, $shipment = null)
     {
         $carrierTitle = $this->helper->getShippingTitle($order->getStoreId()) ?: 'Uber Direct';
-        $shipment->addTrack(
-            $this->trackFactory->create()
-                ->setNumber($trackNumber)
-                ->setCarrierCode(self::CARRIER_CODE)
-                ->setTitle($carrierTitle)
-                ->setUrl($trackURL)
-        );
-        $shipment->save();
+        if (is_null($shipment)) {
+            $orderShipment = $this->trackFactory->create()->getCollection()
+                ->addFieldToFilter('order_id', ['eq' => $order->getEntityId()])
+                ->getFirstItem();
+            $orderShipment->setTrackNumber($trackNumber);
+            $orderShipment->setTrackUrl($trackURL);
+            $orderShipment->save();
+        } else {
+            $shipment->addTrack(
+                $this->trackFactory->create()
+                    ->setNumber($trackNumber)
+                    ->setCarrierCode(self::CARRIER_CODE)
+                    ->setTitle($carrierTitle)
+                    ->setUrl($trackURL)
+            );
+            $shipment->save();
+        }
     }
 
     /**

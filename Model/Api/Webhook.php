@@ -243,6 +243,11 @@ class Webhook implements WebhookInterface
         // Compare Hashes
         $hashGenerated = hash_hmac('sha256', $requestBody, $magentoWebhookSignatureKey);
         if ($hashGenerated !== $uberWebhookSignature) {
+            $this->helper->logDebug(json_encode([
+                'signature' => $magentoWebhookSignatureKey,
+                'webhookHash' => $uberWebhookSignature,
+                'hashGenerated' => $hashGenerated
+            ]));
             throw new Exception(__('Webhook Signature Invalid'));
         }
     }

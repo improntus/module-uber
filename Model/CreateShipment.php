@@ -207,7 +207,7 @@ class CreateShipment
                 if ($this->helper->isCashOnDeliveryEnabled($order->getStoreId()) &&
                     $order->getPayment()->getMethod() === 'cashondelivery') {
                     $deliveryAdditionalData['dropoff_payment']['requirements'] = [
-                          [
+                        [
                             'paying_party' => 'recipient',
                             'amount' => (int)$order->getGrandTotal(),
                             'payment_methods' => [
@@ -356,7 +356,6 @@ class CreateShipment
                 ->addFieldToFilter('order_id', ['eq' => $order->getEntityId()])
                 ->getFirstItem();
             $orderShipment->setTrackNumber($trackNumber);
-            $orderShipment->setTrackUrl($trackURL);
             $orderShipment->save();
         } else {
             $shipment->addTrack(
@@ -364,7 +363,6 @@ class CreateShipment
                     ->setNumber($trackNumber)
                     ->setCarrierCode(self::CARRIER_CODE)
                     ->setTitle($carrierTitle)
-                    ->setUrl($trackURL)
             );
             $shipment->save();
         }

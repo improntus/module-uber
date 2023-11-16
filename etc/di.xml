@@ -120,17 +120,13 @@
     </type>
 
     <!-- Plugins -->
-    <type name="Magento\Inventory\Model\SourceRepository">
-        <plugin name="sourceRepositoryPlugin"
-                type="Improntus\Uber\Plugin\SourceRepositoryPlugin"/>
-    </type>
     <type name="Magento\Payment\Model\MethodList">
         <plugin name="methodListPlugin"
-                type="Improntus\Uber\Plugin\MethodListPlugin"/>
+                type="Improntus\Uber\Plugin\Model\MethodList\MethodListPlugin"/>
     </type>
     <type name="Magento\Backend\Block\Widget\Button\Toolbar">
         <plugin name="orderToolbarButtons"
-                type="Improntus\Uber\Plugin\OrderToolbarButtons"/>
+                type="Improntus\Uber\Plugin\Widget\Button\Toolbar\OrderToolbarButtons"/>
     </type>
 
     <type name="Improntus\Uber\Model\Carrier\Uber">

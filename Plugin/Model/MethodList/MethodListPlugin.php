@@ -4,7 +4,7 @@
  *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
  */
 
-namespace Improntus\Uber\Plugin;
+namespace Improntus\Uber\Plugin\Model\MethodList;
 
 use Improntus\Uber\Helper\Data;
 use Improntus\Uber\Model\Carrier\Uber;

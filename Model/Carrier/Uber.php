@@ -373,6 +373,7 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
     {
         $coordinates = $this->uber->getAddressCoordinates($customerAddress);
         if (count($coordinates) === 0 or !is_array($coordinates)) {
+            $this->uberHelper->log("We could not locate this address: " . json_encode($customerAddress));
             throw new Exception(__('We could not locate this address. Please verify the data entered.'));
         }
         return [

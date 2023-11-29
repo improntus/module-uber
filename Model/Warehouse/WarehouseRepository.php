@@ -71,8 +71,10 @@ class WarehouseRepository implements WarehouseRepositoryInterface
      * @param int $storeId
      * @param array $cartItemsSku
      * @param string $countryId
+     * @param int $regionId
+     * @return array
      */
-    public function getAvailableSources(int $storeId, array $cartItemsSku, string $countryId): array
+    public function getAvailableSources(int $storeId, array $cartItemsSku, string $countryId, int $regionId): array
     {
         // Uber Waypoint
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('store_id', $storeId)->create();

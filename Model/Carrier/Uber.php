@@ -176,14 +176,12 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
 
             // Validate Street & Postcode / Zipcode
             if (empty($request->getDestStreet()) && empty($request->getDestPostcode())) {
-                // todo: Change Exception msg (Street & Postcode)
                 throw new Exception(__('This shipping method is not available. Please specify the zip code.'));
             }
 
             // Validate Cart
             $cartValidation = $this->isValidCart($request);
             if (!$cartValidation['isValidCart']) {
-                // todo: Change Exception msg (Invalid items)
                 throw new Exception($cartValidation['validationMsg'] ?? __('This shipping method is not available'));
             }
 
@@ -191,7 +189,7 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
             $orderStoreId = $this->storeManager->getStore()->getStoreId();
 
             // Get Warehouses
-            $warehousesCollection = $this->warehouseRepository->getAvailableSources($orderStoreId, $cartValidation['cartItemsSku'], $request->getDestCountryId());
+            $warehousesCollection = $this->warehouseRepository->getAvailableSources($orderStoreId, $cartValidation['cartItemsSku'], $request->getDestCountryId(), $request->getDestRegionId());
             if (is_null($warehousesCollection)) {
                 $this->uberHelper->logDebug('There are no warehouses available to process the order');
                 throw new Exception(__('The cart contains products that are out of stock for express delivery'));

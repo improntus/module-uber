@@ -177,7 +177,6 @@ class Uber
 
         // Opps...
         if ($uberRequest->getStatusCode() !== 200) {
-            // TODO: Log message
             $this->helper->log(__("ERROR: Generate Uber Organization: %1", json_encode($responseBody)));
             throw new Exception($responseBody['code']);
         }
@@ -298,7 +297,6 @@ class Uber
 
         // Opps...
         if ($uberRequest->getStatusCode() !== 200) {
-            // TODO: Log message
             $error = json_decode($responseBody, true);
             $this->helper->log("ERROR: Uber Shipping Cancel - CustomerID / OrganizationID:  $organizationId");
             $this->helper->log("ERROR: Uber Shipping Cancel Request: " . json_encode($requestData));

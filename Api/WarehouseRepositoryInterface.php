@@ -13,9 +13,10 @@ interface WarehouseRepositoryInterface
      * @param int $storeId
      * @param array $cartItemsSku
      * @param string $countryId
+     * @param int $regionId
      * @return mixed
      */
-    public function getAvailableSources(int $storeId, array $cartItemsSku, string $countryId);
+    public function getAvailableSources(int $storeId, array $cartItemsSku, string $countryId, int $regionId);
 
     /**
      * checkWarehouseWorkSchedule

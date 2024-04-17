@@ -1,0 +1,463 @@
+<?xml version="1.0" ?>
+<!--
+  @author Improntus Dev Team
+  @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
+  -->
+
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">uber_waypoint_form.waypoint_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Waypoint</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="back">
+                <url path="*/*/index"/>
+                <class>back</class>
+                <label translate="true">Back</label>
+            </button>
+            <button name="reset">
+                <class>reset</class>
+                <label translate="true">Reset</label>
+            </button>
+            <button name="delete" class="Improntus\Uber\Block\Adminhtml\Button\Waypoint\Delete" />
+            <button name="save" class="Improntus\Uber\Block\Adminhtml\Button\Save">
+                <class>uber-button</class>
+                <label translate="true">Save Waypoint</label>
+            </button>
+        </buttons>
+        <namespace>uber_waypoint_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>uber_waypoint_form.waypoint_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="waypoint_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="uber/waypoint/save"/>
+        </settings>
+        <aclResource>Improntus_Uber::waypoint_edit</aclResource>
+        <dataProvider class="Improntus\Uber\Model\Waypoint\DataProvider" name="waypoint_form_data_source">
+            <settings>
+                <requestFieldName>waypoint_id</requestFieldName>
+                <primaryFieldName>waypoint_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general" sortOrder="10">
+        <settings>
+            <label translate="true">Waypoint Information</label>
+        </settings>
+        <field name="waypoint_id" formElement="input" sortOrder="10">
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+            </settings>
+        </field>
+        <field name="active" formElement="checkbox" sortOrder="20">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Active</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="store_id" formElement="select" sortOrder="30">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Store</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\Config\Model\Config\Source\Store"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="organization_id" formElement="select" sortOrder="40">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Organization</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Organization\OrganizationOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="name" formElement="input" sortOrder="50">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Name</label>
+            </settings>
+        </field>
+        <field name="address" formElement="input" sortOrder="60">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Address</label>
+            </settings>
+        </field>
+        <field name="postcode" formElement="input" sortOrder="70">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Postcode</label>
+            </settings>
+        </field>
+        <field name="country" formElement="select" sortOrder="80">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Country</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\Directory\Model\Config\Source\Country"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="region" formElement="input" sortOrder="90">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Region</label>
+            </settings>
+        </field>
+        <field name="city" formElement="input" sortOrder="100">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">City</label>
+            </settings>
+        </field>
+        <field name="telephone" formElement="input" sortOrder="110">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Telephone</label>
+                <tooltip>
+                    <description translate="true">The phone number must include the Country Code. Ex.: +549</description>
+                </tooltip>
+            </settings>
+        </field>
+        <field name="instructions" formElement="input" sortOrder="120">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Instructions</label>
+            </settings>
+        </field>
+        <field name="latitude" formElement="input" sortOrder="130">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Latitude</label>
+                <tooltip>
+                    <link>https://support.google.com/maps/answer/18539</link>
+                    <description translate="true">
+                        <![CDATA[To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>]]>
+                    </description>
+                </tooltip>
+            </settings>
+        </field>
+        <field name="longitude" formElement="input" sortOrder="140">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Longitude</label>
+                <tooltip>
+                    <link>https://support.google.com/maps/answer/18539</link>
+                    <description translate="true">
+                        <![CDATA[To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>]]>
+                    </description>
+                </tooltip>
+            </settings>
+        </field>
+    </fieldset>
+    <!-- Store Hours -->
+    <fieldset name="store_hours" sortOrder="150">
+        <settings>
+            <label translate="true">Day and Hours availability</label>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+        </settings>
+        <field name="monday_open" formElement="select" sortOrder="10">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Monday Opening</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="monday_close" formElement="select" sortOrder="15">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Monday Closing</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="tuesday_open" formElement="select" sortOrder="20">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Tuesday Opening</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="tuesday_close" formElement="select" sortOrder="25">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Tuesday Closing</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="wednesday_open" formElement="select" sortOrder="30">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Wednesday Opening</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="wednesday_close" formElement="select" sortOrder="35">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Wednesday Closing</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="thursday_open" formElement="select" sortOrder="40">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Thursday Opening</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="thursday_close" formElement="select" sortOrder="45">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Thursday Closing</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="friday_open" formElement="select" sortOrder="50">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Friday Opening</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="friday_close" formElement="select" sortOrder="55">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Friday Closing</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="saturday_open" formElement="select" sortOrder="60">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Saturday Opening</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="saturday_close" formElement="select" sortOrder="65">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Saturday Closing</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="sunday_open" formElement="select" sortOrder="70">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Sunday Opening</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="sunday_close" formElement="select" sortOrder="75">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Sunday Closing</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Waypoint\TimeOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+</form>

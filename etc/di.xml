@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<!--
+  @author Improntus Dev Team
+  @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
+  -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Webapi -->
+    <preference for="Improntus\Uber\Api\WebhookInterface" type="Improntus\Uber\Model\Api\Webhook"/>
+
+    <!-- Organizations -->
+    <preference for="Improntus\Uber\Api\OrganizationRepositoryInterface"
+                type="Improntus\Uber\Model\OrganizationRepository"/>
+    <preference for="Improntus\Uber\Api\Data\OrganizationInterface" type="Improntus\Uber\Model\Organization"/>
+    <preference for="Improntus\Uber\Api\Data\OrganizationSearchResultInterface"
+                type="Magento\Framework\Api\SearchResults"/>
+
+    <!-- Waypoint -->
+    <preference for="Improntus\Uber\Api\WaypointRepositoryInterface" type="Improntus\Uber\Model\WaypointRepository"/>
+    <preference for="Improntus\Uber\Api\Data\WaypointInterface" type="Improntus\Uber\Model\Waypoint"/>
+    <preference for="Improntus\Uber\Api\Data\WaypointSearchResultInterface" type="Magento\Framework\Api\SearchResults"/>
+
+    <!-- Organization -->
+    <type name="Improntus\Uber\Model\ResourceModel\Organization\Collection">
+        <arguments>
+            <argument name="model" xsi:type="string">Improntus\Uber\Model\Organization</argument>
+            <argument name="resourceModel" xsi:type="string">Improntus\Uber\Model\ResourceModel\Organization</argument>
+            <argument name="idFieldName" xsi:type="string">entity_id</argument>
+            <argument name="eventPrefix" xsi:type="string">improntus_uber_organization_collection</argument>
+            <argument name="eventObject" xsi:type="string">organization_collection</argument>
+        </arguments>
+    </type>
+    <virtualType name="UberOrganizationGridCollection" type="Improntus\Uber\Model\ResourceModel\Organization\Collection">
+        <arguments>
+            <argument name="model" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\Document
+            </argument>
+            <argument name="resourceModel" xsi:type="string">Improntus\Uber\Model\ResourceModel\Organization</argument>
+            <argument name="idFieldName" xsi:type="string">entity_id</argument>
+            <argument name="eventPrefix" xsi:type="string">improntus_uber_organization_collection</argument>
+            <argument name="eventObject" xsi:type="string">organization_collection</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Improntus\Uber\Model\Config\Source\Carriers\SourceOption">
+        <arguments>
+            <argument name="defaultOptions" xsi:type="array">
+                <item name="waypoints" xsi:type="string">Waypoints</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Interfaces -->
+    <type name="Improntus\Uber\Model\Carrier\Uber">
+        <arguments>
+            <argument name="warehouseRepositories" xsi:type="array">
+                <item name="waypoints" xsi:type="object">Improntus\Uber\Model\Warehouse\WarehouseRepository</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Improntus\Uber\Model\CreateShipment">
+        <arguments>
+            <argument name="warehouseRepositories" xsi:type="array">
+                <item name="waypoints" xsi:type="object">Improntus\Uber\Model\Warehouse\WarehouseRepository</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Improntus\Uber\Model\CancelShipment">
+        <arguments>
+            <argument name="warehouseRepositories" xsi:type="array">
+                <item name="waypoints" xsi:type="object">Improntus\Uber\Model\Warehouse\WarehouseRepository</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Waypoints -->
+    <type name="Improntus\Uber\Model\ResourceModel\Waypoint\Collection">
+        <arguments>
+            <argument name="model" xsi:type="string">Improntus\Uber\Model\Waypoint</argument>
+            <argument name="resourceModel" xsi:type="string">Improntus\Uber\Model\ResourceModel\Waypoint</argument>
+            <argument name="idFieldName" xsi:type="string">waypoint_id</argument>
+            <argument name="eventPrefix" xsi:type="string">improntus_uber_waypoint_collection</argument>
+            <argument name="eventObject" xsi:type="string">waypoint_collection</argument>
+        </arguments>
+    </type>
+    <virtualType name="UberWaypointGridCollection" type="Improntus\Uber\Model\ResourceModel\Waypoint\Collection">
+        <arguments>
+            <argument name="model" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\Document
+            </argument>
+            <argument name="resourceModel" xsi:type="string">Improntus\Uber\Model\ResourceModel\Waypoint</argument>
+            <argument name="idFieldName" xsi:type="string">waypoint_id</argument>
+            <argument name="eventPrefix" xsi:type="string">improntus_uber_waypoint_collection</argument>
+            <argument name="eventObject" xsi:type="string">waypoint_collection</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="uber_waypoint_listing_data_source" xsi:type="string">UberWaypointGridCollection</item>
+                <item name="uber_organization_listing_data_source" xsi:type="string">UberOrganizationGridCollection
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Token -->
+    <preference for="Improntus\Uber\Api\TokenRepositoryInterface" type="Improntus\Uber\Model\TokenRepository"/>
+    <preference for="Improntus\Uber\Api\Data\TokenInterface" type="Improntus\Uber\Model\Token"/>
+    <preference for="Improntus\Uber\Api\Data\TokenSearchResultInterface" type="Magento\Framework\Api\SearchResults"/>
+
+    <type name="Improntus\Uber\Model\ResourceModel\Token\Collection">
+        <arguments>
+            <argument name="model" xsi:type="string">Improntus\Uber\Model\Token</argument>
+            <argument name="resourceModel" xsi:type="string">Improntus\Uber\Model\ResourceModel\Token</argument>
+            <argument name="idFieldName" xsi:type="string">entity_id</argument>
+            <argument name="eventPrefix" xsi:type="string">improntus_uber_token_collection</argument>
+            <argument name="eventObject" xsi:type="string">token_collection</argument>
+        </arguments>
+    </type>
+
+    <!-- Order Shipment -->
+    <preference for="Improntus\Uber\Api\OrderShipmentRepositoryInterface"
+                type="Improntus\Uber\Model\OrderShipmentRepository"/>
+    <preference for="Improntus\Uber\Api\Data\OrderShipmentInterface" type="Improntus\Uber\Model\OrderShipment"/>
+    <preference for="Improntus\Uber\Api\Data\OrderShipmentSearchResultInterface"
+                type="Magento\Framework\Api\SearchResults"/>
+
+    <type name="Improntus\Uber\Model\ResourceModel\OrderShipment\Collection">
+        <arguments>
+            <argument name="model" xsi:type="string">Improntus\Uber\Model\OrderShipment</argument>
+            <argument name="resourceModel" xsi:type="string">Improntus\Uber\Model\ResourceModel\OrderShipment</argument>
+            <argument name="idFieldName" xsi:type="string">entity_id</argument>
+            <argument name="eventPrefix" xsi:type="string">improntus_uber_token_collection</argument>
+            <argument name="eventObject" xsi:type="string">token_collection</argument>
+        </arguments>
+    </type>
+
+    <!-- Logger -->
+    <type name="Improntus\Uber\Logger\Handler\Base">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Improntus\Uber\Logger\Handler\Exceptions">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Improntus\Uber\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">uber</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="base" xsi:type="object">Improntus\Uber\Logger\Handler\Base</item>
+                <item name="exceptions" xsi:type="object">Improntus\Uber\Logger\Handler\Exceptions</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Plugins -->
+    <type name="Magento\Payment\Model\MethodList">
+        <plugin name="methodListPlugin"
+                type="Improntus\Uber\Plugin\Model\MethodList\MethodListPlugin"/>
+    </type>
+    <type name="Magento\Backend\Block\Widget\Button\Toolbar">
+        <plugin name="orderToolbarButtons"
+                type="Improntus\Uber\Plugin\Widget\Button\Toolbar\OrderToolbarButtons"/>
+    </type>
+
+    <!-- Uber Stores -->
+    <preference for="Improntus\Uber\Api\StoreRepositoryInterface" type="Improntus\Uber\Model\StoreRepository"/>
+    <preference for="Improntus\Uber\Api\Data\StoreInterface" type="Improntus\Uber\Model\Store"/>
+    <preference for="Improntus\Uber\Api\Data\StoreSearchResultInterface" type="Magento\Framework\Api\SearchResults"/>
+
+    <type name="Improntus\Uber\Model\ResourceModel\Store\Collection">
+        <arguments>
+            <argument name="model" xsi:type="string">Improntus\Uber\Model\Store</argument>
+            <argument name="resourceModel" xsi:type="string">Improntus\Uber\Model\ResourceModel\Store</argument>
+            <argument name="idFieldName" xsi:type="string">entity_id</argument>
+            <argument name="eventPrefix" xsi:type="string">improntus_uber_store</argument>
+            <argument name="eventObject" xsi:type="string">store_collection</argument>
+        </arguments>
+    </type>
+</config>

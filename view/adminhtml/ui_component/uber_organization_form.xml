@@ -1,0 +1,271 @@
+<?xml version="1.0" ?>
+<!--
+  @author Improntus Dev Team
+  @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
+  -->
+
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">uber_organization_form.organization_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Organization</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="back">
+                <url path="*/*/index"/>
+                <class>back</class>
+                <label translate="true">Back</label>
+            </button>
+            <button name="save" class="Improntus\Uber\Block\Adminhtml\Button\Save">
+                <class>uber-button</class>
+                <label translate="true">Save Organization</label>
+            </button>
+        </buttons>
+        <namespace>uber_organization_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>uber_organization_form.organization_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="organization_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="uber/organization/save"/>
+        </settings>
+        <aclResource>Improntus_Uber::organization_edit</aclResource>
+        <dataProvider class="Improntus\Uber\Model\Organization\DataProvider" name="organization_form_data_source">
+            <settings>
+                <requestFieldName>entity_id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general" sortOrder="10">
+        <settings>
+            <label translate="true">Organization Information</label>
+        </settings>
+        <field name="entity_id" formElement="input" sortOrder="10">
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+            </settings>
+        </field>
+        <field name="active" formElement="checkbox" sortOrder="15">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Active</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="store_id" formElement="select" sortOrder="16">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Store</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\Config\Model\Config\Source\Store"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="uber_organization_id" formElement="input" sortOrder="20">
+            <settings>
+                <dataType>text</dataType>
+                <disabled>true</disabled>
+                <label translate="true">Organization Id</label>
+                <notice translate="true">This field is automatically completed when creating the organization</notice>
+            </settings>
+        </field>
+        <field name="organization_name" formElement="input" sortOrder="25">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Organization Name</label>
+            </settings>
+        </field>
+        <field name="billing_type" formElement="select" sortOrder="30">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Improntus_Uber/js/form/element/billingType</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Billing Type</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Organization\BillingOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="merchant_type" formElement="select" sortOrder="35">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Merchant Type</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Organization\MerchantOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="email" formElement="input" sortOrder="40">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Email</label>
+            </settings>
+        </field>
+        <field name="onboarding_type" formElement="select" sortOrder="45">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Onboarding</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\Organization\OnboardingInviteOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="phone_country_code" formElement="select" sortOrder="50">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Phone Country Code</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Improntus\Uber\Model\Config\Source\CountryPhoneOption"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="phone_number" formElement="input" sortOrder="55">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Phone Number</label>
+            </settings>
+        </field>
+    </fieldset>
+    <!-- ADDRESS DATA -->
+    <fieldset name="address_data" sortOrder="60">
+        <settings>
+            <label translate="true">Address Data</label>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+        </settings>
+        <field name="street" formElement="input" sortOrder="5">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Street</label>
+                <notice translate="true">The street detail if needed, for example 2000 Tustin Ave.</notice>
+            </settings>
+        </field>
+
+        <field name="postcode" formElement="input" sortOrder="10">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Postcode / Zipcode</label>
+            </settings>
+        </field>
+
+        <field name="street2" formElement="input" sortOrder="15">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Additional Street</label>
+                <notice translate="true">Additional street detail if needed</notice>
+            </settings>
+        </field>
+
+        <field name="city" formElement="input" sortOrder="20">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">City</label>
+                <notice translate="true">The city detail for the address, for example “Irvine”</notice>
+            </settings>
+        </field>
+
+        <field name="state" formElement="input" sortOrder="25">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">State</label>
+                <notice translate="true">The state detail for the address, for example “CA” for California</notice>
+            </settings>
+        </field>
+        <field name="country" formElement="select" sortOrder="30">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Country</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\Directory\Model\Config\Source\Country"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+</form>

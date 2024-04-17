@@ -1,0 +1,247 @@
+Save,Save
+"Delete Waypoint","Delete Waypoint"
+"Are you sure you want to do this?","Are you sure you want to do this?"
+"Proof of Delivery: OrderID is required","Proof of Delivery: OrderID is required"
+"Uber module is disabled","Uber module is disabled"
+"Delivery has not yet been validated","Delivery has not yet been validated"
+Organizations,Organizations
+"New Organization","New Organization"
+"Edit Organization: %1","Edit Organization: %1"
+"There was a problem creating the Organization in UBER. DATA: %1","There was a problem creating the Organization in UBER. DATA: %1"
+"There was a problem creating the Organization in UBER","There was a problem creating the Organization in UBER"
+"The Organization has been saved.","The Organization has been saved."
+"There was a problem saving the Organization. ERROR: %1 DATA: %2","There was a problem saving the Organization. ERROR: %1 DATA: %2"
+"There was a problem saving the Organization","There was a problem saving the Organization"
+"Order ID parameter is required","Order ID parameter is required"
+"Shipment successfully canceled","Shipment successfully canceled"
+"UBER Cancellation Shipment ERROR. OrderId %1 - Details: %2","UBER Cancellation Shipment ERROR. OrderId %1 - Details: %2"
+"<b>Uber Cancellation ERROR</b>: %1","<b>Uber Cancellation ERROR</b>: %1"
+"Uber Shipping Cancel ERROR: %1","Uber Shipping Cancel ERROR: %1"
+"UBER Create Shipment ERROR. OrderID is Required","UBER Create Shipment ERROR. OrderID is Required"
+"Shipment generated successfully","Shipment generated successfully"
+"UBER Create Shipment ERROR. OrderId %1 - Details: %2","UBER Create Shipment ERROR. OrderId %1 - Details: %2"
+"<b>Uber Shipping Create ERROR:</b> %1","<b>Uber Shipping Create ERROR:</b> %1"
+"Uber Shipping Create ERROR: %1","Uber Shipping Create ERROR: %1"
+Waypoints,Waypoints
+"New Waypoint","New Waypoint"
+"Edit Waypoint: %1","Edit Waypoint: %1"
+"The Waypoint has been saved.","The Waypoint has been saved."
+"UBER Save Waypoint ERROR: %1","UBER Save Waypoint ERROR: %1"
+"There was a problem saving the Waypoint","There was a problem saving the Waypoint"
+"Integration Disabled","Integration Disabled"
+"Missing External ID","Missing External ID"
+"Order not found","Order not found"
+"Uber Notification","Uber Notification"
+"<b>Canceled shipment:</b> %1","<b>Canceled shipment:</b> %1"
+"Delivery status has changed to <b>%1</b>","Delivery status has changed to <b>%1</b>"
+"Webhooks ERROR: %1","Webhooks ERROR: %1"
+"Missing Webhook Signature","Missing Webhook Signature"
+"Webhook Signature Invalid","Webhook Signature Invalid"
+"<b>Driver Name:</b> %1","<b>Driver Name:</b> %1"
+"<b>Vehicle Type:</b> %1","<b>Vehicle Type:</b> %1"
+"<b>Pickup estimated time:</b> %1","<b>Pickup estimated time:</b> %1"
+"<b>Dropoff estimated time:</b> %1","<b>Dropoff estimated time:</b> %1"
+"The order was delivered at <b>%1</b>","The order was delivered at <b>%1</b>"
+"<br><b>Verification Details</b><br>%1","<br><b>Verification Details</b><br>%1"
+"Status: <b>%1</b>","Status: <b>%1</b>"
+"Date: <b>%1</b>","Date: <b>%1</b>"
+Barcode,Barcode
+"<a href=""%1"" target=""_blank"">View Picture</a>","<a href=""%1"" target=""_blank"">View Picture</a>"
+Picture,Picture
+"Status: <b>Successfully</b>","Status: <b>Successfully</b>"
+Pincode,Pincode
+"Signer Name: <b>%1</b>","Signer Name: <b>%1</b>"
+"Signer Relationship: <b>%1</b>","Signer Relationship: <b>%1</b>"
+"View Signature","View Signature"
+Signature,Signature
+"Method: <b>%1</b>","Method: <b>%1</b>"
+"The requested Order does not exist","The requested Order does not exist"
+"<b>Uber Cancellation ID</b>: %1","<b>Uber Cancellation ID</b>: %1"
+"This shipping method is not available. Please specify the zip code.","This shipping method is not available. Please specify the zip code."
+"This shipping method is not available","This shipping method is not available"
+"The cart contains products that are out of stock for express delivery","The cart contains products that are out of stock for express delivery"
+"No estimates available for the address entered","No estimates available for the address entered"
+"Uber Estimate ERROR: %1","Uber Estimate ERROR: %1"
+"The cart contains items that cannot be shipped with Uber","The cart contains items that cannot be shipped with Uber"
+"We could not locate this address. Please verify the data entered.","We could not locate this address. Please verify the data entered."
+"-- Select --","-- Select --"
+"-- Select Mode --","-- Select Mode --"
+Production,Production
+Sandbox,Sandbox
+"-- Select Source --","-- Select Source --"
+MSI,MSI
+Barcodes,Barcodes
+"Pin Code","Pin Code"
+Identification,Identification
+"Google Maps","Google Maps"
+"Nominatim (OpenStreetMap)","Nominatim (OpenStreetMap)"
+"-- Select Billing --","-- Select Billing --"
+Centralized,Centralized
+Decentralized,Decentralized
+"-- Select Merchant --","-- Select Merchant --"
+Restaurant,Restaurant
+Groery,Groery
+Liquor,Liquor
+Retail,Retail
+Essentials,Essentials
+Pharmacy,Pharmacy
+"Specialty Food","Specialty Food"
+Flower,Flower
+"Pet Supply","Pet Supply"
+"-- Select Onboarding --","-- Select Onboarding --"
+"Do not send instructions","Do not send instructions"
+"Send instructions","Send instructions"
+"Use Root Organization","Use Root Organization"
+"Use Base Organization","Use Base Organization"
+Admin,Admin
+Employee,Employee
+Small,Small
+Medium,Medium
+Large,Large
+Xlarge,Xlarge
+"No Available","No Available"
+"The order status does not allow generating a shipment","The order status does not allow generating a shipment"
+"The preparation point is outside working hours","The preparation point is outside working hours"
+"<b>Uber Shipping ID</b>: %1","<b>Uber Shipping ID</b>: %1"
+"<b>Tracking URL</b>: <a href=""%1"">%1</a>","<b>Tracking URL</b>: <a href=""%1"">%1</a>"
+"Could not save the OrderShipment: %1","Could not save the OrderShipment: %1"
+"Requested OrderShipment doesn't exist","Requested OrderShipment doesn't exist"
+"Unable to Delete OrderShipment %1","Unable to Delete OrderShipment %1"
+"Could not save the Organization: %1","Could not save the Organization: %1"
+"Requested Organization doesn't exist","Requested Organization doesn't exist"
+"Unable to Delete Organization %1","Unable to Delete Organization %1"
+"Could not save the Token: %1","Could not save the Token: %1"
+"Requested Token doesn't exist","Requested Token doesn't exist"
+"Unable to Delete Token %1","Unable to Delete Token %1"
+"An error occurred while validating/generating token","An error occurred while validating/generating token"
+"ERROR: Generate Uber Organization: %1","ERROR: Generate Uber Organization: %1"
+"Warehouse Repository Missing Organization","Warehouse Repository Missing Organization"
+"Could not save the Waypoint: %1","Could not save the Waypoint: %1"
+"Requested Waypoint doesn't exist","Requested Waypoint doesn't exist"
+"Unable to Delete Waypoint %1","Unable to Delete Waypoint %1"
+"UBER ERROR LOG SalesOrderSaveAfter: %1","UBER ERROR LOG SalesOrderSaveAfter: %1"
+"<b>Uber Automatic Shipping Create ERROR</b>: %1","<b>Uber Automatic Shipping Create ERROR</b>: %1"
+"Request Driver","Request Driver"
+"Cancel Driver","Cancel Driver"
+"Re Request Driver","Re Request Driver"
+"Proof of Delivery","Proof of Delivery"
+"Uber Order View Toolbar ERROR: %1","Uber Order View Toolbar ERROR: %1"
+"Shipping With Uber","Shipping With Uber"
+"Uber Product Size","Uber Product Size"
+"Uber Product Width","Uber Product Width"
+"Expressed in centimeters","Expressed in centimeters"
+"Uber Product Height","Uber Product Height"
+"Uber Product Depth","Uber Product Depth"
+"Verification Method: ","Verification Method: "
+"Signer Name: ","Signer Name: "
+"Signer Relationship: ","Signer Relationship: "
+Signature:,Signature:
+"Pin Code: ","Pin Code: "
+"Barcode: ","Barcode: "
+"Result: ","Result: "
+"Uber Proof of Delivery","Uber Proof of Delivery"
+"Field ","Field "
+" is required."," is required."
+"Waypoint was deleted","Waypoint was deleted"
+"The Waypoint you are trying to delete does not exist","The Waypoint you are trying to delete does not exist"
+"There was a problem deleting the Waypoint","There was a problem deleting the Waypoint"
+"Uber Direct","Uber Direct"
+Configuration,Configuration
+"Delivery Method","Delivery Method"
+"Manage Organizations","Manage Organizations"
+"<span class=""uber-brand"">Uber</span> Uber Configuration","<span class=""uber-brand"">Uber</span> Uber Configuration"
+"Customer ID","Customer ID"
+"Data provided by Uber","Data provided by Uber"
+"Client ID","Client ID"
+"Client Secret","Client Secret"
+Enabled,Enabled
+"Integration Mode","Integration Mode"
+"Debug Mode","Debug Mode"
+Warehouse,Warehouse
+"Free Shipping","Free Shipping"
+"Apply Free Shipping rules","Apply Free Shipping rules"
+"Verification Type","Verification Type"
+"Verification steps that must be taken before the dropoff can be completed.","Verification steps that must be taken before the dropoff can be completed."
+"Identification min age","Identification min age"
+"Identification verification is required for restricted items. Restricted items encompass products like alcohol, tobacco, and prescription medications that have specific delivery regulations or restrictions. These limitations may be due to safety considerations or legal mandates.","Identification verification is required for restricted items. Restricted items encompass products like alcohol, tobacco, and prescription medications that have specific delivery regulations or restrictions. These limitations may be due to safety considerations or legal mandates."
+"Cash on Delivery","Cash on Delivery"
+"Is necessary contact Uber to activate this feature<br>América: sample@uber.com<br>Asia: sample@uber.com<br>Europe: sample@uber.com","Is necessary contact Uber to activate this feature<br>América: sample@uber.com<br>Asia: sample@uber.com<br>Europe: sample@uber.com"
+"Automatic Status Update","Automatic Status Update"
+"For more information see the Uber <a target='_blank' href='https://developer.uber.com/docs/deliveries/guides/webhooks'>Webhooks guide</a>","For more information see the Uber <a target='_blank' href='https://developer.uber.com/docs/deliveries/guides/webhooks'>Webhooks guide</a>"
+"Before activating this option it is necessary to configure webhooks in Uber","Before activating this option it is necessary to configure webhooks in Uber"
+"Webhook Signing Key","Webhook Signing Key"
+"Window Delivery","Window Delivery"
+"Number of minutes it takes to create the order","Number of minutes it takes to create the order"
+Title,Title
+Description,Description
+"Sort Order","Sort Order"
+"Show Method if Not Applicable","Show Method if Not Applicable"
+"Product Width Attribute","Product Width Attribute"
+"Product Height Attribute","Product Height Attribute"
+"Product Depth Attribute","Product Depth Attribute"
+"Automatic Shipment Generation","Automatic Shipment Generation"
+"Status for automatic shipping creation","Status for automatic shipping creation"
+"When order change to one of this selected status, shipment will be generated automatically","When order change to one of this selected status, shipment will be generated automatically"
+Organization,Organization
+Back,Back
+"Save Organization","Save Organization"
+"Organization Information","Organization Information"
+Active,Active
+Store,Store
+"Organization Id","Organization Id"
+"This field is automatically completed when creating the organization","This field is automatically completed when creating the organization"
+"Organization Name","Organization Name"
+"Billing Type","Billing Type"
+"Merchant Type","Merchant Type"
+Email,Email
+Onboarding,Onboarding
+"Phone Country Code","Phone Country Code"
+"Phone Number","Phone Number"
+"Address Data","Address Data"
+Street,Street
+"The street detail if needed, for example 2000 Tustin Ave.","The street detail if needed, for example 2000 Tustin Ave."
+"Postcode / Zipcode","Postcode / Zipcode"
+"Additional Street","Additional Street"
+"Additional street detail if needed","Additional street detail if needed"
+City,City
+"The city detail for the address, for example “Irvine”","The city detail for the address, for example “Irvine”"
+State,State
+"The state detail for the address, for example “CA” for California","The state detail for the address, for example “CA” for California"
+Country,Country
+"Add Organization","Add Organization"
+Id,Id
+"Uber Organization Id","Uber Organization Id"
+Waypoint,Waypoint
+Reset,Reset
+"Save Waypoint","Save Waypoint"
+"Waypoint Information","Waypoint Information"
+Name,Name
+Address,Address
+Postcode,Postcode
+Region,Region
+Telephone,Telephone
+Instructions,Instructions
+Latitude,Latitude
+"To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>","To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>"
+Longitude,Longitude
+"Day and Hours availability","Day and Hours availability"
+"Monday Opening","Monday Opening"
+"Monday Closing","Monday Closing"
+"Tuesday Opening","Tuesday Opening"
+"Tuesday Closing","Tuesday Closing"
+"Wednesday Opening","Wednesday Opening"
+"Wednesday Closing","Wednesday Closing"
+"Thursday Opening","Thursday Opening"
+"Thursday Closing","Thursday Closing"
+"Friday Opening","Friday Opening"
+"Friday Closing","Friday Closing"
+"Saturday Opening","Saturday Opening"
+"Saturday Closing","Saturday Closing"
+"Sunday Opening","Sunday Opening"
+"Sunday Closing","Sunday Closing"
+"Add Waypoint","Add Waypoint"
+ID,ID
+"Maximum time to guarantee delivery","Maximum time to guarantee delivery"
+"Promise Time Delivery","Promise Time Delivery"
+"Use this Endpoint to configure the Webhook in Uber","Use this Endpoint to configure the Webhook in Uber"
+"ATTENTION: When creating a new Waypoint it is automatically synchronized with Uber. If you need to modify any information you must contact Uber","ATTENTION: When creating a new Waypoint it is automatically synchronized with Uber. If you need to modify any information you must contact Uber"

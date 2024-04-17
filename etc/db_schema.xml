@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<!--
+  @author Improntus Dev Team
+  @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
+  -->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="improntus_uber_order_shipment" resource="default" comment="Uber Shipment Data">
+        <column xsi:type="int" name="entity_id" unsigned="false" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="int" name="order_id" unsigned="true" nullable="true" comment="Order ID"/>
+        <column xsi:type="varchar" name="increment_id" length="255" nullable="false" comment="Increment ID"/>
+        <column xsi:type="varchar" name="uber_shipping_id" length="255" nullable="true" comment="Uber Shipping ID"/>
+        <column xsi:type="int" name="source_waypoint" padding="11" unsigned="false" nullable="true" identity="false"
+                comment="Source Waypoint Id"/>
+        <column xsi:type="text" name="source_msi" nullable="true" comment="Source MSI Code"/>
+        <column xsi:type="text" name="verification" nullable="true" comment="Verification"/>
+        <column xsi:type="text" name="status" nullable="true" comment="Status"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+
+    <table name="improntus_uber_token" resource="default" comment="Uber Access Token data">
+        <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true"
+                comment="Entity Id"/>
+        <column xsi:type="int" name="store_id" padding="11" unsigned="false" nullable="false" identity="false"
+                comment="Store Id"/>
+        <column xsi:type="timestamp" name="expiration_date" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Expiration Date"/>
+        <column xsi:type="longtext" name="token" nullable="false" comment="Access Token"/>
+        <column xsi:type="varchar" name="scope" nullable="false" length="255" comment="Uber Scope"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="UBER_STORE_SCOPE">
+            <column name="store_id"/>
+            <column name="scope"/>
+        </constraint>
+    </table>
+
+    <table name="improntus_uber_organization" resource="default" comment="Uber Organization">
+        <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true"
+                comment="Entity Id"/>
+        <column xsi:type="int" name="store_id" padding="11" unsigned="false" nullable="false" identity="false"
+                comment="Store Id"/>
+        <column xsi:type="boolean" name="active" nullable="false" default="false" comment="Active"/>
+        <column xsi:type="varchar" name="uber_organization_id" nullable="false" length="255" comment="Organization Id"/>
+        <column xsi:type="varchar" name="organization_name" nullable="false" length="255" comment="Organization Name"/>
+        <column xsi:type="varchar" name="billing_type" nullable="false" length="255" comment="Billing Type"/>
+        <column xsi:type="varchar" name="merchant_type" nullable="false" length="255" comment="Merchant Type"/>
+        <column xsi:type="varchar" name="onboarding_type" nullable="false" length="255" comment="Onboarding Type"/>
+        <column xsi:type="varchar" name="email" nullable="false" length="255" comment="Email"/>
+        <column xsi:type="varchar" name="phone_number" nullable="false" length="255" comment="Phone Number"/>
+        <column xsi:type="varchar" name="phone_country_code" nullable="false" length="255"
+                comment="Phone Country Code"/>
+        <column xsi:type="varchar" name="street" nullable="false" length="255" comment="Street"/>
+        <column xsi:type="varchar" name="street2" nullable="false" length="255" comment="Street 2"/>
+        <column xsi:type="varchar" name="city" nullable="false" length="255" comment="City"/>
+        <column xsi:type="varchar" name="state" nullable="false" length="255" comment="State"/>
+        <column xsi:type="varchar" name="postcode" nullable="false" length="255" comment="postcode"/>
+        <column xsi:type="varchar" name="country" nullable="false" length="255" comment="Country"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+
+    <table name="improntus_uber_waypoint" resource="default" comment="Uber Waypoints">
+        <column xsi:type="int" name="waypoint_id" padding="11" unsigned="false" nullable="false" identity="true"
+                comment="Waypoint Id"/>
+        <column xsi:type="int" name="store_id" padding="11" unsigned="false" nullable="false" identity="false"
+                comment="Store Id"/>
+        <column xsi:type="varchar" name="organization_id" nullable="false" length="255" comment="Organization Id"/>
+        <column xsi:type="boolean" name="active" nullable="false" comment="Active"/>
+        <column xsi:type="varchar" name="name" nullable="false" length="255" comment="Name"/>
+        <column xsi:type="varchar" name="address" nullable="false" length="255" comment="Address"/>
+        <column xsi:type="varchar" name="postcode" nullable="false" length="255" comment="Postcode"/>
+        <column xsi:type="varchar" name="region" nullable="false" length="255" comment="Region"/>
+        <column xsi:type="varchar" name="city" nullable="false" length="255" comment="City"/>
+        <column xsi:type="varchar" name="country" nullable="false" length="255" comment="Country"/>
+        <column xsi:type="varchar" name="latitude" nullable="false" length="60" comment="Latitude"/>
+        <column xsi:type="varchar" name="longitude" nullable="false" length="60" comment="Longitude"/>
+        <column xsi:type="varchar" name="telephone" nullable="false" length="255" comment="Telephone"/>
+        <column xsi:type="varchar" name="instructions" nullable="false" length="255" comment="Instructions"/>
+        <column xsi:type="varchar" name="monday_open" nullable="true" length="2" default="99" comment="Monday - Open"/>
+        <column xsi:type="varchar" name="monday_close" nullable="true" length="2" default="99"
+                comment="Monday - Close"/>
+        <column xsi:type="varchar" name="tuesday_open" nullable="true" length="2" default="99"
+                comment="Tuesday - Open"/>
+        <column xsi:type="varchar" name="tuesday_close" nullable="true" length="2" default="99"
+                comment="Tuesday - Close"/>
+        <column xsi:type="varchar" name="wednesday_open" nullable="true" length="2" default="99"
+                comment="Wednesday - Open"/>
+        <column xsi:type="varchar" name="wednesday_close" nullable="true" length="2" default="99"
+                comment="Wednesday - Close"/>
+        <column xsi:type="varchar" name="thursday_open" nullable="true" length="2" default="99"
+                comment="Thursday - Open"/>
+        <column xsi:type="varchar" name="thursday_close" nullable="true" length="2" default="99"
+                comment="Thursday - Close"/>
+        <column xsi:type="varchar" name="friday_open" nullable="true" length="2" default="99" comment="Friday - Open"/>
+        <column xsi:type="varchar" name="friday_close" nullable="true" length="2" default="99"
+                comment="Friday - Close"/>
+        <column xsi:type="varchar" name="saturday_open" nullable="true" length="2" default="99"
+                comment="Saturday - Open"/>
+        <column xsi:type="varchar" name="saturday_close" nullable="true" length="2" default="99"
+                comment="Saturday - Close"/>
+        <column xsi:type="varchar" name="sunday_open" nullable="true" length="2" default="99" comment="Sunday - Open"/>
+        <column xsi:type="varchar" name="sunday_close" nullable="true" length="2" default="99"
+                comment="Sunday - Close"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="waypoint_id"/>
+        </constraint>
+    </table>
+
+    <table name="improntus_uber_store" resource="default" comment="Uber Stores data">
+        <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true"
+                comment="Entity Id"/>
+        <column xsi:type="int" name="waypoint_id" padding="11" unsigned="false" nullable="true" identity="false"
+                comment="Waypoint Id"/>
+        <column xsi:type="varchar" name="source_code" length="255" nullable="true" comment="Source Code"/>
+        <column xsi:type="longtext" name="hash" nullable="false" comment="Hash validator"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+</schema>

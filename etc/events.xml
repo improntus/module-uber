@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  @author Improntus Dev Team
+  @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
+  -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_place_before">
+        <observer name="Improntus_Uber::SalesOrderPlaceBefore"
+                  instance="Improntus\Uber\Observer\SalesOrderPlaceBefore"/>
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="Improntus_Uber::SalesOrderSaveAfter"
+                  instance="Improntus\Uber\Observer\SalesOrderSaveAfter"/>
+    </event>
+</config>

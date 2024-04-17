@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+  @author Improntus Dev Team
+  @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
+  -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Improntus_Uber::menu"
+             title="Uber Direct"
+             translate="title"
+             module="Magento_Config"
+             sortOrder="10"
+             resource="Improntus_Uber::menu"/>
+        <add id="Improntus_Uber::settings"
+             title="Configuration"
+             translate="title"
+             module="Improntus_Uber"
+             parent="Improntus_Uber::menu"
+             action="adminhtml/system_config/edit/section/shipping/shipping_uber"
+             resource="Improntus_Uber::settings"
+             sortOrder="20"/>
+        <add id="Improntus_Uber::carriers"
+             title="Delivery Method"
+             translate="title"
+             module="Improntus_Uber"
+             parent="Improntus_Uber::menu"
+             action="adminhtml/system_config/edit/section/carriers/carriers_uber"
+             resource="Improntus_Uber::carriers"
+             sortOrder="30"/>
+        <add id="Improntus_Uber::waypoint"
+             title="Waypoints"
+             translate="title"
+             module="Improntus_Uber"
+             sortOrder="40"
+             parent="Improntus_Uber::menu"
+             action="uber/waypoint"
+             resource="Improntus_Uber::waypoints"/>
+        <add id="Improntus_Uber::organizations"
+             title="Manage Organizations"
+             translate="title"
+             module="Improntus_Uber"
+             sortOrder="50"
+             parent="Improntus_Uber::menu"
+             action="uber/organization"
+             resource="Improntus_Uber::organizations"/>
+    </menu>
+</config>

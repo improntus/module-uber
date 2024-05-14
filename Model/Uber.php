@@ -558,6 +558,11 @@ class Uber
          */
         $storesAllowed = [];
         foreach ($suborganizations as $organizationId) {
+            // Check is valid $organizationId
+            if (empty($organizationId)) {
+                continue;
+            }
+
             // Get endpoint URL
             $getWarehouseClosestEndpoint = $this->helper->buildRequestURL("direct/organizations/$organizationId/stores?address=$customerAddress");
 

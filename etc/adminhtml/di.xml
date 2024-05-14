@@ -26,11 +26,18 @@
             </argument>
         </arguments>
     </type>
+
     <!-- Organizations -->
     <type name="Improntus\Uber\Controller\Adminhtml\Organization\Index">
         <arguments>
             <argument name="activeMenuItem" xsi:type="string">Improntus_Uber::organization</argument>
             <argument name="pageTitle" xsi:type="string" translate="true">Organizations</argument>
         </arguments>
+    </type>
+
+    <!-- Plugins -->
+    <type name="Magento\Backend\Block\Widget\Button\Toolbar">
+        <plugin name="orderToolbarButtons"
+                type="Improntus\Uber\Plugin\Widget\Button\Toolbar\OrderToolbarButtons"/>
     </type>
 </config>

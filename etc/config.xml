@@ -13,6 +13,7 @@
                 <mode>0</mode>
                 <debug>0</debug>
                 <active>0</active>
+                <source>waypoints</source>
                 <title>Uber Direct</title>
                 <sort_order>0</sort_order>
                 <promise_time>20</promise_time>
@@ -20,6 +21,7 @@
                 <sallowspecific>0</sallowspecific>
                 <description>Uber Direct</description>
                 <preparation_time>15</preparation_time>
+                <automatic_shipment>0</automatic_shipment>
                 <webhooks_integration>0</webhooks_integration>
                 <model>Improntus\Uber\Model\Carrier\Uber</model>
                 <verification_age_pickup>21</verification_age_pickup>

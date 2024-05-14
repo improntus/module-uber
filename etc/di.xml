@@ -164,10 +164,6 @@
         <plugin name="methodListPlugin"
                 type="Improntus\Uber\Plugin\Model\MethodList\MethodListPlugin"/>
     </type>
-    <type name="Magento\Backend\Block\Widget\Button\Toolbar">
-        <plugin name="orderToolbarButtons"
-                type="Improntus\Uber\Plugin\Widget\Button\Toolbar\OrderToolbarButtons"/>
-    </type>
 
     <!-- Uber Stores -->
     <preference for="Improntus\Uber\Api\StoreRepositoryInterface" type="Improntus\Uber\Model\StoreRepository"/>

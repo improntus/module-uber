@@ -574,7 +574,9 @@ class Uber
 
             // Request ERROR
             if ($uberRequest->getStatusCode() !== 200) {
-                $this->helper->log(__("ERROR: Generate Uber Stores Closest: %1", json_encode($responseBody)));
+                $this->helper->log("Uber Stores Closest Customer Address: $customerAddress");
+                $this->helper->log("Uber Stores Closest Request: " . json_encode($requestData));
+                $this->helper->log(__("ERROR: Uber Stores Closest: %1", json_encode($responseBody)));
                 throw new Exception($responseBody['code'] ?? '');
             }
 

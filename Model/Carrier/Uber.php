@@ -252,10 +252,13 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
             // Apply Free Ship?
             $isFreeShipping = $this->getConfigFlag('free_shipping') && $request->getFreeShipping();
 
+            // Convert Price
+            $priceConverted = ($estimateData['fee'] ?? 0) / 100;
+
             // Set Shipping Price
             if (!$isFreeShipping) {
                 // Set Price
-                $uberMethod->setPrice($estimateData['fee']);
+                $uberMethod->setPrice($priceConverted);
             }
 
             // Set Warehouse ID on Checkout Session

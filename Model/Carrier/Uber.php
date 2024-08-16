@@ -191,8 +191,8 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
             }
 
             // Get Current StoreId
-            $orderStoreId = $this->storeManager->getStore()->getStoreId();
-
+            $orderStoreId = $request->getStoreId() ?? $this->storeManager->getStore()->getStoreId();
+            
             // Get Warehouses
             $warehousesCollection = $warehouseRepository->getAvailableSources(
                 $orderStoreId,

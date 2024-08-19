@@ -379,7 +379,7 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
      */
     public function getAllowedMethods()
     {
-        return true;
+        return ['uber' => $this->getConfigData('name')];
     }
 
     /**

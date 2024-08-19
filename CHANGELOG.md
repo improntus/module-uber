@@ -1,5 +1,8 @@
 CHANGELOG
 ---------
+### 1.0.4 - 2024-08-16
+- Fixed allowed shipping method
+
 ### 1.0.3 - 2024-08-16
 - Fixed issue with store id in non-frontend area
 

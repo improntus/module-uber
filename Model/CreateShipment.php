@@ -191,7 +191,7 @@ class CreateShipment
                 $warehouseStoreId = $warehouseRepository->getWarehouseStore($warehouse);
 
                 // Generate DeliveryTime and Check Warehouse Work Schedule
-                $deliveryTimeLocal = $this->getDeliveryTime($order->getStoreId());
+                $deliveryTimeLocal = $this->helper->getDeliveryTime($order->getStoreId());
                 if (!$warehouseRepository->checkWarehouseWorkSchedule($warehouse, $deliveryTimeLocal)) {
                     throw new Exception(__('The preparation point is outside working hours'));
                 }
@@ -546,23 +546,6 @@ class CreateShipment
         } catch (Exception $e) {
             $this->helper->log(__("Uber Shipping Cancel ERROR: %1", $e->getMessage()));
         }
-    }
-
-    /**
-     * getDeliveryTime
-     *
-     * Return Estimated shipping time based on store time zone
-     *
-     * @param $storeId
-     * @return \DateTime
-     */
-    private function getDeliveryTime($storeId): \DateTime
-    {
-        // Get Preparation Time (Window Delivery)
-        $preparationTime = $this->helper->getPreparationTime($storeId);
-        $currentTime = $this->timezone->date();
-        $interval = new \DateInterval("PT{$preparationTime}M");
-        return $currentTime->add($interval);
     }
 
     /**

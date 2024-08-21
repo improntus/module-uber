@@ -1,5 +1,8 @@
 CHANGELOG
 ---------
+### 1.0.5 - 2024-08-21
+- Removed shipping method when the warehouse is not available
+
 ### 1.0.4 - 2024-08-16
 - Fixed allowed shipping method
 

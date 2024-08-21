@@ -110,15 +110,19 @@ class WarehouseRepository implements WarehouseRepositoryInterface
      */
     public function checkWarehouseWorkSchedule($warehouse, $deliveryTime): bool
     {
-        $daysOfWeek = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
-        $day = ucfirst($daysOfWeek[$this->timezone->date()->format('w')]);
-        $openHour = $warehouse->{"get{$day}Open"}();
-        $closeHour = $warehouse->{"get{$day}Close"}();
-        $deliveryHour = $deliveryTime->format("H");
-        // Check Waypoint Availability
-        if ($deliveryHour >= $openHour && $deliveryHour <= $closeHour) {
-            return true;
+        if ($warehouse->getActive()) {
+            $daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            $day = ucfirst($daysOfWeek[$this->timezone->date()->format('w')]);
+            $openHour = $warehouse->{"get{$day}Open"}();
+            $closeHour = $warehouse->{"get{$day}Close"}();
+            $deliveryHour = $deliveryTime->format("H");
+
+            // Check Waypoint Availability
+            if ($deliveryHour >= $openHour && $deliveryHour <= $closeHour) {
+                return true;
+            }
         }
+
         return false;
     }
 
@@ -161,14 +165,17 @@ class WarehouseRepository implements WarehouseRepositoryInterface
          */
         $closestWarehouse = null;
         $alternativeWaypoint = null;
+        $deliveryTimeLocal = $this->helper->getDeliveryTime();
         foreach ($uberSources as $uberStore) {
-            if (in_array($uberStore->getId(), $uberWarehouses)) {
-                if ($uberStore->getId() == $uberWarehouses[0]) {
-                    $closestWarehouse = $uberStore;
-                    break;
-                } else {
-                    // Alternative Waypoint
-                    $alternativeWaypoint = $uberStore;
+            if ($this->checkWarehouseWorkSchedule($uberStore, $deliveryTimeLocal)) {
+                if (in_array($uberStore->getId(), $uberWarehouses)) {
+                    if ($uberStore->getId() == $uberWarehouses[0]) {
+                        $closestWarehouse = $uberStore;
+                        break;
+                    } else {
+                        // Alternative Waypoint
+                        $alternativeWaypoint = $uberStore;
+                    }
                 }
             }
         }

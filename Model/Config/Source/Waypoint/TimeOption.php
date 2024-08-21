@@ -10,13 +10,15 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class TimeOption implements OptionSourceInterface
 {
+    public const NO_AVAILABLE_VALUE = 99;
+
     /**
      * @return array
      */
     public function toOptionArray(): array
     {
         return [
-            ['value' => '99', 'label' => __('No Available')],
+            ['value' => self::NO_AVAILABLE_VALUE, 'label' => __('No Available')],
             ['value' => '00', 'label' => '00:00'],
             ['value' => '01', 'label' => '01:00'],
             ['value' => '02', 'label' => '02:00'],

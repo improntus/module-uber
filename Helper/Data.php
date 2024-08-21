@@ -12,6 +12,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Module\ModuleListInterface;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -54,12 +55,18 @@ class Data extends AbstractHelper
     protected EncryptorInterface $encryptor;
 
     /**
+     * @var TimezoneInterface $timezone
+     */
+    protected TimezoneInterface $timezoneInterface;
+
+    /**
      * @param EncryptorInterface $encryptor
      * @param ScopeConfigInterface $scopeConfig
      * @param Logger $logger
      * @param StoreManagerInterface $storeManager
      * @param Context $context
      * @param ModuleListInterface $moduleList
+     * @param TimezoneInterface $timezoneInterface
      */
     public function __construct(
         EncryptorInterface $encryptor,
@@ -67,13 +74,15 @@ class Data extends AbstractHelper
         Logger $logger,
         StoreManagerInterface $storeManager,
         Context $context,
-        ModuleListInterface $moduleList
+        ModuleListInterface $moduleList,
+        TimezoneInterface $timezoneInterface
     ) {
         $this->storeManager = $storeManager;
         $this->logger = $logger;
         $this->encryptor = $encryptor;
         $this->scopeConfig = $scopeConfig;
         $this->moduleList = $moduleList;
+        $this->timezoneInterface = $timezoneInterface;
         parent::__construct($context);
     }
 
@@ -437,5 +446,22 @@ class Data extends AbstractHelper
         // Get Base URL
         $basePath = $integrationMode ? self::UBER_PRODUCTION_ENDPOINT : self::UBER_SANDBOX_ENDPOINT;
         return vsprintf($basePath, [$endpoint]);
+    }
+
+    /**
+     * getDeliveryTime
+     *
+     * Return Estimated shipping time based on store time zone
+     *
+     * @param $storeId
+     * @return \DateTime
+     */
+    public function getDeliveryTime($storeId = null): \DateTime
+    {
+        // Get Preparation Time (Window Delivery)
+        $preparationTime = $this->getPreparationTime($storeId ?? $this->storeManager->getStore()->getId());
+        $currentTime = $this->timezoneInterface->date();
+        $interval = new \DateInterval("PT{$preparationTime}M");
+        return $currentTime->add($interval);
     }
 }

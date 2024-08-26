@@ -78,4 +78,12 @@ interface WarehouseRepositoryInterface
      * @return mixed
      */
     public function getWarehouseStore($warehouse);
+
+    /**
+     * Get Sources MSI by Website
+     *
+     * @param $storeId
+     * @return array
+     */
+    public function getSourcesByWebsite($storeId): array;
 }

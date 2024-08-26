@@ -168,6 +168,22 @@
                     <label>Description</label>
                     <validate>required-entry</validate>
                 </field>
+                <field id="show_carrier_obh" translate="label comment tooltip" type="select" sortOrder="133"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Uber Outside Business Hours</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If set to NO, the shipping method will be hidden when quoted outside business hours.</comment>
+                </field>
+                <field id="description_obh" translate="label comment tooltip" type="textarea" sortOrder="135" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Description Outside Business Hours</label>
+                    <tooltip>The goal of this field is to inform the customer that they will receive their purchase the next business day.</tooltip>
+                    <comment>This description will be displayed when an order is quoted outside of Business Hours</comment>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="show_carrier_obh">1</field>
+                    </depends>
+                </field>
                 <field id="sort_order" translate="label" type="text" sortOrder="140" showInDefault="1" showInWebsite="1"
                        showInStore="1" canRestore="1">
                     <label>Sort Order</label>

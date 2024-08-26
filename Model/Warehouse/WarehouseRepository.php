@@ -96,7 +96,10 @@ class WarehouseRepository implements WarehouseRepositoryInterface
     public function getAvailableSources(int $storeId, array $cartItemsSku, string $countryId, int $regionId): array
     {
         // Uber Waypoint
-        $searchCriteria = $this->searchCriteriaBuilder->addFilter('store_id', $storeId)->create();
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('store_id', $storeId)
+            ->addFilter('active', 1)
+            ->create();
         return $this->waypointRepository->getList($searchCriteria)->getItems();
     }
 
@@ -153,8 +156,9 @@ class WarehouseRepository implements WarehouseRepositoryInterface
                 'main_table.waypoint_id = iuw.waypoint_id'
             );
         $uberSources = $this->uberStoreCollection->addFieldToFilter(StoreInterface::ENTITY_ID, ['in' => $uberWarehouses])
-                        ->addFieldToFilter("main_table." . StoreInterface::WAYPOINT_ID, ['neq' => null])
-                        ->getItems();
+            ->addFieldToFilter("main_table." . StoreInterface::WAYPOINT_ID, ['neq' => null])
+            ->addFieldToFilter("iuw.active", ['eq' => 1])
+            ->getItems();
 
         /**
          * Get Warehouse Closest
@@ -166,9 +170,11 @@ class WarehouseRepository implements WarehouseRepositoryInterface
         $closestWarehouse = null;
         $alternativeWaypoint = null;
         $deliveryTimeLocal = $this->helper->getDeliveryTime();
+        $showUberShipping = $this->helper->showUberShippingOBH();
         foreach ($uberSources as $uberStore) {
-            if ($this->checkWarehouseWorkSchedule($uberStore, $deliveryTimeLocal)) {
-                if (in_array($uberStore->getId(), $uberWarehouses)) {
+            $isWarehouseValid = in_array($uberStore->getId(), $uberWarehouses);
+            if ($showUberShipping || $this->checkWarehouseWorkSchedule($uberStore, $deliveryTimeLocal)) {
+                if ($isWarehouseValid) {
                     if ($uberStore->getId() == $uberWarehouses[0]) {
                         $closestWarehouse = $uberStore;
                         break;
@@ -298,5 +304,16 @@ class WarehouseRepository implements WarehouseRepositoryInterface
             return false;
         }
         return $uberStore->getId();
+    }
+
+    /**
+     * Get Sources MSI by Website
+     *
+     * @param $storeId
+     * @return array
+     */
+    public function getSourcesByWebsite($storeId): array
+    {
+        return [];
     }
 }

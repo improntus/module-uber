@@ -278,6 +278,28 @@ class Data extends AbstractHelper
     }
 
     /**
+     * getShippingDescriptionOBH
+     *
+     * Return Carrier Description Outside Business Hours
+     * @param $storeId
+     * @return string
+     */
+    public function getShippingDescriptionOBH($storeId = null): string
+    {
+        return $this->getConfigCarrierData('description_obh', $storeId);
+    }
+
+    /**
+     * showUberShippingOBH
+     * @param $storeId
+     * @return bool
+     */
+    public function showUberShippingOBH($storeId = null): bool
+    {
+        return (bool)$this->getConfigCarrierData('show_carrier_obh', $storeId);
+    }
+
+    /**
      * getStoreWeightUnit
      * @param $storeId
      * @return mixed

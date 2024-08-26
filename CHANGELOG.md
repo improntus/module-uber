@@ -1,5 +1,10 @@
 CHANGELOG
 ---------
+
+### 1.0.6 - 2024-08-26
+- Update: WarehouseRepositoryInterface / WarehouseRepository
+- Added: Possibility to display a different title when quoting an order outside business hours.
+
 ### 1.0.5 - 2024-08-21
 - Removed shipping method when the warehouse is not available
 

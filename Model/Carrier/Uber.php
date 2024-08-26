@@ -19,7 +19,6 @@ use Magento\Directory\Model\RegionFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DataObject;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Xml\Security;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
@@ -192,7 +191,7 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
 
             // Get Current StoreId
             $orderStoreId = $request->getStoreId() ?? $this->storeManager->getStore()->getStoreId();
-            
+
             // Get Warehouses
             $warehousesCollection = $warehouseRepository->getAvailableSources(
                 $orderStoreId,
@@ -200,7 +199,7 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
                 $request->getDestCountryId(),
                 $request->getDestRegionId()
             );
-            if ($warehousesCollection === null) {
+            if (empty($warehousesCollection)) {
                 $this->uberHelper->logDebug('There are no warehouses available to process the order');
                 throw new Exception(__('The cart contains products that are out of stock for express delivery'));
             }
@@ -247,6 +246,13 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
             $estimateData = $this->uber->getEstimateShipping($shippingData, $organizationId, $orderStoreId);
             if ($estimateData === null) {
                 throw new Exception(__('This shipping method is not available'));
+            }
+
+            // Check Warehouse Schedule
+            $deliveryTimeLocal = $this->uberHelper->getDeliveryTime($orderStoreId);
+            $isWarehouseOpen = $warehouseRepository->checkWarehouseWorkSchedule($warehouse, $deliveryTimeLocal);
+            if (!$isWarehouseOpen) {
+                $uberMethod->setMethodTitle($this->uberHelper->getShippingDescriptionOBH($orderStoreId));
             }
 
             // Apply Free Ship?

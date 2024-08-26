@@ -19,6 +19,7 @@
                 <promise_time>20</promise_time>
                 <free_shipping>0</free_shipping>
                 <sallowspecific>0</sallowspecific>
+                <show_carrier_obh>1</show_carrier_obh>
                 <description>Uber Direct</description>
                 <preparation_time>15</preparation_time>
                 <automatic_shipment>0</automatic_shipment>
@@ -32,6 +33,7 @@
                 <verification_type_pickup>signature_requirement</verification_type_pickup>
                 <verification_type_dropoff>signature_requirement</verification_type_dropoff>
                 <webhook_signing backend_model="Magento\Config\Model\Config\Backend\Encrypted"/>
+                <description_obh>You will receive your purchase on the next business day.</description_obh>
             </uber>
         </carriers>
     </default>

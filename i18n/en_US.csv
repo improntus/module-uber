@@ -245,3 +245,8 @@ ID,ID
 "Promise Time Delivery","Promise Time Delivery"
 "Use this Endpoint to configure the Webhook in Uber","Use this Endpoint to configure the Webhook in Uber"
 "ATTENTION: When creating a new Waypoint it is automatically synchronized with Uber. If you need to modify any information you must contact Uber","ATTENTION: When creating a new Waypoint it is automatically synchronized with Uber. If you need to modify any information you must contact Uber"
+"Description Outside Business Hours","Description Outside Business Hours"
+"The goal of this field is to inform the customer that they will receive their purchase the next business day.","The goal of this field is to inform the customer that they will receive their purchase the next business day."
+"This description will be displayed when an order is quoted outside of Business Hours","This description will be displayed when an order is quoted outside of Business Hours"
+"Enable Uber Outside Business Hours","Enable Uber Outside Business Hours"
+"If set to NO, the shipping method will be hidden when quoted outside business hours.","If set to NO, the shipping method will be hidden when quoted outside business hours."

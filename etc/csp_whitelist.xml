@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  @author Improntus Dev Team
+  @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
+  -->
+
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="img-src">
+            <values>
+                <value id="uber_host" type="host">*.uber.com</value>
+                <value id="uber_eats_host" type="host">*.ubereats.com</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

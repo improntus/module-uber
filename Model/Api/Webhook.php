@@ -350,8 +350,8 @@ class Webhook implements WebhookInterface
          * Define Reason Code => Description
          */
         $uberCancellationReason = [
-            "MERCHANT_CANCEL" => "Marchant cancelled",
-            "cancelled_by_merchant_api" => "Marchant cancelled",
+            "MERCHANT_CANCEL" => "Merchant cancelled",
+            "cancelled_by_merchant_api" => "Merchant cancelled",
             "no_secure_location_to_dropoff" => "Courier doesn't have a safe area to deliver the product",
             "customer_unavailable" => "Customer wasn't available to receive the delivery",
             "customer_not_available" => "Customer wasn't available to receive the delivery",

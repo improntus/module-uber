@@ -18,7 +18,7 @@ class TimeOption implements OptionSourceInterface
     public function toOptionArray(): array
     {
         return [
-            ['value' => self::NO_AVAILABLE_VALUE, 'label' => __('No Available')],
+            ['value' => self::NO_AVAILABLE_VALUE, 'label' => __('Not available')],
             ['value' => '00', 'label' => '00:00'],
             ['value' => '01', 'label' => '01:00'],
             ['value' => '02', 'label' => '02:00'],

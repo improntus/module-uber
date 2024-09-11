@@ -80,14 +80,14 @@ Centralized,Centralized
 Decentralized,Decentralized
 "-- Select Merchant --","-- Select Merchant --"
 Restaurant,Restaurant
-Groery,Groery
+Grocery,Grocery
 Liquor,Liquor
 Retail,Retail
 Essentials,Essentials
 Pharmacy,Pharmacy
 "Specialty Food","Specialty Food"
-Flower,Flower
-"Pet Supply","Pet Supply"
+Flower shop,Flower shop
+"Pet shop","Pet shop"
 "-- Select Onboarding --","-- Select Onboarding --"
 "Do not send instructions","Do not send instructions"
 "Send instructions","Send instructions"
@@ -99,21 +99,21 @@ Small,Small
 Medium,Medium
 Large,Large
 Xlarge,Xlarge
-"No Available","No Available"
+"Not available","Not available"
 "The order status does not allow generating a shipment","The order status does not allow generating a shipment"
-"The preparation point is outside working hours","The preparation point is outside working hours"
+"The preparation time is outside of working hours","The preparation time is outside of working hours"
 "<b>Uber Shipping ID</b>: %1","<b>Uber Shipping ID</b>: %1"
 "<b>Tracking URL</b>: <a href=""%1"">%1</a>","<b>Tracking URL</b>: <a href=""%1"">%1</a>"
 "Could not save the OrderShipment: %1","Could not save the OrderShipment: %1"
-"Requested OrderShipment doesn't exist","Requested OrderShipment doesn't exist"
+"The requested OrderShipment doesn't exist","The requested OrderShipment doesn't exist"
 "Unable to Delete OrderShipment %1","Unable to Delete OrderShipment %1"
 "Could not save the Organization: %1","Could not save the Organization: %1"
-"Requested Organization doesn't exist","Requested Organization doesn't exist"
+"The requested Organization doesn't exist","The requested Organization doesn't exist"
 "Unable to Delete Organization %1","Unable to Delete Organization %1"
 "Could not save the Token: %1","Could not save the Token: %1"
-"Requested Token doesn't exist","Requested Token doesn't exist"
+"The requested Token doesn't exist","The requested Token doesn't exist"
 "Unable to Delete Token %1","Unable to Delete Token %1"
-"An error occurred while validating/generating token","An error occurred while validating/generating token"
+"An error occurred while validating/generating the token","An error occurred while validating/generating the token"
 "ERROR: Generate Uber Organization: %1","ERROR: Generate Uber Organization: %1"
 "Warehouse Repository Missing Organization","Warehouse Repository Missing Organization"
 "Could not save the Waypoint: %1","Could not save the Waypoint: %1"
@@ -224,7 +224,7 @@ Instructions,Instructions
 Latitude,Latitude
 "To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>","To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>"
 Longitude,Longitude
-"Day and Hours availability","Day and Hours availability"
+"Days and Hours of Availability","Days and Hours of Availability"
 "Monday Opening","Monday Opening"
 "Monday Closing","Monday Closing"
 "Tuesday Opening","Tuesday Opening"

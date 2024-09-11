@@ -108,7 +108,7 @@ class OrderShipmentRepository implements OrderShipmentRepositoryInterface
             $orderShipment = $this->orderShipmentInterfaceFactory->create();
             $this->resource->load($orderShipment, $id);
             if (!$orderShipment->getId()) {
-                throw new NoSuchEntityException(__("Requested OrderShipment doesn't exist"));
+                throw new NoSuchEntityException(__("The requested OrderShipment doesn't exist"));
             }
             $this->instances[$id] = $orderShipment;
         }
@@ -127,7 +127,7 @@ class OrderShipmentRepository implements OrderShipmentRepositoryInterface
             $orderShipment = $this->orderShipmentInterfaceFactory->create();
             $this->resource->load($orderShipment, $orderId, OrderShipmentInterface::ORDER_ID);
             if (!$orderShipment->getId()) {
-                throw new NoSuchEntityException(__("Requested OrderShipment doesn't exist"));
+                throw new NoSuchEntityException(__("The requested OrderShipment doesn't exist"));
             }
             $this->instances[$orderId] = $orderShipment;
         }
@@ -146,7 +146,7 @@ class OrderShipmentRepository implements OrderShipmentRepositoryInterface
             $orderShipment = $this->orderShipmentInterfaceFactory->create();
             $this->resource->load($orderShipment, $incrementId, OrderShipmentInterface::INCREMENT_ID);
             if (!$orderShipment->getId()) {
-                throw new NoSuchEntityException(__("Requested OrderShipment doesn't exist"));
+                throw new NoSuchEntityException(__("The requested OrderShipment doesn't exist"));
             }
             $this->instances[$incrementId] = $orderShipment;
         }

@@ -225,7 +225,7 @@
     <!-- Store Hours -->
     <fieldset name="store_hours" sortOrder="150">
         <settings>
-            <label translate="true">Day and Hours availability</label>
+            <label translate="true">Days and Hours of Availability</label>
             <collapsible>true</collapsible>
             <opened>false</opened>
         </settings>

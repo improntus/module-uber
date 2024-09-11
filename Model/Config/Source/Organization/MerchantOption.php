@@ -25,8 +25,8 @@ class MerchantOption implements OptionSourceInterface
             ['label' => __('Essentials'), 'value' => 'MERCHANT_TYPE_ESSENTIALS'],
             ['label' => __('Pharmacy'), 'value' => 'MERCHANT_TYPE_PHARMACY'],
             ['label' => __('Specialty Food'), 'value' => 'MERCHANT_TYPE_SPECIALTY_FOOD'],
-            ['label' => __('Flower'), 'value' => 'MERCHANT_TYPE_FLOWER'],
-            ['label' => __('Pet Supply'), 'value' => 'MERCHANT_TYPE_PET_SUPPLY'],
+            ['label' => __('Flower shop'), 'value' => 'MERCHANT_TYPE_FLOWER'],
+            ['label' => __('Pet shop'), 'value' => 'MERCHANT_TYPE_PET_SUPPLY'],
         ];
     }
 }

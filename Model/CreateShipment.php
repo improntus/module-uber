@@ -193,7 +193,7 @@ class CreateShipment
                 // Generate DeliveryTime and Check Warehouse Work Schedule
                 $deliveryTimeLocal = $this->helper->getDeliveryTime($order->getStoreId());
                 if (!$warehouseRepository->checkWarehouseWorkSchedule($warehouse, $deliveryTimeLocal)) {
-                    throw new Exception(__('The preparation point is outside working hours'));
+                    throw new Exception(__('The preparation time is outside of working hours'));
                 }
 
                 /**

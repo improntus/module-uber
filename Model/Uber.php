@@ -131,7 +131,7 @@ class Uber
 
         // Has data?
         if ($token === null) {
-            throw new Exception(__("An error occurred while validating/generating token"));
+            throw new Exception(__("An error occurred while validating/generating the token"));
         }
 
         // Prepare Request
@@ -225,7 +225,7 @@ class Uber
 
         // Has data?
         if ($token === null) {
-            throw new Exception(__("An error occurred while validating/generating token"));
+            throw new Exception(__("An error occurred while validating/generating the token"));
         }
 
         // Prepare Request
@@ -306,7 +306,7 @@ class Uber
 
         // Has data?
         if ($token === null) {
-            throw new Exception(__("An error occurred while validating/generating token"));
+            throw new Exception(__("An error occurred while validating/generating the token"));
         }
 
         // Prepare Request
@@ -373,7 +373,7 @@ class Uber
 
         // Has data?
         if ($token === null) {
-            throw new Exception(__("An error occurred while validating/generating token"));
+            throw new Exception(__("An error occurred while validating/generating the token"));
         }
 
         // Prepare Request
@@ -430,7 +430,7 @@ class Uber
 
         // Has data?
         if ($token === null) {
-            throw new Exception(__("An error occurred while validating/generating token"));
+            throw new Exception(__("An error occurred while validating/generating the token"));
         }
 
         // Prepare Request
@@ -531,7 +531,7 @@ class Uber
 
         // Has data?
         if ($token === null) {
-            throw new Exception(__("An error occurred while validating/generating token"));
+            throw new Exception(__("An error occurred while validating/generating the token"));
         }
 
         // Prepare Request

@@ -93,15 +93,26 @@ class POD extends Action
                  * Get Proof of Delivery from API
                  */
                 $orderData = $this->orderRepository->get($orderShipment->getOrderId());
-                $customerId = $this->helper->getCustomerId($orderData->getStoreId());
-                $podData = $this->uber->getProofOfDelivery(
-                    $orderShipment->getUberShippingId(),
-                    $customerId,
-                    $orderData->getStoreId()
-                );
+                $verificationData = $orderShipment->getVerification();
+                if($verificationData === null){
+                    $customerId = $this->helper->getCustomerId($orderData->getStoreId());
+                    $podData = $this->uber->getProofOfDelivery(
+                        $orderShipment->getUberShippingId(),
+                        $customerId,
+                        $orderData->getStoreId()
+                    );
+
+                    // Save Verification Data
+                    if($podData['document'] !== ''){
+                        $verificationData = $podData['document'];
+                        $orderShipment->setVerification($verificationData);
+                        $orderShipment->save();
+                    }
+                }
+
                 return $resultJson->setData([
                     'origin' => 'api',
-                    'document' => $podData->document ?: ''
+                    'document' => $verificationData ?: ''
                 ]);
             }
         } catch (NoSuchEntityException|\Exception $e) {

@@ -13,7 +13,7 @@
         <column xsi:type="int" name="source_waypoint" padding="11" unsigned="false" nullable="true" identity="false"
                 comment="Source Waypoint Id"/>
         <column xsi:type="text" name="source_msi" nullable="true" comment="Source MSI Code"/>
-        <column xsi:type="text" name="verification" nullable="true" comment="Verification"/>
+        <column xsi:type="longtext" name="verification" nullable="true" comment="Verification"/>
         <column xsi:type="text" name="status" nullable="true" comment="Status"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>

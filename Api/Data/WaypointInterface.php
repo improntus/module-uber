@@ -1,68 +1,41 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Api\Data;
 
 interface WaypointInterface
 {
-    const WAYPOINT_ID = 'waypoint_id';
-
-    const ORGANIZATION_ID = 'organization_id';
-
-    const STORE_ID = 'store_id';
-
-    const NAME = 'name';
-
-    const ACTIVE = 'active';
-
-    const ADDRESS = 'address';
-
-    const POSTCODE = 'postcode';
-
-    const REGION = 'region';
-
-    const CITY = 'city';
-
-    const COUNTRY = 'country';
-
-    const TELEPHONE = 'telephone';
-
-    const LATITUDE = 'latitude';
-
-    const LONGITUDE = 'longitude';
-
-    const INSTRUCTIONS = 'instructions';
-
-    const MONDAY_OPEN = 'monday_open';
-
-    const MONDAY_CLOSE = 'monday_close';
-
-    const TUESDAY_OPEN = 'tuesday_open';
-
-    const TUESDAY_CLOSE = 'tuesday_close';
-
-    const WEDNESDAY_OPEN = 'wednesday_open';
-
-    const WEDNESDAY_CLOSE = 'wednesday_close';
-
-    const THURSDAY_OPEN = 'thursday_open';
-
-    const THURSDAY_CLOSE = 'thursday_close';
-
-    const FRIDAY_OPEN = 'friday_open';
-
-    const FRIDAY_CLOSE = 'friday_close';
-
-    const SATURDAY_OPEN = 'saturday_open';
-
-    const SATURDAY_CLOSE = 'saturday_close';
-
-    const SUNDAY_OPEN = 'sunday_open';
-
-    const SUNDAY_CLOSE = 'sunday_close';
+    public const WAYPOINT_ID = 'waypoint_id';
+    public const ORGANIZATION_ID = 'organization_id';
+    public const STORE_ID = 'store_id';
+    public const NAME = 'name';
+    public const ACTIVE = 'active';
+    public const ADDRESS = 'address';
+    public const POSTCODE = 'postcode';
+    public const REGION = 'region';
+    public const CITY = 'city';
+    public const COUNTRY = 'country';
+    public const TELEPHONE = 'telephone';
+    public const LATITUDE = 'latitude';
+    public const LONGITUDE = 'longitude';
+    public const INSTRUCTIONS = 'instructions';
+    public const MONDAY_OPEN = 'monday_open';
+    public const MONDAY_CLOSE = 'monday_close';
+    public const TUESDAY_OPEN = 'tuesday_open';
+    public const TUESDAY_CLOSE = 'tuesday_close';
+    public const WEDNESDAY_OPEN = 'wednesday_open';
+    public const WEDNESDAY_CLOSE = 'wednesday_close';
+    public const THURSDAY_OPEN = 'thursday_open';
+    public const THURSDAY_CLOSE = 'thursday_close';
+    public const FRIDAY_OPEN = 'friday_open';
+    public const FRIDAY_CLOSE = 'friday_close';
+    public const SATURDAY_OPEN = 'saturday_open';
+    public const SATURDAY_CLOSE = 'saturday_close';
+    public const SUNDAY_OPEN = 'sunday_open';
+    public const SUNDAY_CLOSE = 'sunday_close';
 
     /**
      * @param $id

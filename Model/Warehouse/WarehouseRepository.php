@@ -1,15 +1,18 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Model\Warehouse;
 
 use Exception;
+use Improntus\Uber\Api\Data\StoreInterface;
 use Improntus\Uber\Api\WarehouseRepositoryInterface;
 use Improntus\Uber\Helper\Data;
 use Improntus\Uber\Model\OrganizationRepository;
+use Improntus\Uber\Model\ResourceModel\Store\Collection as UberStoreCollection;
+use Improntus\Uber\Model\StoreRepository;
 use Improntus\Uber\Model\WaypointRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -44,24 +47,40 @@ class WarehouseRepository implements WarehouseRepositoryInterface
     protected Data $helper;
 
     /**
+     * @var UberStoreCollection $uberStoreCollection
+     */
+    protected UberStoreCollection $uberStoreCollection;
+
+    /**
+     * @var StoreRepository $uberStoreRepository
+     */
+    protected StoreRepository $uberStoreRepository;
+
+    /**
      * @param WaypointRepository $waypointRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param TimezoneInterface $timezone
      * @param OrganizationRepository $organizationRepository
      * @param Data $helper
+     * @param UberStoreCollection $uberStoreCollection
+     * @param StoreRepository $uberStoreRepository
      */
     public function __construct(
         WaypointRepository $waypointRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         TimezoneInterface $timezone,
         OrganizationRepository $organizationRepository,
-        Data $helper
+        Data $helper,
+        UberStoreCollection $uberStoreCollection,
+        StoreRepository $uberStoreRepository
     ) {
         $this->helper = $helper;
         $this->timezone = $timezone;
         $this->waypointRepository = $waypointRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->organizationRepository = $organizationRepository;
+        $this->uberStoreCollection = $uberStoreCollection;
+        $this->uberStoreRepository = $uberStoreRepository;
     }
 
     /**
@@ -77,7 +96,10 @@ class WarehouseRepository implements WarehouseRepositoryInterface
     public function getAvailableSources(int $storeId, array $cartItemsSku, string $countryId, int $regionId): array
     {
         // Uber Waypoint
-        $searchCriteria = $this->searchCriteriaBuilder->addFilter('store_id', $storeId)->create();
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('store_id', $storeId)
+            ->addFilter('active', 1)
+            ->create();
         return $this->waypointRepository->getList($searchCriteria)->getItems();
     }
 
@@ -91,15 +113,19 @@ class WarehouseRepository implements WarehouseRepositoryInterface
      */
     public function checkWarehouseWorkSchedule($warehouse, $deliveryTime): bool
     {
-        $daysOfWeek = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
-        $day = ucfirst($daysOfWeek[$this->timezone->date()->format('w')]);
-        $openHour = $warehouse->{"get{$day}Open"}();
-        $closeHour = $warehouse->{"get{$day}Close"}();
-        $deliveryHour = $deliveryTime->format("H");
-        // Check Waypoint Availability
-        if ($deliveryHour >= $openHour && $deliveryHour <= $closeHour) {
-            return true;
+        if ($warehouse->getActive()) {
+            $daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            $day = ucfirst($daysOfWeek[$this->timezone->date()->format('w')]);
+            $openHour = $warehouse->{"get{$day}Open"}();
+            $closeHour = $warehouse->{"get{$day}Close"}();
+            $deliveryHour = $deliveryTime->format("H");
+
+            // Check Waypoint Availability
+            if ($deliveryHour >= $openHour && $deliveryHour <= $closeHour) {
+                return true;
+            }
         }
+
         return false;
     }
 
@@ -107,36 +133,59 @@ class WarehouseRepository implements WarehouseRepositoryInterface
      * checkWarehouseClosest
      *
      * Return the nearest warehouse to the customer.
-     * @param array $customerCoords
+     * @param array $uberStores
      * @param $warehouses
      * @return void
      */
-    public function checkWarehouseClosest(array $customerCoords, $warehouses)
+    public function checkWarehouseClosest(array $uberStores, $warehouses)
     {
-        // Init Vars
-        $closestDistance = PHP_FLOAT_MAX;
+        // If there are no stores available on Uber, I leave directly
+        if (!isset($uberStores['stores'])) {
+            return null;
+        }
+
+        // Get ExternalId from UberStores
+        $uberWarehouses = array_map(fn ($store) => $store['external_id'], $uberStores['stores']);
+
+        /**
+         * Get Sources by Uber Stores
+         */
+        $this->uberStoreCollection->getSelect()
+            ->join(
+                ["iuw" => "improntus_uber_waypoint"],
+                'main_table.waypoint_id = iuw.waypoint_id'
+            );
+        $uberSources = $this->uberStoreCollection->addFieldToFilter(StoreInterface::ENTITY_ID, ['in' => $uberWarehouses])
+            ->addFieldToFilter("main_table." . StoreInterface::WAYPOINT_ID, ['neq' => null])
+            ->addFieldToFilter("iuw.active", ['eq' => 1])
+            ->getItems();
+
+        /**
+         * Get Warehouse Closest
+         *
+         * I go through the Magento Waypoints and verify, if it corresponds to the first key of $uberWarehouses, it is the one closest to the client.
+         * If NOT applicable, I store it in $alternativeWaypoint.
+         * Then I determine which Warehouse / Waypoint to use.
+         */
         $closestWarehouse = null;
-
-        // Get Customer Coordinates
-        $customerLatitude = deg2rad($customerCoords['latitude']);
-        $customerLongitude = deg2rad($customerCoords['longitude']);
-
-        // Find the closest Warehouse
-        foreach ($warehouses as $warehouse) {
-            $warehouseLatitude = deg2rad($warehouse->getLatitude());
-            $warehouseLongitude = deg2rad($warehouse->getLongitude());
-            $dLat = $warehouseLatitude - $customerLatitude;
-            $dLon = $warehouseLongitude - $customerLongitude;
-            $a = sin($dLat / 2) ** 2 + cos($customerLatitude) * cos($warehouseLatitude) * sin($dLon / 2) ** 2;
-            $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-            $earthRadius = 6371; // Average Earth radius in kilometers
-            $distance = $earthRadius * $c;
-            if ($distance < $closestDistance) {
-                $closestDistance = $distance;
-                $closestWarehouse = $warehouse;
+        $alternativeWaypoint = null;
+        $deliveryTimeLocal = $this->helper->getDeliveryTime();
+        $showUberShipping = $this->helper->showUberShippingOBH();
+        foreach ($uberSources as $uberStore) {
+            $isWarehouseValid = in_array($uberStore->getId(), $uberWarehouses);
+            if ($showUberShipping || $this->checkWarehouseWorkSchedule($uberStore, $deliveryTimeLocal)) {
+                if ($isWarehouseValid) {
+                    if ($uberStore->getId() == $uberWarehouses[0]) {
+                        $closestWarehouse = $uberStore;
+                        break;
+                    } else {
+                        // Alternative Waypoint
+                        $alternativeWaypoint = $uberStore;
+                    }
+                }
             }
         }
-        return $closestWarehouse;
+        return $closestWarehouse ?? $alternativeWaypoint;
     }
 
     /**
@@ -172,14 +221,15 @@ class WarehouseRepository implements WarehouseRepositoryInterface
     public function getWarehouseOrganization($warehouse): mixed
     {
         $organizationId = $warehouse->getOrganizationId();
-        if ($organizationId == 0) {
+        if (str_contains($organizationId, 'W') !== false) {
             // Use ROOT Organization from Shipping Configuration
-            return $this->helper->getCustomerId();
+            [$letter, $websiteId] = explode('W', $organizationId);
+            return $this->helper->getCustomerId($websiteId);
         }
 
         // Get from Organization
         $organizationModel = $this->organizationRepository->get($organizationId);
-        if (is_null($organizationModel->getId())) {
+        if ($organizationModel->getId() === null) {
             throw new Exception(__("Warehouse Repository Missing Organization"));
         }
 
@@ -195,7 +245,7 @@ class WarehouseRepository implements WarehouseRepositoryInterface
      */
     public function getWarehouseId($warehouse)
     {
-        return $warehouse->getId();
+        return $warehouse->getWaypointId();
     }
 
     /**
@@ -217,6 +267,7 @@ class WarehouseRepository implements WarehouseRepositoryInterface
      * Returns json with the waypoint information
      * @param $warehouse
      * @return array
+     * @throws Exception
      */
     public function getWarehousePickupData($warehouse)
     {
@@ -232,11 +283,37 @@ class WarehouseRepository implements WarehouseRepositoryInterface
         $pickupData['pickup_address'] = $this->getWarehouseAddressData($warehouse);
 
         // Set Pickup Notes
-        if (!is_null($warehouse->getInstructions())) {
+        if ($warehouse->getInstructions() !== null) {
             $pickupData['pickup_notes'] = $warehouse->getInstructions();
         }
 
         // Return Data
         return $pickupData;
+    }
+
+    /**
+     * Get Warehouse Store
+     *
+     * @param $warehouse
+     * @return mixed
+     */
+    public function getWarehouseStore($warehouse)
+    {
+        $uberStore = $this->uberStoreRepository->getByWaypoint($warehouse->getWaypointId());
+        if ($uberStore === null) {
+            return false;
+        }
+        return $uberStore->getId();
+    }
+
+    /**
+     * Get Sources MSI by Website
+     *
+     * @param $storeId
+     * @return array
+     */
+    public function getSourcesByWebsite($storeId): array
+    {
+        return [];
     }
 }

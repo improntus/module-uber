@@ -1,100 +1,94 @@
 /*
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
-.admin__menu #menu-improntus-uber-menu > a:before {
-  content: '';
-  opacity: 0.7;
-  font-size: 2.4rem;
-  display: block;
-  position: relative;
-  top: -0.3rem;
-  width: 45px;
-  height: 45px;
-  background: url('../Improntus_Uber/images/uber_logo_menu.svg') center/45px 45px no-repeat;
-  margin: 0 auto;
-}
-.admin__menu #menu-improntus-uber-menu:hover > a:before {
-  opacity: 1;
-}
+@import 'module/_variables';
+& when (@media-common = true) {
+    .admin__menu #menu-improntus-uber-menu > a:before {
+        content: '';
+        opacity: 0.7;
+        font-size: 2.4rem;
+        display: block;
+        position: relative;
+        top: -0.3rem;
+        width: 45px;
+        height: 45px;
+        background: @improntus__uber__icon__background;
+        margin: 0 auto;
+    }
+    .admin__menu #menu-improntus-uber-menu:hover > a:before {
+        opacity: 1;
+    }
 
-/**
- * Uber Backend Button
- */
-button.uber-button{
-  background-color: #000000 !important;
-  color: white !important;
-}
+    button.uber-button{
+        background-color: @improntus__uber__black__color !important;
+        color: @improntus__uber__white__color !important;
+    }
 
-button.uber-button:hover{
-  opacity: 0.8 !important;
-}
+    button.uber-button:hover{
+        opacity: 0.8 !important;
+    }
 
-button.uber-button span::before  {
-  content: '';
-  display: block;
-  position: relative;
-  float: left;
-  left: -7px;
-  width: 60px;
-  height: 37px;
-  background: url('../Improntus_Uber/images/uber_logo_white.png') center no-repeat;
-  background-size: cover;
-}
+    button.uber-button span::before  {
+        content: '';
+        display: block;
+        position: relative;
+        float: left;
+        left: -7px;
+        width: 60px;
+        height: 37px;
+        background: @improntus__uber__button__background;
+        background-size: cover;
+    }
 
-button.uber-button span {
-  line-height: 37px !important;
-}
+    button.uber-button span {
+        line-height: 37px !important;
+    }
 
-/**
- * Config Shipping Group
- */
-.uber-top-section > .entry-edit-head.admin__collapsible-block {
-  border-bottom: 0 !important;
-}
+    .uber-top-section > .entry-edit-head.admin__collapsible-block {
+        border-bottom: 0 !important;
+    }
 
-.uber-top-section.active > .entry-edit-head.admin__collapsible-block {
-  border-bottom: 1px solid #ccc !important;
-}
+    .uber-top-section.active > .entry-edit-head.admin__collapsible-block {
+        border-bottom: 1px solid #ccc !important;
+    }
 
-.uber-top-section > .admin__collapsible-block > a {
-  & span.uber-brand {
-    font-size: 0;
-    display: inline-block;
-    width: 45px;
-    height: 45px;
-    background: url('../Improntus_Uber/images/uber_logo_menu.svg') center/45px 45px no-repeat;
-    vertical-align: middle;
-  }
-}
+    .uber-top-section > .admin__collapsible-block > a {
+        & span.uber-brand {
+            font-size: 0;
+            display: inline-block;
+            width: 45px;
+            height: 45px;
+            background: @improntus__uber__icon__background;
+            vertical-align: middle;
+        }
+    }
 
-/**
- * Config Delivery Group
- */
-.shipping-uber-header > .admin__collapsible-block > a::before {
-  content: "" !important;
-}
+    .shipping-uber-header > .admin__collapsible-block > a::before {
+        content: '' !important;
+    }
 
-.shipping-uber-header > .admin__collapsible-block > a {
-  display: inline-block !important;
-}
+    .shipping-uber-header > .admin__collapsible-block > a {
+        display: inline-block !important;
+    }
 
-.shipping-uber-header > .admin__collapsible-block > a::before {
-  content: '' !important;
-  width: 0 !important;
-  height: 0 !important;
-  border-color: transparent !important;
-  border-top-color: #000 !important;
-  border-style: solid !important;
-  border-width: .8rem .5rem 0 .5rem !important;
-  transition: all .2s linear !important;
-  top: 0 !important;
-  bottom: 0 !important;
-  margin: auto !important;
-}
+    .shipping-uber-header > .admin__collapsible-block > a::before {
+        content: '' !important;
+        height: 0 !important;
+        border-color: transparent !important;
+        border-top-color: @improntus__uber__black__color !important;
+        border-style: solid !important;
+        border-width: .8rem .5rem 0 .5rem !important;
+        transition: all .2s linear !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        width: 0 !important;
+        margin: auto !important;
+    }
 
-.shipping-uber-header > .admin__collapsible-block > a.open::before {
-  border-color: transparent !important;
-  border-bottom-color: #000 !important;
-  border-width: 0 .5rem .8rem .5rem !important;
+    .shipping-uber-header > .admin__collapsible-block > a.open::before {
+        border-bottom-color: @improntus__uber__black__color !important;
+        border-color: transparent !important;
+        border-width: 0 .5rem .8rem .5rem !important;
+    }
 }

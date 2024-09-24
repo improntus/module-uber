@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Controller\Adminhtml\Shipment;
@@ -19,7 +19,7 @@ use Magento\Sales\Model\OrderRepository;
 
 class Cancel extends Action
 {
-    const ADMIN_RESOURCE = 'Improntus_Uber::shipment_cancel';
+    public const ADMIN_RESOURCE = 'Improntus_Uber::shipment_cancel';
 
     /**
      * @var CancelShipment $cancelShipment
@@ -62,7 +62,7 @@ class Cancel extends Action
     public function execute()
     {
         $orderId = $this->getRequest()->getParam('order_id');
-        if (is_null($orderId)) {
+        if ($orderId === null) {
             $this->helper->logDebug(__('Order ID parameter is required'));
             $this->messageManager->addErrorMessage(__('Order ID parameter is required'));
         }
@@ -74,7 +74,14 @@ class Cancel extends Action
             $this->cancelShipment->cancel($orderId);
             $this->messageManager->addSuccessMessage(__('Shipment successfully canceled'));
         } catch (Exception $e) {
-            $this->helper->log(__('UBER Cancellation Shipment ERROR. OrderId %1 - Details: %2', [$orderId, $e->getMessage()]));
+            $this->helper->log(
+                __(
+                    'UBER Cancellation Shipment ERROR. OrderId %1 - Details: %2',
+                    [
+                        $orderId, $e->getMessage()
+                    ]
+                )
+            );
             $this->messageManager->addErrorMessage('Uber: ' . __($e->getMessage()));
             $this->addCommentCancelError($orderId, __($e->getMessage()));
         }
@@ -94,7 +101,7 @@ class Cancel extends Action
     private function addCommentCancelError(int $orderId, string $msgError = '-')
     {
         $order = $this->orderRepository->get($orderId);
-        if (is_null($order->getEntityId())) {
+        if ($order->getEntityId() === null) {
             return false;
         }
         try {

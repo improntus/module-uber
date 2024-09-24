@@ -1,10 +1,11 @@
 <?xml version="1.0" ?>
 <!--
-   @author Improntus Dev Team
-   @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+  @author Improntus Dev Team
+  @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
   -->
 
-<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
             <item name="provider" xsi:type="string">uber_organization_listing.uber_organization_listing_data_source</item>
@@ -31,7 +32,8 @@
             <updateUrl path="mui/index/render" />
         </settings>
         <aclResource>Improntus_Uber::organizations</aclResource>
-        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="uber_organization_listing_data_source">
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider"
+                      name="uber_organization_listing_data_source">
             <settings>
                 <requestFieldName>entity_id</requestFieldName>
                 <primaryFieldName>entity_id</primaryFieldName>

@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Controller\Adminhtml\Organization;
@@ -71,7 +71,9 @@ class Edit extends Action
         if ($organization === null) {
             $resultPage->getConfig()->getTitle()->prepend(__('New Organization'));
         } else {
-            $resultPage->getConfig()->getTitle()->prepend(__("Edit Organization: %1", $organization->getOrganizationName()));
+            $resultPage->getConfig()->getTitle()->prepend(
+                __("Edit Organization: %1", $organization->getOrganizationName())
+            );
         }
         return $resultPage;
     }

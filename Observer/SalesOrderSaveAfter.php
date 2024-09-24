@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Observer;
@@ -70,7 +70,7 @@ class SalesOrderSaveAfter implements ObserverInterface
             try {
                 // Get Order by IncrementalId and Update OrderId
                 $uberOrderShipment = $this->uberOrderShipmentRepository->getByIncrementId($order->getIncrementId());
-                if (is_null($uberOrderShipment->getOrderId())) {
+                if ($uberOrderShipment->getOrderId() === null) {
                     $uberOrderShipment->setOrderId($order->getId());
                     $this->uberOrderShipmentRepository->save($uberOrderShipment);
                 }
@@ -81,7 +81,7 @@ class SalesOrderSaveAfter implements ObserverInterface
                 if ($this->helper->isAutomaticShipmentGenerationEnabled($order->getStoreId())) {
                     $statusAllowed = $this->helper->getAutomaticShipmentGenerationStatus($order->getStoreId());
                     if (count($statusAllowed) > 0 && in_array($order->getStatus(), $statusAllowed) &&
-                        is_null($uberOrderShipment->getUberShippingId())
+                        $uberOrderShipment->getUberShippingId() === null
                     ) {
                         try {
                             $this->createShipment->create($order->getId());

@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Plugin\Widget\Button\Toolbar;
@@ -16,6 +16,7 @@ use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Sales\Block\Adminhtml\Order\View;
+use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderRepository;
 
 class OrderToolbarButtons
@@ -76,13 +77,24 @@ class OrderToolbarButtons
         }
 
         $order = $context->getOrder();
+
+        // If the order is closed or canceled I do not render the buttons
+        $orderStatusNotAllowed = [Order::STATE_CANCELED, Order::STATE_CLOSED];
+        if (in_array($order->getStatus(), $orderStatusNotAllowed)) {
+            return [$context, $buttonList];
+        }
+
         if ($this->helper->isModuleEnabled($order->getStoreId()) && $order->getShippingMethod() == self::CARRIER_CODE) {
             try {
                 $orderData = $this->orderRepository->get($order->getId());
 
                 // Create Shipping Button
                 if ($orderData->getShipmentsCollection()->getSize() === 0 && !$order->hasShipments()) {
-                    $baseUrl = $this->urlInterface->getUrl('uber/shipment/create', ['order_id' => $order->getId()]);
+                    $baseUrl = $this->urlInterface->getUrl(
+                        'uber/shipment/create',
+                        ['order_id' => $order->getId()
+                        ]
+                    );
                     $buttonList->add(
                         'uber_ship',
                         [
@@ -98,20 +110,47 @@ class OrderToolbarButtons
                     $uberOrderShipmentRepository = $this->orderShipmentRepository->getByOrderId($order->getId());
 
                     // Button data
-                    $buttonAction = $this->urlInterface->getUrl('uber/shipment/cancel', ['order_id' => $order->getId()]);
+                    $buttonAction = $this->urlInterface->getUrl(
+                        'uber/shipment/cancel',
+                        [
+                        'order_id' => $order->getId()]
+                    );
                     $buttonLabel = __('Cancel Driver');
-                    if (is_null($uberOrderShipmentRepository->getUberShippingId())) {
+                    if ($uberOrderShipmentRepository->getUberShippingId() === null) {
                         $buttonLabel = __('Re Request Driver');
-                        $buttonAction = $this->urlInterface->getUrl('uber/shipment/create', ['order_id' => $order->getId()]);
+                        $buttonAction = $this->urlInterface->getUrl(
+                            'uber/shipment/create',
+                            ['order_id' => $order->getId()]
+                        );
+                    } else {
+                        if (!$this->helper->isWebhooksEnabled($order->getStoreId())) {
+                            // Show POD Retrieval Button
+                            $buttonOptions = json_encode([
+                                'order_id' => $order->getId(),
+                                'url' => $this->urlInterface->getUrl('uber/order/pod')
+                            ]);
+                            $onclickJs = "jQuery('#uber_pod').orderUberPod($buttonOptions).orderUberPod('showPOD');";
+                            $buttonList->add(
+                                'uber_pod',
+                                [
+                                    'label' => __('Proof of Delivery'),
+                                    'class' => 'uber-button',
+                                    'onclick' => $onclickJs,
+                                    'data_attribute' => [
+                                        'mage-init' => '{"orderUberPod":{}}',
+                                    ]
+                                ]
+                            );
+                        }
                     }
 
                     // Show buttons
                     if ($uberOrderShipmentRepository->getStatus() === 'delivered' &&
-                        !is_null($uberOrderShipmentRepository->getVerification())) {
+                        $uberOrderShipmentRepository->getVerification() !== null) {
                         // Show POD Retrieval Button
                         $buttonOptions = json_encode([
-                           'order_id' => $order->getId(),
-                           'url' => $this->urlInterface->getUrl('uber/order/pod')
+                            'order_id' => $order->getId(),
+                            'url' => $this->urlInterface->getUrl('uber/order/pod')
                         ]);
                         $onclickJs = "jQuery('#uber_pod').orderUberPod($buttonOptions).orderUberPod('showPOD');";
                         $buttonList->add(

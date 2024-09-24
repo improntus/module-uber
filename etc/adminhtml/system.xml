@@ -1,28 +1,29 @@
 <?xml version="1.0"?>
 <!--
-   @author Improntus Dev Team
-   @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+  @author Improntus Dev Team
+  @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
   -->
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="shipping" translate="label" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
-            <group id="uber" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="uber" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
                 <label><![CDATA[<span class="uber-brand">Uber</span> Uber Configuration]]></label>
                 <fieldset_css>uber-top-section</fieldset_css>
-                <field id="customer_id" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="customer_id" translate="label comment" type="text" sortOrder="10" showInWebsite="1">
                     <label>Customer ID</label>
                     <comment>Data provided by Uber</comment>
                     <validate>required-entry no-whitespace</validate>
                 </field>
-                <field id="client_id" translate="label comment" type="obscure" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="client_id" translate="label comment" type="obscure" sortOrder="20" showInWebsite="1">
                     <label>Client ID</label>
                     <comment>Data provided by Uber</comment>
                     <validate>required-entry no-whitespace</validate>
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                 </field>
-                <field id="client_secret" translate="label comment" type="obscure" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="client_secret" translate="label comment" type="obscure" sortOrder="30" showInWebsite="1">
                     <label>Client Secret</label>
                     <comment>Data provided by Uber</comment>
                     <validate>required-entry no-whitespace</validate>
@@ -32,50 +33,82 @@
         </section>
         <!-- CARRIER -->
         <section id="carriers" translate="label" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
-            <group id="uber" translate="label" type="text" sortOrder="400" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="uber" translate="label" type="text" sortOrder="400" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
                 <label><![CDATA[<span class="uber-brand">Uber</span> Uber Configuration]]></label>
                 <fieldset_css>uber-top-section</fieldset_css>
-                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="1" canRestore="1">
                     <label>Enabled</label>
                     <validate>required-entry</validate>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="mode" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="mode" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1"
+                       showInStore="1" canRestore="1">
                     <label>Integration Mode</label>
                     <validate>required-entry</validate>
                     <source_model>Improntus\Uber\Model\Config\Source\Carriers\IntegrationModeOption</source_model>
                 </field>
-                <field id="debug" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="debug" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1"
+                       showInStore="1" canRestore="1">
                     <label>Debug Mode</label>
                     <validate>required-entry</validate>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="source" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="source" translate="label" type="select" sortOrder="40" showInDefault="1" canRestore="1">
                     <label>Warehouse</label>
                     <validate>required-entry</validate>
                     <source_model>Improntus\Uber\Model\Config\Source\Carriers\SourceOption</source_model>
                 </field>
-                <field id="free_shipping" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="free_shipping" translate="label comment" type="select" sortOrder="50" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Free Shipping</label>
                     <validate>required-entry</validate>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Apply Free Shipping rules</comment>
                 </field>
-                <field id="verification_type" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Verification Type</label>
+                <field id="verification_type_dropoff" translate="label comment" type="select" sortOrder="60"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Droppoff Verification Type</label>
                     <validate>required-entry</validate>
                     <source_model>Improntus\Uber\Model\Config\Source\Carriers\VerificationOption</source_model>
                     <comment>Verification steps that must be taken before the dropoff can be completed.</comment>
                 </field>
-                <field id="verification_age" translate="label comment tooltip" type="text" sortOrder="65" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="verification_age_dropoff" translate="label comment tooltip" type="text" sortOrder="65"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Identification min age</label>
                     <validate>required-entry validate-number</validate>
                     <depends>
-                        <field id="verification_type">identification</field>
+                        <field id="verification_type_dropoff">identification</field>
                     </depends>
-                    <tooltip>Identification verification is required for restricted items. Restricted items encompass products like alcohol, tobacco, and prescription medications that have specific delivery regulations or restrictions. These limitations may be due to safety considerations or legal mandates.</tooltip>
+                    <tooltip>Identification verification is required for restricted items. Restricted items encompass
+                        products like alcohol, tobacco, and prescription medications that have specific delivery
+                        regulations or restrictions. These limitations may be due to safety considerations or legal
+                        mandates.
+                    </tooltip>
                 </field>
-                <field id="cod" translate="label comment tooltip" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="verification_type_pickup" translate="label comment" type="select" sortOrder="70"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>PickUp Verification Type</label>
+                    <validate>required-entry</validate>
+                    <source_model>Improntus\Uber\Model\Config\Source\Carriers\VerificationPickupOption</source_model>
+                    <comment>Verification to complete Driver Pickup / Return.</comment>
+                </field>
+                <field id="verification_age_pickup" translate="label comment tooltip" type="text" sortOrder="75"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Identification min age</label>
+                    <validate>required-entry validate-number</validate>
+                    <depends>
+                        <field id="verification_type_pickup">identification</field>
+                    </depends>
+                    <tooltip>Identification verification is required for restricted items. Restricted items encompass
+                        products like alcohol, tobacco, and prescription medications that have specific delivery
+                        regulations or restrictions. These limitations may be due to safety considerations or legal
+                        mandates.
+                    </tooltip>
+                </field>
+                <field id="cod" translate="label comment tooltip" type="select" sortOrder="90" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Cash on Delivery</label>
                     <validate>required-entry</validate>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -83,13 +116,26 @@
                         <![CDATA[Is necessary contact Uber to activate this feature<br>América: sample@uber.com<br>Asia: sample@uber.com<br>Europe: sample@uber.com]]>
                     </tooltip>
                 </field>
-                <field id="webhooks_integration" translate="label comment tooltip" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="webhooks_integration" translate="label comment tooltip" type="select" sortOrder="100"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Automatic Status Update</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <tooltip>Before activating this option it is necessary to configure webhooks in Uber</tooltip>
-                    <comment><![CDATA[For more information see the Uber <a target='_blank' href='https://developer.uber.com/docs/deliveries/guides/webhooks'>Webhooks guide</a>]]></comment>
+                    <comment>
+                        <![CDATA[For more information see the Uber <a target='_blank' href='https://developer.uber.com/docs/deliveries/guides/webhooks'>Webhooks guide</a>]]>
+                    </comment>
                 </field>
-                <field id="webhook_signing" translate="label comment" type="obscure" sortOrder="85" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="webhook_endpoint" translate="label comment" type="text" sortOrder="101" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Webhook URL</label>
+                    <depends>
+                        <field id="webhooks_integration">1</field>
+                    </depends>
+                    <comment>Use this Endpoint to configure the Webhook in Uber</comment>
+                    <frontend_model>Improntus\Uber\Block\Adminhtml\System\Config\WebhookEndpoint</frontend_model>
+                </field>
+                <field id="webhook_signing" translate="label comment" type="obscure" sortOrder="105" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
                     <label>Webhook Signing Key</label>
                     <depends>
                         <field id="webhooks_integration">1</field>
@@ -98,56 +144,90 @@
                     <validate>required-entry no-whitespace</validate>
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                 </field>
-                <field id="preparation_time" translate="label comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="preparation_time" translate="label comment" type="text" sortOrder="110" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Window Delivery</label>
-                    <validate>required-entry validate-number</validate>
+                    <validate>required-entry validate-number validate-zero-or-greater</validate>
                     <comment>Number of minutes it takes to create the order</comment>
                     <tooltip>Expressed in Minutes</tooltip>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="promise_time" translate="label comment" type="text" sortOrder="115" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Promise Time Delivery</label>
+                    <validate>required-entry validate-number validate-zero-or-greater</validate>
+                    <comment>Maximum time to guarantee delivery. Expressed in Minutes</comment>
+                    <tooltip><![CDATA[Minimum promise time 20 minutes]]></tooltip>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1"
+                       showInStore="1" canRestore="1">
                     <label>Title</label>
                     <validate>required-entry</validate>
                 </field>
-                <field id="description" translate="label" type="textarea" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="description" translate="label" type="textarea" sortOrder="130" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Description</label>
                     <validate>required-entry</validate>
                 </field>
-                <field id="sort_order" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="show_carrier_obh" translate="label comment tooltip" type="select" sortOrder="133"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Uber Outside Business Hours</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If set to NO, the shipping method will be hidden when quoted outside business hours.</comment>
+                </field>
+                <field id="description_obh" translate="label comment tooltip" type="textarea" sortOrder="135" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Description Outside Business Hours</label>
+                    <tooltip>The goal of this field is to inform the customer that they will receive their purchase the next business day.</tooltip>
+                    <comment>This description will be displayed when an order is quoted outside of Business Hours</comment>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="show_carrier_obh">1</field>
+                    </depends>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="140" showInDefault="1" showInWebsite="1"
+                       showInStore="1" canRestore="1">
                     <label>Sort Order</label>
                     <validate>required-entry validate-number</validate>
                 </field>
-                <field id="showmethod" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="showmethod" translate="label" type="select" sortOrder="150" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Show Method if Not Applicable</label>
                     <frontend_class>shipping-skip-hide</frontend_class>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="product_width_attribute" translate="label" type="select" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="product_width_attribute" translate="label" type="select" sortOrder="160" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Product Width Attribute</label>
                     <validate>required-entry</validate>
                     <source_model>Improntus\Uber\Model\Config\Source\Carriers\CatalogProductOption</source_model>
                 </field>
-                <field id="product_height_attribute" translate="label" type="select" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="product_height_attribute" translate="label" type="select" sortOrder="170" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Product Height Attribute</label>
                     <validate>required-entry</validate>
                     <source_model>Improntus\Uber\Model\Config\Source\Carriers\CatalogProductOption</source_model>
                 </field>
-                <field id="product_depth_attribute" translate="label" type="select" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="product_depth_attribute" translate="label" type="select" sortOrder="180" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Product Depth Attribute</label>
                     <validate>required-entry</validate>
                     <source_model>Improntus\Uber\Model\Config\Source\Carriers\CatalogProductOption</source_model>
                 </field>
-                <field id="automatic_shipment" translate="label" type="select" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="automatic_shipment" translate="label" type="select" sortOrder="190" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Automatic Shipment Generation</label>
                     <validate>required-entry</validate>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="status_allowed" translate="label comment" type="multiselect" sortOrder="180" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="status_allowed" translate="label comment" type="multiselect" sortOrder="200"
+                       showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Status for automatic shipping creation</label>
                     <depends>
                         <field id="automatic_shipment">1</field>
                     </depends>
                     <source_model>Improntus\Uber\Model\Config\Source\Carriers\StatusOrderOption</source_model>
-                    <comment>When order change to one of this selected status, shipment will be generated automatically</comment>
+                    <comment>When order change to one of this selected status, shipment will be generated automatically
+                    </comment>
                 </field>
             </group>
         </section>

@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Model\Config\Source\Organization;
@@ -11,6 +11,7 @@ use Improntus\Uber\Model\OrganizationRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Data\OptionSourceInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Store\Model\StoreManagerInterface;
 
 class OrganizationOption implements OptionSourceInterface
 {
@@ -25,6 +26,11 @@ class OrganizationOption implements OptionSourceInterface
     protected OrganizationRepository $organizationRepository;
 
     /**
+     * @var StoreManagerInterface $storeManager
+     */
+    protected StoreManagerInterface $storeManager;
+
+    /**
      * @var Data $helper
      */
     protected Data $helper;
@@ -36,10 +42,12 @@ class OrganizationOption implements OptionSourceInterface
      */
     public function __construct(
         Data $helper,
+        StoreManagerInterface $storeManager,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         OrganizationRepository $organizationRepository
     ) {
         $this->helper = $helper;
+        $this->storeManager = $storeManager;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->organizationRepository = $organizationRepository;
     }
@@ -50,7 +58,12 @@ class OrganizationOption implements OptionSourceInterface
     public function toOptionArray(): array
     {
         // Init Option
-        $organizationOptions[] = ['label' => __('Use Root Organization'), 'value' => 0];
+        $organizationOptions = [];
+
+        // Generate Root Organization with Websites
+        foreach ($this->storeManager->getWebsites() as $website) {
+            $organizationOptions[] = ['label' => __('Use Root Organization (%1)', $website->getName()), 'value' => "W{$website->getId()}"];
+        }
 
         // Search Criteria
         $searchCriteria = $this->searchCriteriaBuilder->create();

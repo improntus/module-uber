@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Model\Config\Source\Carriers;
@@ -17,12 +17,20 @@ class SourceOption implements OptionSourceInterface
     protected Data $helper;
 
     /**
+     * @var array
+     */
+    protected array $defaultOptions;
+
+    /**
      * @param Data $helper
+     * @param array $defaultOptions
      */
     public function __construct(
-        Data $helper
+        Data  $helper,
+        array $defaultOptions = []
     ) {
         $this->helper = $helper;
+        $this->defaultOptions = $defaultOptions;
     }
 
     /**
@@ -30,17 +38,23 @@ class SourceOption implements OptionSourceInterface
      */
     public function toOptionArray(): array
     {
-        $sourceOptions = [
-            ['label' => __('-- Select Source --'), 'value' => ''],
-            ['label' => __('Waypoints'), 'value' => 0]
-        ];
+        $sourceOptions = [];
+
+        foreach ($this->defaultOptions as $key => $value) {
+            $sourceOptions[] = [
+                'value' => $key,
+                'label' => $value,
+            ];
+        }
 
         /**
          * MSI has Enabled?
-         */
-        if ($this->helper->hasMsiInstalled()) {
-            $sourceOptions[] = ['label' => __('MSI'), 'value' => 1];
-        }
+         *
+         * if ($this->helper->hasMsiInstalled()) {
+         * $sourceOptions[] = ['label' => __('MSI'), 'value' => 1];
+         * } else {
+         * $sourceOptions[] = ['label' => __('Waypoints'), 'value' => 0];
+         * }*/
 
         return $sourceOptions;
     }

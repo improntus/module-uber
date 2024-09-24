@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Controller\Adminhtml\Waypoint;
@@ -10,8 +10,7 @@ use Improntus\Uber\Controller\Adminhtml\AbstractDelete;
 
 class Delete extends AbstractDelete
 {
-
-    const ADMIN_RESOURCE = 'Improntus_Uber::waypoint_delete';
+    public const ADMIN_RESOURCE = 'Improntus_Uber::waypoint_delete';
 
     /**
      * @return bool
@@ -20,5 +19,4 @@ class Delete extends AbstractDelete
     {
         return $this->_authorization->isAllowed(self::ADMIN_RESOURCE);
     }
-
 }

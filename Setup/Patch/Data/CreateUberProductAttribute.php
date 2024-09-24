@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Setup\Patch\Data;
@@ -53,17 +53,18 @@ class CreateUberProductAttribute implements DataPatchInterface
         $this->moduleDataSetup->getConnection()->startSetup();
         /** @var EavSetup $eavSetup */
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
-        $eavSetup->addAttribute(Product::ENTITY, 'can_ship_uber', [
+        $eavSetup->addAttribute(Product::ENTITY, 'disable_uber_shipping', [
             'group' => 'General',
             'type' => 'int',
-            'label' => __('Shipping With Uber'),
+            'label' => __('Disable Uber Shipping'),
             'input' => 'boolean',
             'backend' => \Magento\Catalog\Model\Product\Attribute\Backend\Boolean::class,
             'source' => \Magento\Eav\Model\Entity\Attribute\Source\Boolean::class,
             'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
-            'default' => 1,
+            'default' => true,
             'visible' => true,
             'required' => false,
+            'filterable' => true,
             'user_defined' => true,
             'visible_on_front' => false,
             'used_in_product_listing' => true,
@@ -83,7 +84,11 @@ class CreateUberProductAttribute implements DataPatchInterface
             'user_defined' => true,
             'visible_on_front' => false,
             'used_in_product_listing' => true,
-            'sort_order' => 110
+            'sort_order' => 110,
+            'note' => 'Small: e.g. Bottle of water - ' .
+                       'Medium: You need a tote bag to carry it e.g. retail bag - ' .
+                       'Large: You need two hands to carry it e.g. TV - ' .
+                       'Xlarge: Dispatch to only couriers using a car or larger'
         ]);
 
         $eavSetup->addAttribute(Product::ENTITY, 'uber_width', [
@@ -144,7 +149,7 @@ class CreateUberProductAttribute implements DataPatchInterface
         $this->moduleDataSetup->getConnection()->startSetup();
         /** @var EavSetup $eavSetup */
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
-        $eavSetup->removeAttribute(Product::ENTITY, 'can_ship_uber');
+        $eavSetup->removeAttribute(Product::ENTITY, 'disable_uber_shipping');
         $eavSetup->removeAttribute(Product::ENTITY, 'uber_size');
         $eavSetup->removeAttribute(Product::ENTITY, 'uber_width');
         $eavSetup->removeAttribute(Product::ENTITY, 'uber_height');

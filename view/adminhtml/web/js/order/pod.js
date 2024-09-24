@@ -1,6 +1,6 @@
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 define([
@@ -55,33 +55,39 @@ define([
             var verificationContent = "<hr><br>";
             let verificationType = Object.keys(verificationData).toString();
 
-            // Set Method Title
-            verificationContent += '<h2>' + $.mage.__('Verification Method: ') + `<b>${verificationType}</b>` + '</h2>';
+            // API or UberOrderShipmentRepository
+            if(verificationData.origin === 'api') {
+                verificationContent += `<img src='data:image/png;base64,${verificationData.document}' draggable='false'/><br>`;
+            } else {
+                // Set Method Title
+                verificationContent += '<h2>' + $.mage.__('Verification Method: ') + `<b>${verificationType}</b>` + '</h2>';
 
-            // Prepare content
-            switch (verificationType) {
-                case 'signature':
-                    verificationContent += '<p>' + $.mage.__('Signer Name: ') + `<b>${verificationData.signature.signer_name}</b>` + '</p>';
-                    verificationContent += '<p>' + $.mage.__('Signer Relationship: ') + `<b>${verificationData.signature.signer_relationship}</b>` + '</p>';
-                    verificationContent += '<p>' + $.mage.__('Signature:') + '</p>';
-                    verificationContent += `<img src='${verificationData.signature.image_url}' width='350' draggable='false'/><br>`;
-                    verificationContent += `<a href='${verificationData.signature.image_url}' target="_blank">Open in New Tab</a>`;
-                    break;
-                case 'pincode':
-                    verificationContent += '<p>' + $.mage.__('Pin Code: ') + `<b>${verificationData.pin_code.entered}</b>` + '</p>';
-                    break;
-                case 'barcode':
-                    verificationContent += '<p>' + $.mage.__('Barcode: ') + `<b>${verificationData.barcodes.value}</b>` + '</p>';
-                    verificationContent += '<p>' + $.mage.__('Result: ') + `<b>${verificationData.barcodes.scan_result.outcome}</b>` + '</p>';
-                    break;
-                case 'picture':
-                    verificationContent += `<img src='${verificationData.picture.image_url}' width='350' draggable='false'/><br>`;
-                    verificationContent += `<a href='${verificationData.picture.image_url}' target="_blank">Open in New Tab</a>`;
-                    break;
-                default:
-                    verificationContent += 'Unknown';
-                    break;
+                // Prepare content
+                switch (verificationType) {
+                    case 'signature':
+                        verificationContent += '<p>' + $.mage.__('Signer Name: ') + `<b>${verificationData.signature.signer_name}</b>` + '</p>';
+                        verificationContent += '<p>' + $.mage.__('Signer Relationship: ') + `<b>${verificationData.signature.signer_relationship}</b>` + '</p>';
+                        verificationContent += '<p>' + $.mage.__('Signature:') + '</p>';
+                        verificationContent += `<img src='${verificationData.signature.image_url}' width='350' draggable='false'/><br>`;
+                        verificationContent += `<a href='${verificationData.signature.image_url}' target="_blank">Open in New Tab</a>`;
+                        break;
+                    case 'pincode':
+                        verificationContent += '<p>' + $.mage.__('Pin Code: ') + `<b>${verificationData.pin_code.entered}</b>` + '</p>';
+                        break;
+                    case 'barcode':
+                        verificationContent += '<p>' + $.mage.__('Barcode: ') + `<b>${verificationData.barcodes.value}</b>` + '</p>';
+                        verificationContent += '<p>' + $.mage.__('Result: ') + `<b>${verificationData.barcodes.scan_result.outcome}</b>` + '</p>';
+                        break;
+                    case 'picture':
+                        verificationContent += `<img src='${verificationData.picture.image_url}' width='350' draggable='false'/><br>`;
+                        verificationContent += `<a href='${verificationData.picture.image_url}' target="_blank">Open in New Tab</a>`;
+                        break;
+                    default:
+                        verificationContent += 'Unknown';
+                        break;
+                }
             }
+
             return verificationContent;
         },
 

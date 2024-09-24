@@ -1,0 +1,100 @@
+{
+    "improntus_uber_order_shipment": {
+        "column": {
+            "entity_id": true,
+            "order_id": true,
+            "increment_id": true,
+            "uber_shipping_id": true,
+            "source_waypoint": true,
+            "source_msi": true,
+            "verification": true,
+            "status": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "improntus_uber_token": {
+        "column": {
+            "entity_id": true,
+            "store_id": true,
+            "expiration_date": true,
+            "token": true,
+            "scope": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "IMPRONTUS_UBER_TOKEN_STORE_ID_SCOPE": true
+        }
+    },
+    "improntus_uber_organization": {
+        "column": {
+            "entity_id": true,
+            "store_id": true,
+            "active": true,
+            "uber_organization_id": true,
+            "organization_name": true,
+            "billing_type": true,
+            "merchant_type": true,
+            "onboarding_type": true,
+            "email": true,
+            "phone_number": true,
+            "phone_country_code": true,
+            "street": true,
+            "street2": true,
+            "city": true,
+            "state": true,
+            "postcode": true,
+            "country": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "improntus_uber_waypoint": {
+        "column": {
+            "waypoint_id": true,
+            "store_id": true,
+            "organization_id": true,
+            "active": true,
+            "name": true,
+            "address": true,
+            "postcode": true,
+            "region": true,
+            "city": true,
+            "country": true,
+            "latitude": true,
+            "longitude": true,
+            "telephone": true,
+            "instructions": true,
+            "monday_open": true,
+            "monday_close": true,
+            "tuesday_open": true,
+            "tuesday_close": true,
+            "wednesday_open": true,
+            "wednesday_close": true,
+            "thursday_open": true,
+            "thursday_close": true,
+            "friday_open": true,
+            "friday_close": true,
+            "saturday_open": true,
+            "saturday_close": true,
+            "sunday_open": true,
+            "sunday_close": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "improntus_uber_store": {
+        "column": {
+            "entity_id": true,
+            "waypoint_id": true,
+            "source_code": true,
+            "hash": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

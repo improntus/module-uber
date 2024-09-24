@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Observer;
@@ -74,7 +74,7 @@ class SalesOrderPlaceBefore implements ObserverInterface
                 $orderShipping = $this->orderShipmentFactory->create();
 
                 // Warehouse is Waypoints or MSI
-                if ($this->helper->getSourceOrigin()) {
+                if ($this->helper->getSourceOrigin() == 'msi') {
                     $orderShipping->setSourceMsi($warehouseId);
                 } else {
                     $orderShipping->setSourceWaypoint($warehouseId);

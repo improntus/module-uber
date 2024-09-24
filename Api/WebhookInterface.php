@@ -1,8 +1,8 @@
 <?php
 
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Api;
@@ -20,5 +20,12 @@ interface WebhookInterface
      * @param mixed $delivery_id
      * @return array
      */
-    public function updateStatus(mixed $data, mixed $kind, mixed $status, mixed $account_id, mixed $customer_id, mixed $delivery_id): array;
+    public function updateStatus(
+        mixed $data,
+        mixed $kind,
+        mixed $status,
+        mixed $account_id,
+        mixed $customer_id,
+        mixed $delivery_id
+    ): array;
 }

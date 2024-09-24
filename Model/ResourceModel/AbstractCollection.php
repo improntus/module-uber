@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Model\ResourceModel;
@@ -71,7 +71,7 @@ abstract class AbstractCollection extends DbAbstractCollection implements Search
     public function getSelectCountSql()
     {
         $countSelect = parent::getSelectCountSql();
-        $countSelect->reset(\Zend_Db_Select::GROUP);
+        $countSelect->reset(Select::GROUP);
         return $countSelect;
     }
 

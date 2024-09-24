@@ -1,10 +1,11 @@
 <?xml version="1.0" ?>
 <!--
-   @author Improntus Dev Team
-   @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+  @author Improntus Dev Team
+  @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
   -->
 
-<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
             <item name="provider" xsi:type="string">uber_waypoint_listing.uber_waypoint_listing_data_source</item>
@@ -31,7 +32,8 @@
             <updateUrl path="mui/index/render" />
         </settings>
         <aclResource>Improntus_Uber::waypoints</aclResource>
-        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="uber_waypoint_listing_data_source">
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider"
+                      name="uber_waypoint_listing_data_source">
             <settings>
                 <requestFieldName>waypoint_id</requestFieldName>
                 <primaryFieldName>waypoint_id</primaryFieldName>
@@ -61,11 +63,19 @@
         <paging name="listing_paging" />
     </listingToolbar>
     <columns name="uber_waypoint_columns">
-        <column name="waypoint_id" sortOrder="10">
+        <column name="waypoint_id" sortOrder="5">
             <settings>
                 <filter>textRange</filter>
                 <label translate="true">ID</label>
                 <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="active" sortOrder="10">
+            <settings>
+                <filter>select</filter>
+                <label translate="true">Active</label>
+                <dataType>select</dataType>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
             </settings>
         </column>
         <column name="name" sortOrder="15">

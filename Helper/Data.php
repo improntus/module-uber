@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Helper;
@@ -12,26 +12,27 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Module\ModuleListInterface;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 class Data extends AbstractHelper
 {
-    const UBER_PRODUCTION_ENDPOINT = 'https://api.uber.com/v1/%s';
+    public const UBER_PRODUCTION_ENDPOINT = 'https://api.uber.com/v1/%s';
 
-    const UBER_SANDBOX_ENDPOINT = 'https://sandbox-api.uber.com/v1/%s';
+    public const UBER_SANDBOX_ENDPOINT = 'https://sandbox-api.uber.com/v1/%s';
 
-    const UBER_CARRIER_CONFIG_PATH = 'carriers/uber/%s';
+    public const UBER_CARRIER_CONFIG_PATH = 'carriers/uber/%s';
 
-    const UBER_SHIPPING_CONFIG_PATH = 'shipping/uber/%s';
+    public const UBER_SHIPPING_CONFIG_PATH = 'shipping/uber/%s';
 
-    const PAYMENT_COD_CONFIG_PATH = 'payment/cashondelivery/%s';
+    public const PAYMENT_COD_CONFIG_PATH = 'payment/cashondelivery/%s';
 
-    const STORE_WEIGHT_UNIT_CONFIG_PATH = 'general/locale/weight_unit';
+    public const STORE_WEIGHT_UNIT_CONFIG_PATH = 'general/locale/weight_unit';
 
-    const STORE_NAME_CONFIG_PATH = 'general/store_information/name';
+    public const STORE_NAME_CONFIG_PATH = 'general/store_information/name';
 
-    const UBER_DELIVERED_STATUS = 'uber_delivered';
+    public const UBER_DELIVERED_STATUS = 'uber_delivered';
 
     /**
      * @var Logger $logger
@@ -54,12 +55,18 @@ class Data extends AbstractHelper
     protected EncryptorInterface $encryptor;
 
     /**
+     * @var TimezoneInterface $timezone
+     */
+    protected TimezoneInterface $timezoneInterface;
+
+    /**
      * @param EncryptorInterface $encryptor
      * @param ScopeConfigInterface $scopeConfig
      * @param Logger $logger
      * @param StoreManagerInterface $storeManager
      * @param Context $context
      * @param ModuleListInterface $moduleList
+     * @param TimezoneInterface $timezoneInterface
      */
     public function __construct(
         EncryptorInterface $encryptor,
@@ -67,13 +74,15 @@ class Data extends AbstractHelper
         Logger $logger,
         StoreManagerInterface $storeManager,
         Context $context,
-        ModuleListInterface $moduleList
+        ModuleListInterface $moduleList,
+        TimezoneInterface $timezoneInterface
     ) {
         $this->storeManager = $storeManager;
         $this->logger = $logger;
         $this->encryptor = $encryptor;
         $this->scopeConfig = $scopeConfig;
         $this->moduleList = $moduleList;
+        $this->timezoneInterface = $timezoneInterface;
         parent::__construct($context);
     }
 
@@ -141,12 +150,11 @@ class Data extends AbstractHelper
      * getSourceOrigin
      *
      * Returns True if MSI should be used or False if Uber Waypoints should be used
-     * @param $storeId
-     * @return bool
+     * @return string
      */
-    public function getSourceOrigin($storeId = null): bool
+    public function getSourceOrigin(): string
     {
-        return (bool)$this->getConfigCarrierData('source', $storeId);
+        return $this->getConfigCarrierData('source');
     }
 
     /**
@@ -162,15 +170,29 @@ class Data extends AbstractHelper
     }
 
     /**
+     * getPromiseTime
+     *
+     * Returns Promise Time Delivery
+     * @default 20 Minutes
+     * @param $storeId
+     * @return int
+     */
+    public function getPromiseTime($storeId = null): int
+    {
+        return (int)$this->getConfigCarrierData('promise_time', $storeId) ?: 20;
+    }
+
+    /**
      * getVerificationType
      *
      * Returns Verification Type selected
-     * @param $storeId
+     * @param null $storeId
+     * @param string $area
      * @return string
      */
-    public function getVerificationType($storeId = null): string
+    public function getVerificationType($storeId = null, string $area = 'dropoff'): string
     {
-        return $this->getConfigCarrierData('verification_type', $storeId);
+        return $this->getConfigCarrierData("verification_type_{$area}", $storeId);
     }
 
     /**
@@ -213,12 +235,13 @@ class Data extends AbstractHelper
      * getIdentificationAge
      *
      * Returns Identification Min Age for Verification
-     * @param $storeId
+     * @param null $storeId
+     * @param string $area
      * @return int
      */
-    public function getIdentificationAge($storeId = null): int
+    public function getIdentificationAge($storeId = null, string $area = 'dropoff'): int
     {
-        return (int)$this->getConfigCarrierData('verification_age', $storeId);
+        return (int)$this->getConfigCarrierData("verification_age_{$area}", $storeId);
     }
 
     /**
@@ -255,6 +278,28 @@ class Data extends AbstractHelper
     }
 
     /**
+     * getShippingDescriptionOBH
+     *
+     * Return Carrier Description Outside Business Hours
+     * @param $storeId
+     * @return string
+     */
+    public function getShippingDescriptionOBH($storeId = null): string
+    {
+        return $this->getConfigCarrierData('description_obh', $storeId);
+    }
+
+    /**
+     * showUberShippingOBH
+     * @param $storeId
+     * @return bool
+     */
+    public function showUberShippingOBH($storeId = null): bool
+    {
+        return (bool)$this->getConfigCarrierData('show_carrier_obh', $storeId);
+    }
+
+    /**
      * getStoreWeightUnit
      * @param $storeId
      * @return mixed
@@ -274,8 +319,12 @@ class Data extends AbstractHelper
     public function getStoreName($storeId = null): string
     {
         $storeName = $this->scopeConfig->getValue(self::STORE_NAME_CONFIG_PATH, ScopeInterface::SCOPE_STORE, $storeId);
-        if (is_null($storeName)) {
-            $storeUrl = $this->scopeConfig->getValue('web/unsecure/base_url', ScopeInterface::SCOPE_STORE, $storeId) ?? "M2";
+        if ($storeName === null) {
+            $storeUrl = $this->scopeConfig->getValue(
+                'web/unsecure/base_url',
+                ScopeInterface::SCOPE_STORE,
+                $storeId
+            ) ?? "M2";
             $storeName = "$storeUrl - Uber Direct";
         }
         return $storeName;
@@ -304,13 +353,26 @@ class Data extends AbstractHelper
     }
 
     /**
+     * Get Source Default
+     *
+     * Return Default Stock from MSI
+     * @param null $storeId
+     * @return string
+     */
+    public function getSourceDefault($storeId = null): string
+    {
+        return $this->getConfigCarrierData('default_source_stock', $storeId) ?? 'default';
+    }
+
+    /**
      * getCustomerId / organizationId
-     * @param $storeId
+     * @param null $storeId
+     * @param string $scope
      * @return mixed|string
      */
-    public function getCustomerId($storeId = null): mixed
+    public function getCustomerId($storeId = null, $scope = ScopeInterface::SCOPE_STORE): mixed
     {
-        return $this->getConfigShippingData('customer_id', $storeId);
+        return $this->getConfigShippingData('customer_id', $storeId, $scope);
     }
 
     /**
@@ -321,7 +383,7 @@ class Data extends AbstractHelper
     public function getClientId($storeId = null): mixed
     {
         $clienteId = $this->getConfigShippingData('client_id', $storeId);
-        return !is_null($clienteId) ? $this->encryptor->decrypt($clienteId) : '';
+        return $clienteId !== null ? $this->encryptor->decrypt($clienteId) : '';
     }
 
     /**
@@ -332,19 +394,20 @@ class Data extends AbstractHelper
     public function getClientSecret($storeId = null): mixed
     {
         $clientSecret = $this->getConfigShippingData('client_secret', $storeId);
-        return !is_null($clientSecret) ? $this->encryptor->decrypt($clientSecret) : '';
+        return $clientSecret !== null ? $this->encryptor->decrypt($clientSecret) : '';
     }
 
     /**
      * getConfigShippingData
      * @param $configPath
-     * @param $storeId
+     * @param null $storeId
+     * @param string $scope
      * @return mixed|string
      */
-    public function getConfigShippingData($configPath, $storeId = null): mixed
+    public function getConfigShippingData($configPath, $storeId = null, $scope = ScopeInterface::SCOPE_STORE): mixed
     {
         $path = vsprintf(self::UBER_SHIPPING_CONFIG_PATH, [$configPath]);
-        return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, $storeId) ?? '';
+        return $this->scopeConfig->getValue($path, $scope, $storeId) ?? '';
     }
 
     /**
@@ -369,11 +432,7 @@ class Data extends AbstractHelper
      */
     public function log($message, string $type = 'debug'): void
     {
-        if ($type !== 'debug') {
-            $this->logger->info($message);
-        } else {
-            $this->logger->debug($message);
-        }
+        $this->logger->critical($message);
     }
 
     /**
@@ -409,5 +468,22 @@ class Data extends AbstractHelper
         // Get Base URL
         $basePath = $integrationMode ? self::UBER_PRODUCTION_ENDPOINT : self::UBER_SANDBOX_ENDPOINT;
         return vsprintf($basePath, [$endpoint]);
+    }
+
+    /**
+     * getDeliveryTime
+     *
+     * Return Estimated shipping time based on store time zone
+     *
+     * @param $storeId
+     * @return \DateTime
+     */
+    public function getDeliveryTime($storeId = null): \DateTime
+    {
+        // Get Preparation Time (Window Delivery)
+        $preparationTime = $this->getPreparationTime($storeId ?? $this->storeManager->getStore()->getId());
+        $currentTime = $this->timezoneInterface->date();
+        $interval = new \DateInterval("PT{$preparationTime}M");
+        return $currentTime->add($interval);
     }
 }

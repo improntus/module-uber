@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Controller\Adminhtml\Shipment;
@@ -19,7 +19,7 @@ use Magento\Sales\Model\OrderRepository;
 
 class Create extends Action
 {
-    const ADMIN_RESOURCE = 'Improntus_Uber::shipment_create';
+    public const ADMIN_RESOURCE = 'Improntus_Uber::shipment_create';
 
     /**
      * @var CreateShipment $createShipment
@@ -62,7 +62,7 @@ class Create extends Action
     public function execute()
     {
         $orderId = $this->getRequest()->getParam('order_id');
-        if (is_null($orderId)) {
+        if ($orderId === null) {
             $this->messageManager->addErrorMessage(__('Order ID parameter is required'));
             $this->helper->logDebug(__('UBER Create Shipment ERROR. OrderID is Required'));
         }
@@ -74,7 +74,9 @@ class Create extends Action
             $this->createShipment->create($orderId);
             $this->messageManager->addSuccessMessage(__('Shipment generated successfully'));
         } catch (Exception $e) {
-            $this->helper->log(__('UBER Create Shipment ERROR. OrderId %1 - Details: %2', [$orderId, $e->getMessage()]));
+            $this->helper->log(
+                __('UBER Create Shipment ERROR. OrderId %1 - Details: %2', [$orderId, $e->getMessage()])
+            );
             $this->messageManager->addErrorMessage('Uber: ' . __($e->getMessage()));
             $this->addCommentShippingError($orderId, $e->getMessage());
         }
@@ -84,7 +86,8 @@ class Create extends Action
     }
 
     /**
-     * addCommentShippingError
+     * AddCommentShippingError
+     *
      * @param int $orderId
      * @param string $msgError
      * @return bool|void
@@ -94,10 +97,9 @@ class Create extends Action
     private function addCommentShippingError(int $orderId, string $msgError = '-')
     {
         $order = $this->orderRepository->get($orderId);
-        if (is_null($order->getEntityId())) {
+        if ($order->getEntityId() === null) {
             return false;
         }
-
         try {
             $order->addCommentToStatusHistory(
                 __('<b>Uber Shipping Create ERROR:</b> %1', __($msgError))

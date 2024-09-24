@@ -1,14 +1,14 @@
-<img src="./view/adminhtml/web/images/uber_logo_menu.svg" align="right" width="48"> <p>Official Module - Magento 2</p>
+<img src="./view/adminhtml/web/images/uber_logo_menu.svg" align="right" width="48"> <p>Official Module - Adobe Commerce / Magento 2 Open Source</p>
 <hr>
 
 ## Description
-Official module [Uber](https://uber.com/) for Magento 2. The module was developed using Uber API documentation [API Docs](https://developer.uber.com/docs/deliveries/overview).
+Official module [Uber](https://uber.com/) for Adobe Commerce / Magento 2 Open Source. The module was developed using Uber API documentation [API Docs](https://developer.uber.com/docs/deliveries/overview).
 
 ### Installation
-The module requires Magento 2.3.x or higher for its correct operation. It will need to be installed using the Magento console commands.
+The module requires Adobe Commerce / Magento 2 Open Source 2.3.x or higher for its correct operation. It will need to be installed using the Magento console commands.
 
 ```sh
-composer require improntus/module-uber-magento-2
+composer require improntus/module-uber
 ```
 
 Developer installation mode

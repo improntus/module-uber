@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Model;
@@ -15,7 +15,7 @@ class Organization extends AbstractModel implements OrganizationInterface
     /**
      * @var string
      */
-    const CACHE_TAG = 'improntus_uber_organization';
+    public const CACHE_TAG = 'improntus_uber_organization';
 
     /**
      * @var string

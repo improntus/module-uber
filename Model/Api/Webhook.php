@@ -1,8 +1,8 @@
 <?php
 
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Model\Api;
@@ -110,7 +110,7 @@ class Webhook implements WebhookInterface
 
             $incrementId = $data['external_id'];
             $order = $this->getOrderData($incrementId);
-            if (is_null($order['orderId'])) {
+            if ($order['orderId'] === null) {
                 throw new Exception(__('Order not found'));
             }
 
@@ -137,7 +137,7 @@ class Webhook implements WebhookInterface
                  * The states uber_pickup / uber_dropoff require the flag courier_imminent must be true
                  */
                 $orderNewStatus = self::UBER_ORDER_STATUS[$status];
-                if (($status === 'dropoff' or $status === 'pickup') && $data['courier_imminent'] === true) {
+                if (($status === 'dropoff' || $status === 'pickup') && $data['courier_imminent'] === true) {
                     /**
                      * Inset Driver Info in Order History
                      */
@@ -153,7 +153,6 @@ class Webhook implements WebhookInterface
                         case 'pickup':
                             // Ignore this event
                             return [["error" => false, "msg" => "ok"]];
-                            break;
                         case 'canceled':
                             // Add Cancellation Details
                             $cancellationDetail = $this->getCancellationDescription($data['undeliverable_reason']);
@@ -236,7 +235,7 @@ class Webhook implements WebhookInterface
         $requestBody = $this->request->getContent();
         $magentoWebhookSignatureKey = $this->helper->getWebhookSignature($storeId);
         $uberWebhookSignature = $this->request->getHeader('X-Postmates-Signature') ?: null;
-        if (is_null($magentoWebhookSignatureKey) or is_null($uberWebhookSignature)) {
+        if ($magentoWebhookSignatureKey === null || $uberWebhookSignature === null) {
             throw new Exception(__('Missing Webhook Signature'));
         }
 
@@ -262,7 +261,10 @@ class Webhook implements WebhookInterface
     protected function getDriverAndEstimatedInfo($data): string
     {
         $driverInfoComment = __('<b>Driver Name:</b> %1', $data['courier']['name'] ?? 'n/a') . '<br>';
-        $driverInfoComment .= __('<b>Vehicle Type:</b> %1', ucfirst($data['courier']['vehicle_type']) ?? 'n/a') . '<br>';
+        $driverInfoComment .= __(
+            '<b>Vehicle Type:</b> %1',
+            ucfirst($data['courier']['vehicle_type']) ?? 'n/a'
+        ) . '<br>';
         $driverInfoComment .= __('<b>Pickup estimated time:</b> %1', $data['pickup_ready'] ?? 'n/a') . '<br>';
         $driverInfoComment .= __('<b>Dropoff estimated time:</b> %1', $data['dropoff_ready'] ?? 'n/a') . '<br>';
         return $driverInfoComment;
@@ -277,7 +279,10 @@ class Webhook implements WebhookInterface
      */
     protected function getDeliveredDetails($data): string
     {
-        $deliveredComment = __('The order was delivered at <b>%1</b>', $data['dropoff']['status_timestamp'] ?? 'n/a') . '<br>';
+        $deliveredComment = __(
+            'The order was delivered at <b>%1</b>',
+            $data['dropoff']['status_timestamp'] ?? 'n/a'
+        ) . '<br>';
         // Get Verification Info
         if (isset($data['dropoff']['verification']) &&
             count($data['dropoff']['verification']) > 0) {
@@ -345,8 +350,8 @@ class Webhook implements WebhookInterface
          * Define Reason Code => Description
          */
         $uberCancellationReason = [
-            "MERCHANT_CANCEL" => "Marchant cancelled",
-            "cancelled_by_merchant_api" => "Marchant cancelled",
+            "MERCHANT_CANCEL" => "Merchant cancelled",
+            "cancelled_by_merchant_api" => "Merchant cancelled",
             "no_secure_location_to_dropoff" => "Courier doesn't have a safe area to deliver the product",
             "customer_unavailable" => "Customer wasn't available to receive the delivery",
             "customer_not_available" => "Customer wasn't available to receive the delivery",

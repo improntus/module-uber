@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Controller\Adminhtml\Waypoint;
@@ -17,8 +17,7 @@ use Magento\Framework\Registry;
 
 class Edit extends Action
 {
-
-    const ADMIN_RESOURCE = 'Improntus_Uber::waypoint_edit';
+    public const ADMIN_RESOURCE = 'Improntus_Uber::waypoint_edit';
 
     /**
      * @var WaypointRepositoryInterface

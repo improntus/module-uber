@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Model\Config\Source\Waypoint;
@@ -10,13 +10,15 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class TimeOption implements OptionSourceInterface
 {
+    public const NO_AVAILABLE_VALUE = 99;
+
     /**
      * @return array
      */
     public function toOptionArray(): array
     {
         return [
-            ['value' => '99', 'label' => __('No Available')],
+            ['value' => self::NO_AVAILABLE_VALUE, 'label' => __('Not available')],
             ['value' => '00', 'label' => '00:00'],
             ['value' => '01', 'label' => '01:00'],
             ['value' => '02', 'label' => '02:00'],
@@ -44,4 +46,3 @@ class TimeOption implements OptionSourceInterface
         ];
     }
 }
-

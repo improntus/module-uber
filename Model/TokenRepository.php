@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Model;
@@ -108,7 +108,7 @@ class TokenRepository implements TokenRepositoryInterface
             $token = $this->tokenInterfaceFactory->create();
             $this->resource->load($token, $id);
             if (!$token->getId()) {
-                throw new NoSuchEntityException(__("Requested Token doesn't exist"));
+                throw new NoSuchEntityException(__("The requested Token doesn't exist"));
             }
             $this->instances[$id] = $token;
         }
@@ -126,7 +126,7 @@ class TokenRepository implements TokenRepositoryInterface
             $token = $this->tokenInterfaceFactory->create();
             $this->resource->load($token, $storeId, TokenInterface::STORE_ID);
             if (!$token->getId()) {
-                throw new NoSuchEntityException(__("Requested Token doesn't exist"));
+                throw new NoSuchEntityException(__("The requested Token doesn't exist"));
             }
             $this->instances[$storeId] = $token;
         }
@@ -143,7 +143,7 @@ class TokenRepository implements TokenRepositoryInterface
         $token = $this->tokenInterfaceFactory->create();
         $this->resource->load($token, $scope, TokenInterface::SCOPE);
         if (!$token->getId()) {
-            throw new NoSuchEntityException(__("Requested Token doesn't exist"));
+            throw new NoSuchEntityException(__("The requested Token doesn't exist"));
         }
         return $token;
     }

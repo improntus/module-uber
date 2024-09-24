@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Api;
@@ -30,11 +30,11 @@ interface WarehouseRepositoryInterface
 
     /**
      * checkWarehouseClosest
-     * @param array $customerCoords
+     * @param array $uberStores
      * @param $warehouses
      * @return mixed
      */
-    public function checkWarehouseClosest(array $customerCoords, $warehouses);
+    public function checkWarehouseClosest(array $uberStores, $warehouses);
 
     /**
      * getWarehouseAddressData
@@ -70,4 +70,20 @@ interface WarehouseRepositoryInterface
      * @return mixed
      */
     public function getWarehousePickupData($warehouse);
+
+    /**
+     * Get Warehouse Store
+     *
+     * @param $warehouse
+     * @return mixed
+     */
+    public function getWarehouseStore($warehouse);
+
+    /**
+     * Get Sources MSI by Website
+     *
+     * @param $storeId
+     * @return array
+     */
+    public function getSourcesByWebsite($storeId): array;
 }

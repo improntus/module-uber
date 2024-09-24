@@ -1,22 +1,18 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Api\Data;
 
 interface TokenInterface
 {
-    const TOKEN_ID = 'entity_id';
-
-    const STORE_ID = 'store_id';
-
-    const EXPIRATION_DATE = 'expiration_date';
-
-    const TOKEN = 'token';
-
-    const SCOPE = 'scope';
+    public const TOKEN_ID = 'entity_id';
+    public const STORE_ID = 'store_id';
+    public const EXPIRATION_DATE = 'expiration_date';
+    public const TOKEN = 'token';
+    public const SCOPE = 'scope';
 
     /**
      * @return mixed

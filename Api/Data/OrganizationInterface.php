@@ -1,46 +1,30 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Api\Data;
 
 interface OrganizationInterface
 {
-    const ENTITY_ID = 'entity_id';
-
-    const ACTIVE = 'active';
-
-    const ORGANIZATION_ID = 'uber_organization_id';
-
-    const ORGANIZATION_NAME = 'organization_name';
-
-    const BILLING_TYPE = 'billing_type';
-
-    const MERCHANT_TYPE = 'merchant_type';
-
-    const ONBOARDING_TYPE = 'onboarding_type';
-
-    const EMAIL = 'email';
-
-    const PHONE_NUMBER = 'phone_number';
-
-    const PHONE_COUNTRY_CODE = 'phone_country_code';
-
-    const STREET = 'street';
-
-    const STREET2 = 'street2';
-
-    const CITY = 'city';
-
-    const STATE = 'state';
-
-    const POSTCODE = 'postcode';
-
-    const COUNTRY = 'country';
-
-    const STORE_ID = 'store_id';
+    public const ENTITY_ID = 'entity_id';
+    public const ACTIVE = 'active';
+    public const ORGANIZATION_ID = 'uber_organization_id';
+    public const ORGANIZATION_NAME = 'organization_name';
+    public const BILLING_TYPE = 'billing_type';
+    public const MERCHANT_TYPE = 'merchant_type';
+    public const ONBOARDING_TYPE = 'onboarding_type';
+    public const EMAIL = 'email';
+    public const PHONE_NUMBER = 'phone_number';
+    public const PHONE_COUNTRY_CODE = 'phone_country_code';
+    public const STREET = 'street';
+    public const STREET2 = 'street2';
+    public const CITY = 'city';
+    public const STATE = 'state';
+    public const POSTCODE = 'postcode';
+    public const COUNTRY = 'country';
+    public const STORE_ID = 'store_id';
 
     /**
      * getUberOrganizationId

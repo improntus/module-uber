@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Model\Rest;
@@ -65,7 +65,6 @@ class Webservice
                 $endpoint,
                 $params
             );
-            $a = 1;
         } catch (GuzzleException $exception) {
             /** @var Response $response */
             $response = $this->responseFactory->create([

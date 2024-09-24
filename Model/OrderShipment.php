@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Model;
@@ -15,7 +15,7 @@ class OrderShipment extends AbstractModel implements OrderShipmentInterface
     /**
      * @var string
      */
-    const CACHE_TAG = 'improntus_uber_order_shipment';
+    public const CACHE_TAG = 'improntus_uber_order_shipment';
 
     /**
      * @var string

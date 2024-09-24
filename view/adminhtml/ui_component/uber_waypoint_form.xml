@@ -1,10 +1,11 @@
 <?xml version="1.0" ?>
 <!--
-   @author Improntus Dev Team
-   @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+  @author Improntus Dev Team
+  @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
   -->
 
-<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
             <item name="provider" xsi:type="string">uber_waypoint_form.waypoint_form_data_source</item>
@@ -179,6 +180,9 @@
                 </validation>
                 <dataType>text</dataType>
                 <label translate="true">Telephone</label>
+                <tooltip>
+                    <description translate="true">The phone number must include the Country Code. Ex.: +549</description>
+                </tooltip>
             </settings>
         </field>
         <field name="instructions" formElement="input" sortOrder="120">
@@ -196,7 +200,9 @@
                 <label translate="true">Latitude</label>
                 <tooltip>
                     <link>https://support.google.com/maps/answer/18539</link>
-                    <description translate="true"><![CDATA[To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>]]></description>
+                    <description translate="true">
+                        <![CDATA[To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>]]>
+                    </description>
                 </tooltip>
             </settings>
         </field>
@@ -209,7 +215,9 @@
                 <label translate="true">Longitude</label>
                 <tooltip>
                     <link>https://support.google.com/maps/answer/18539</link>
-                    <description translate="true"><![CDATA[To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>]]></description>
+                    <description translate="true">
+                        <![CDATA[To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>]]>
+                    </description>
                 </tooltip>
             </settings>
         </field>
@@ -217,7 +225,7 @@
     <!-- Store Hours -->
     <fieldset name="store_hours" sortOrder="150">
         <settings>
-            <label translate="true">Day and Hours availability</label>
+            <label translate="true">Days and Hours of Availability</label>
             <collapsible>true</collapsible>
             <opened>false</opened>
         </settings>

@@ -1,7 +1,7 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Controller\Adminhtml\Organization;
@@ -22,7 +22,7 @@ use Magento\Framework\Registry;
 
 class Save extends Action
 {
-    const ADMIN_RESOURCE = 'Improntus_Uber::organization_edit';
+    public const ADMIN_RESOURCE = 'Improntus_Uber::organization_edit';
 
     /**
      * @var OrganizationInterfaceFactory $organizationFactory
@@ -119,7 +119,9 @@ class Save extends Action
                 if (isset($uberResult["organization_id"])) {
                     $data['uber_organization_id'] = $uberResult["organization_id"];
                 } else {
-                    $this->helper->logDebug(__('There was a problem creating the Organization in UBER. DATA: %1', json_encode($data)));
+                    $this->helper->logDebug(
+                        __('There was a problem creating the Organization in UBER. DATA: %1', json_encode($data))
+                    );
                     $this->messageManager->addErrorMessage(__('There was a problem creating the Organization in UBER'));
                 }
             } catch (\Exception $e) {
@@ -145,7 +147,14 @@ class Save extends Action
                 $resultRedirect->setPath('*/*');
             }
         } catch (LocalizedException $e) {
-            $this->helper->logDebug(__('There was a problem saving the Organization. ERROR: %1 DATA: %2', [$e->getMessage(), json_encode($data)]));
+            $this->helper->logDebug(
+                __(
+                    'There was a problem saving the Organization. ERROR: %1 DATA: %2',
+                    [
+                        $e->getMessage(), json_encode($data)
+                    ]
+                )
+            );
             $this->messageManager->addErrorMessage($e->getMessage());
             $this->dataPersistor->set('uber_organization', $postData);
             $resultRedirect->setPath('*/*/edit', ['entity_id' => $id]);

@@ -1,28 +1,21 @@
 <?php
 /**
- *  @author Improntus Dev Team
- *  @copyright Copyright (c) 2023 Improntus (http://www.improntus.com)
+ * @author Improntus Dev Team
+ * @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
  */
 
 namespace Improntus\Uber\Api\Data;
 
 interface OrderShipmentInterface
 {
-    const ENTITY_ID = 'entity_id';
-
-    const ORDER_ID = 'order_id';
-
-    const INCREMENT_ID = 'increment_id';
-
-    const SOURCE_WAYPOINT = 'source_waypoint';
-
-    const SOURCE_MSI = 'source_msi';
-
-    const STATUS = 'status';
-
-    const VERIFICATION = 'verification';
-
-    const UBER_SHIPPING_ID = 'uber_shipping_id';
+    public const ENTITY_ID = 'entity_id';
+    public const ORDER_ID = 'order_id';
+    public const INCREMENT_ID = 'increment_id';
+    public const SOURCE_WAYPOINT = 'source_waypoint';
+    public const SOURCE_MSI = 'source_msi';
+    public const STATUS = 'status';
+    public const VERIFICATION = 'verification';
+    public const UBER_SHIPPING_ID = 'uber_shipping_id';
 
     /**
      * @return mixed

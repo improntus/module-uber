@@ -1,0 +1,28 @@
+@module: 'Improntus_Uber';
+
+& when (@media-common = true) {
+    #uber.input-container.field {
+        .carrier {
+            color: transparent;
+            line-height: 0;
+            overflow: hidden;
+            &:before {
+                content: '';
+                background-image: url('@{baseDir}@{module}/images/logo-uber.svg');
+                background-size: contain;
+                background-repeat: no-repeat;
+                width: 100px;
+                height: 40px;
+                display: block;
+                background-position: center;
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    // your code
+}
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    // your code
+}

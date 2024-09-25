@@ -80,14 +80,14 @@ Centralized,Centralized
 Decentralized,Decentralized
 "-- Select Merchant --","-- Select Merchant --"
 Restaurant,Restaurant
-Grocery,Grocery
+Groery,Groery
 Liquor,Liquor
 Retail,Retail
 Essentials,Essentials
 Pharmacy,Pharmacy
 "Specialty Food","Specialty Food"
-Flower shop,Flower shop
-"Pet shop","Pet shop"
+Flower,Flower
+"Pet Supply","Pet Supply"
 "-- Select Onboarding --","-- Select Onboarding --"
 "Do not send instructions","Do not send instructions"
 "Send instructions","Send instructions"
@@ -99,21 +99,21 @@ Small,Small
 Medium,Medium
 Large,Large
 Xlarge,Xlarge
-"Not available","Not available"
+"No Available","No Available"
 "The order status does not allow generating a shipment","The order status does not allow generating a shipment"
-"The preparation time is outside of working hours","The preparation time is outside of working hours"
+"The preparation point is outside working hours","The preparation point is outside working hours"
 "<b>Uber Shipping ID</b>: %1","<b>Uber Shipping ID</b>: %1"
 "<b>Tracking URL</b>: <a href=""%1"">%1</a>","<b>Tracking URL</b>: <a href=""%1"">%1</a>"
 "Could not save the OrderShipment: %1","Could not save the OrderShipment: %1"
-"The requested OrderShipment doesn't exist","The requested OrderShipment doesn't exist"
+"Requested OrderShipment doesn't exist","Requested OrderShipment doesn't exist"
 "Unable to Delete OrderShipment %1","Unable to Delete OrderShipment %1"
 "Could not save the Organization: %1","Could not save the Organization: %1"
-"The requested Organization doesn't exist","The requested Organization doesn't exist"
+"Requested Organization doesn't exist","Requested Organization doesn't exist"
 "Unable to Delete Organization %1","Unable to Delete Organization %1"
 "Could not save the Token: %1","Could not save the Token: %1"
-"The requested Token doesn't exist","The requested Token doesn't exist"
+"Requested Token doesn't exist","Requested Token doesn't exist"
 "Unable to Delete Token %1","Unable to Delete Token %1"
-"An error occurred while validating/generating the token","An error occurred while validating/generating the token"
+"An error occurred while validating/generating token","An error occurred while validating/generating token"
 "ERROR: Generate Uber Organization: %1","ERROR: Generate Uber Organization: %1"
 "Warehouse Repository Missing Organization","Warehouse Repository Missing Organization"
 "Could not save the Waypoint: %1","Could not save the Waypoint: %1"
@@ -224,7 +224,7 @@ Instructions,Instructions
 Latitude,Latitude
 "To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>","To get coordinates from an address you can check <a href='https://support.google.com/maps/answer/18539'>this link</a>"
 Longitude,Longitude
-"Days and Hours of Availability","Days and Hours of Availability"
+"Day and Hours availability","Day and Hours availability"
 "Monday Opening","Monday Opening"
 "Monday Closing","Monday Closing"
 "Tuesday Opening","Tuesday Opening"
@@ -241,12 +241,3 @@ Longitude,Longitude
 "Sunday Closing","Sunday Closing"
 "Add Waypoint","Add Waypoint"
 ID,ID
-"Maximum time to guarantee delivery","Maximum time to guarantee delivery"
-"Promise Time Delivery","Promise Time Delivery"
-"Use this Endpoint to configure the Webhook in Uber","Use this Endpoint to configure the Webhook in Uber"
-"ATTENTION: When creating a new Waypoint it is automatically synchronized with Uber. If you need to modify any information you must contact Uber","ATTENTION: When creating a new Waypoint it is automatically synchronized with Uber. If you need to modify any information you must contact Uber"
-"Description Outside Business Hours","Description Outside Business Hours"
-"The goal of this field is to inform the customer that they will receive their purchase the next business day.","The goal of this field is to inform the customer that they will receive their purchase the next business day."
-"This description will be displayed when an order is quoted outside of Business Hours","This description will be displayed when an order is quoted outside of Business Hours"
-"Enable Uber Outside Business Hours","Enable Uber Outside Business Hours"
-"If set to NO, the shipping method will be hidden when quoted outside business hours.","If set to NO, the shipping method will be hidden when quoted outside business hours."

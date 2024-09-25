@@ -22,3 +22,6 @@ CHANGELOG
 
 ### 1.0.0 - 2024-04-10
 - Init module
+
+### 1.0.0 - 2024-09 - 24
+- added module styles

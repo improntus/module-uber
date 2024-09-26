@@ -27,4 +27,4 @@ CHANGELOG
 - added module styles
 
 ### 1.0.0 - 2024-09 - 25
-- added more specification to styles
+- added more specification to styles added pointer event

@@ -30,10 +30,38 @@
                 background-image: url('@{baseDir}@{module}/images/logo-uber.svg');
                 background-size: contain;
                 background-repeat: no-repeat;
-                width: 100px;
+                width: auto;
                 height: 40px;
                 display: block;
                 background-position: center;
+            }
+        }
+    }
+    .form.methods-shipping{
+        tbody{
+            .row{
+                &:has(>#label_carrier_uber_uber){
+                    display: flex;
+                    align-items: center;
+                    .col{
+                        &.col-method{
+                            order:1;
+                        }
+                        &.col-price{
+                            order:3;
+                        }
+                        &.col-method#label_carrier_uber_uber{
+                            order:4;
+                        }
+                        &.col-carrier{
+                            min-width: 80px;
+                            order:2;
+                            &:before{
+                                width: auto;
+                            }
+                        }
+                    }
+                }
             }
         }
     }

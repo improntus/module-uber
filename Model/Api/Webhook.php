@@ -11,6 +11,7 @@ use Exception;
 use Improntus\Uber\Api\OrderShipmentRepositoryInterface;
 use Improntus\Uber\Api\WebhookInterface;
 use Improntus\Uber\Helper\Data;
+use Improntus\Uber\Model\EmailSender;
 use Magento\Framework\Webapi\Rest\Request;
 use Magento\Sales\Model\OrderFactory;
 use Magento\Sales\Model\OrderRepository;
@@ -27,7 +28,7 @@ class Webhook implements WebhookInterface
         'dropoff' => 'uber_dropoff',
         'pickup' => 'uber_pickup',
         'pickup_complete' => 'uber_pickup_complete',
-        'returned' => 'uber_returned'
+        'returned' => 'uber_returned',
     ];
 
     /**
@@ -51,6 +52,11 @@ class Webhook implements WebhookInterface
     protected Request $request;
 
     /**
+     * @var EmailSender $emailSender
+     */
+    protected EmailSender $emailSender;
+
+    /**
      * @var OrderShipmentRepositoryInterface $orderShipmentRepository
      */
     protected OrderShipmentRepositoryInterface $orderShipmentRepository;
@@ -58,19 +64,23 @@ class Webhook implements WebhookInterface
     /**
      * @param Data $helper
      * @param Request $request
+     * @param EmailSender $emailSender
      * @param OrderFactory $orderFactory
      * @param OrderRepository $orderRepository
      * @param OrderShipmentRepositoryInterface $orderShipmentRepository
      */
     public function __construct(
-        Data $helper,
-        Request $request,
-        OrderFactory $orderFactory,
-        OrderRepository $orderRepository,
+        Data                             $helper,
+        Request                          $request,
+        EmailSender                      $emailSender,
+        OrderFactory                     $orderFactory,
+        OrderRepository                  $orderRepository,
         OrderShipmentRepositoryInterface $orderShipmentRepository
-    ) {
+    )
+    {
         $this->helper = $helper;
         $this->request = $request;
+        $this->emailSender = $emailSender;
         $this->orderFactory = $orderFactory;
         $this->orderRepository = $orderRepository;
         $this->orderShipmentRepository = $orderShipmentRepository;
@@ -94,7 +104,8 @@ class Webhook implements WebhookInterface
         mixed $account_id,
         mixed $customer_id,
         mixed $delivery_id,
-    ): array {
+    ): array
+    {
 
         /**
          * Has Enabled hooks integration?
@@ -122,6 +133,9 @@ class Webhook implements WebhookInterface
             // Get Order
             $order = $this->orderRepository->get($order['orderId']);
             $orderStatus = $order->getStatus();
+
+            // Get Tracking URL from Webhook
+            $trackingUrl = $data['tracking_url'] ?: "";
 
             /**
              * Compare Current Status
@@ -197,6 +211,13 @@ class Webhook implements WebhookInterface
                     }
                     $this->orderShipmentRepository->save($orderShipment);
                 }
+
+                /**
+                 * Send Email
+                 */
+                if($this->helper->getEnableEmailUpdate($order->getStoreId())){
+                    $this->emailSender->sendEmail($order, $status, $trackingUrl);
+                }
             }
         } catch (Exception $e) {
             $this->helper->log(__('Webhooks ERROR: %1', $e->getMessage()));
@@ -219,7 +240,7 @@ class Webhook implements WebhookInterface
         $order = $orderModel->loadByIncrementId($incrementId);
         return [
             'orderId' => $order->getId(),
-            'orderStore' => $order->getStoreId()
+            'orderStore' => $order->getStoreId(),
         ];
     }
 
@@ -245,7 +266,7 @@ class Webhook implements WebhookInterface
             $this->helper->logDebug(json_encode([
                 'signature' => $magentoWebhookSignatureKey,
                 'webhookHash' => $uberWebhookSignature,
-                'hashGenerated' => $hashGenerated
+                'hashGenerated' => $hashGenerated,
             ]));
             throw new Exception(__('Webhook Signature Invalid'));
         }
@@ -262,9 +283,9 @@ class Webhook implements WebhookInterface
     {
         $driverInfoComment = __('<b>Driver Name:</b> %1', $data['courier']['name'] ?? 'n/a') . '<br>';
         $driverInfoComment .= __(
-            '<b>Vehicle Type:</b> %1',
-            ucfirst($data['courier']['vehicle_type']) ?? 'n/a'
-        ) . '<br>';
+                '<b>Vehicle Type:</b> %1',
+                ucfirst($data['courier']['vehicle_type']) ?? 'n/a'
+            ) . '<br>';
         $driverInfoComment .= __('<b>Pickup estimated time:</b> %1', $data['pickup_ready'] ?? 'n/a') . '<br>';
         $driverInfoComment .= __('<b>Dropoff estimated time:</b> %1', $data['dropoff_ready'] ?? 'n/a') . '<br>';
         return $driverInfoComment;
@@ -280,9 +301,9 @@ class Webhook implements WebhookInterface
     protected function getDeliveredDetails($data): string
     {
         $deliveredComment = __(
-            'The order was delivered at <b>%1</b>',
-            $data['dropoff']['status_timestamp'] ?? 'n/a'
-        ) . '<br>';
+                'The order was delivered at <b>%1</b>',
+                $data['dropoff']['status_timestamp'] ?? 'n/a'
+            ) . '<br>';
         // Get Verification Info
         if (isset($data['dropoff']['verification']) &&
             count($data['dropoff']['verification']) > 0) {
@@ -380,9 +401,9 @@ class Webhook implements WebhookInterface
             "order_task_failed" => "Uber internal operational issues",
             "courier_report_crash" => "Courier was involved in an accident",
             "Unfulfillment" => "Uber wasn't able to allocate a courier to complete the delivery",
-            "UNFULFILLED"  => "Uber wasn't able to allocate a courier to complete the delivery",
+            "UNFULFILLED" => "Uber wasn't able to allocate a courier to complete the delivery",
             "CUSTOMER_CANCEL" => "Customer cancelled",
-            "UNKNOWN_CANCEL" => "Cancelled party not detected"
+            "UNKNOWN_CANCEL" => "Cancelled party not detected",
         ];
 
         // Return Description

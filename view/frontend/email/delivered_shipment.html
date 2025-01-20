@@ -1,0 +1,8 @@
+<!-- delivered_shipment.html -->
+<!--@subject {{trans "Shipment with Uber updated for order #%order_id - Courier has completed the drop-off" order_id=$order_id}} @-->
+{{template config_path="design/email/header_template"}}
+
+<p>{{trans "%customer_name, the status of your shipment with Uber has been updated:" customer_name=$customer_name}}</p>
+<p>{{trans "The courier has completed the drop-off."}}</p>
+
+{{template config_path="design/email/footer_template"}}

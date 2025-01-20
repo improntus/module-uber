@@ -486,4 +486,54 @@ class Data extends AbstractHelper
         $interval = new \DateInterval("PT{$preparationTime}M");
         return $currentTime->add($interval);
     }
+
+    /**
+     * getEnableEmailUpdate
+     * @param $storeId
+     * @return mixed
+     */
+    public function getEnableEmailUpdate($storeId = null): mixed
+    {
+        return $this->getConfigCarrierData('email_updates/enable', $storeId);
+    }
+
+    /**
+     * getEnableEmailBCC
+     * @param $storeId
+     * @return mixed
+     */
+    public function getEnableEmailBCC($storeId = null): mixed
+    {
+        return $this->getConfigCarrierData('email_updates/enable_bcc', $storeId);
+    }
+
+    /**
+     * getUpdateEmailPickup
+     * @param $storeId
+     * @return mixed
+     */
+    public function getUpdateEmailPickup($storeId = null): mixed
+    {
+        return $this->getConfigCarrierData('email_updates/pickup_email', $storeId);
+    }
+
+    /**
+     * getUpdateEmailOnway
+     * @param $storeId
+     * @return mixed
+     */
+    public function getUpdateEmailOnway($storeId = null): mixed
+    {
+        return $this->getConfigCarrierData('email_updates/onway_email', $storeId);
+    }
+
+    /**
+     * getUpdateEmailDropoff
+     * @param $storeId
+     * @return mixed
+     */
+    public function getUpdateEmailDropoff($storeId = null): mixed
+    {
+        return $this->getConfigCarrierData('email_updates/dropoff_email', $storeId);
+    }
 }

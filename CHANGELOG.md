@@ -26,3 +26,9 @@ CHANGELOG
 
 ### 1.0.0 - 2024-04-10
 - Init module
+
+### 1.0.0 - 2024-09 - 24
+- added module styles
+
+### 1.0.0 - 2024-09 - 25
+- added more specification to styles added pointer event

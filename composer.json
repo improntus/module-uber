@@ -1,11 +1,10 @@
 {
   "name": "improntus/module-uber",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Official module Uber for Adobe Commerce / Magento 2 Open Source",
   "type": "magento2-module",
   "require": {
-    "php": ">=7.4.0, <8.4.0",
-    "improntus/module-uber-inventory": "*"
+    "php": ">=7.4.0, <8.4.0"
   },
   "license": [
     "GPL-3.0-or-later"

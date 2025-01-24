@@ -244,14 +244,17 @@ class CreateShipment
                     ];
                 }
 
-                // Sandbox Mode Webhooks
-                if (!$this->helper->getIntegrationMode($order->getStoreId()) &&
-                    $this->helper->isWebhooksEnabled($order->getStoreId())) {
+                // Sandbox Mode
+                if (!$this->helper->getIntegrationMode($order->getStoreId())) {
                     $deliveryAdditionalData['test_specifications'] = [
                         'robo_courier_specification' => [
                             'mode' => 'auto',
                         ],
                     ];
+
+                    // Unset PickUP & Drop-off data
+                    unset($deliveryAdditionalData['pickup_ready_dt'], $deliveryAdditionalData['pickup_deadline_dt'],
+                        $deliveryAdditionalData['dropoff_ready_dt'], $deliveryAdditionalData['dropoff_deadline_dt']);
                 }
 
                 // Prepara Request
@@ -383,12 +386,12 @@ class CreateShipment
             $orderShipment = $this->trackFactory->create()->getCollection()
                 ->addFieldToFilter('order_id', ['eq' => $order->getEntityId()])
                 ->getFirstItem();
-            $orderShipment->setTrackNumber($trackNumber);
+            $orderShipment->setTrackNumber($trackURL);
             $orderShipment->save();
         } else {
             $shipment->addTrack(
                 $this->trackFactory->create()
-                    ->setNumber($trackNumber)
+                    ->setNumber($trackURL)
                     ->setCarrierCode(self::CARRIER_CODE)
                     ->setTitle($carrierTitle)
             );
@@ -537,7 +540,7 @@ class CreateShipment
         }
         try {
             $orderComment = __('<b>Uber Shipping UUID</b>: %1', $this->formatTrackingNumber($confirmationData['uuid'], true)) . '<br>';
-            $orderComment .= __('<b>Tracking URL</b>: <a href="%1">%1</a>', $confirmationData['tracking_url']) . '<br>';
+            $orderComment .= __('<b>Tracking URL</b>: <a href="%1" target="_blank">%1</a>', $confirmationData['tracking_url']) . '<br>';
             $order->addCommentToStatusHistory(
                 $orderComment,
                 self::DEFAULT_UBER_STATUS
@@ -568,7 +571,7 @@ class CreateShipment
         $area = ($area == 'return') ? 'pickup' : $area;
         $verificationMethod = $this->helper->getVerificationType($storeId, $area);
 
-        // Exclude Identificacion Method
+        // Exclude Identification Method
         if ($excludeIdentificationMethod && $verificationMethod == 'identification') {
             $verificationMethod = 'signature';
         }

@@ -34,6 +34,10 @@
                 <verification_type_dropoff>signature_requirement</verification_type_dropoff>
                 <webhook_signing backend_model="Magento\Config\Model\Config\Backend\Encrypted"/>
                 <description_obh>You will receive your purchase on the next business day.</description_obh>
+                <email_updates>
+                    <enable>0</enable>
+                    <enable_bcc>0</enable_bcc>
+                </email_updates>
             </uber>
         </carriers>
     </default>

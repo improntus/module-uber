@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="uber_pickup_template"
+              label="Uber Pick Up Shipment"
+              file="pickup_shipment.html"
+              type="html"
+              module="Improntus_Uber"
+              area="frontend"
+    />
+    <template id="uber_onway_template"
+              label="Uber On the Way Shipment"
+              file="onway_shipment.html"
+              type="html"
+              module="Improntus_Uber"
+              area="frontend"
+    />
+    <template id="uber_delivered_template"
+              label="Uber Delivered Shipment"
+              file="delivered_shipment.html"
+              type="html"
+              module="Improntus_Uber"
+              area="frontend"
+    />
+</config>

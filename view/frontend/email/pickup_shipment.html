@@ -1,0 +1,23 @@
+<!-- pickup_shipment.html -->
+<!--@subject {{trans "Shipment with Uber updated for order #%order_id - Courier is on route to pick up shipment" order_id=$order_id}} @-->
+{{template config_path="design/email/header_template"}}
+
+<p>{{trans "%customer_name, the status of your shipment with Uber has been updated:" customer_name=$customer_name}}</p>
+<p>{{trans "The courier is en route to pick up your package, and you can follow its progress via the following link:"}}</p>
+<table class="button" width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>
+            <table class="inner-wrapper" border="0" cellspacing="0" cellpadding="0" align="center">
+                <tr>
+                    <td align="center">
+                        <a href="{{var order_uber_tracking_url}}" target="_blank">{{trans "Track my order"}}</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<p>{{trans "If you can't click on the button, copy and paste the following link:"}}</p>
+<p>{{var order_uber_tracking_url}}</p>
+
+{{template config_path="design/email/footer_template"}}

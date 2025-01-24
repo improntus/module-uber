@@ -236,9 +236,6 @@
                 </field>
                 <group id="email_updates" translate="label" type="text" sortOrder="205" showInDefault="1" showInWebsite="1">
                     <label>Email Configuration</label>
-                    <depends>
-                        <field id="webhooks_integration">1</field>
-                    </depends>
                     <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1">
                         <label>Enable email sending</label>
                         <validate>required-entry</validate>

@@ -172,8 +172,7 @@
                        showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Enable Uber Outside Business Hours</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>If set to NO, the shipping method will be hidden when quoted outside business hours.
-                    </comment>
+                    <comment>If set to NO, the shipping method will be hidden when quoted outside business hours.</comment>
                 </field>
                 <field id="description_obh" translate="label comment tooltip" type="textarea" sortOrder="135"
                        showInDefault="1"
@@ -241,7 +240,6 @@
                     </depends>
                     <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1">
                         <label>Enable email sending</label>
-                        <comment>This option, together with Webhooks, allows updating the shipment status via emails.</comment>
                         <validate>required-entry</validate>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>

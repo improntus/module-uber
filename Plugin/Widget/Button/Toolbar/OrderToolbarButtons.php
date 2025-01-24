@@ -47,6 +47,7 @@ class OrderToolbarButtons
      * @param Data $helper
      * @param UrlInterface $urlInterface
      * @param OrderRepository $orderRepository
+     * @param OrderShipmentRepository $orderShipmentRepository
      */
     public function __construct(
         Data $helper,
@@ -122,26 +123,6 @@ class OrderToolbarButtons
                             'uber/shipment/create',
                             ['order_id' => $order->getId()]
                         );
-                    } else {
-                        if (!$this->helper->isWebhooksEnabled($order->getStoreId())) {
-                            // Show POD Retrieval Button
-                            $buttonOptions = json_encode([
-                                'order_id' => $order->getId(),
-                                'url' => $this->urlInterface->getUrl('uber/order/pod')
-                            ]);
-                            $onclickJs = "jQuery('#uber_pod').orderUberPod($buttonOptions).orderUberPod('showPOD');";
-                            $buttonList->add(
-                                'uber_pod',
-                                [
-                                    'label' => __('Proof of Delivery'),
-                                    'class' => 'uber-button',
-                                    'onclick' => $onclickJs,
-                                    'data_attribute' => [
-                                        'mage-init' => '{"orderUberPod":{}}',
-                                    ]
-                                ]
-                            );
-                        }
                     }
 
                     // Show buttons

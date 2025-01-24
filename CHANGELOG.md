@@ -4,10 +4,8 @@ CHANGELOG
 ### 1.0.6 - 2025-01-20
 - Added: Transactional emails are added with shipment status updates. This option requires having Webhooks configured.
 - Added: A cron job is added to synchronize the shipment status
-
-### 1.0.6 - 2024-08-26
-- Update: WarehouseRepositoryInterface / WarehouseRepository
 - Added: Possibility to display a different title when quoting an order outside business hours.
+- Update: WarehouseRepositoryInterface / WarehouseRepository
 
 ### 1.0.5 - 2024-08-21
 - Removed shipping method when the warehouse is not available

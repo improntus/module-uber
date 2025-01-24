@@ -228,7 +228,7 @@ class Webhook implements WebhookInterface
         $order = $orderModel->loadByIncrementId($incrementId);
         return [
             'orderId' => $order->getId(),
-            'orderStore' => $order->getStoreId(),
+            'orderStore' => $order->getStoreId()
         ];
     }
 
@@ -254,7 +254,7 @@ class Webhook implements WebhookInterface
             $this->helper->logDebug(json_encode([
                 'signature' => $magentoWebhookSignatureKey,
                 'webhookHash' => $uberWebhookSignature,
-                'hashGenerated' => $hashGenerated,
+                'hashGenerated' => $hashGenerated
             ]));
             throw new Exception(__('Webhook Signature Invalid'));
         }

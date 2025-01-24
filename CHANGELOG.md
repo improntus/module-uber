@@ -3,6 +3,9 @@ CHANGELOG
 
 ### 1.0.6 - 2025-01-20
 - Added: Transactional emails are added with shipment status updates. This option requires having Webhooks configured.
+
+### 1.0.6 - 2025-01-20
+- Added: Transactional emails are added with shipment status updates. This option requires having Webhooks configured.
 - Added: A cron job is added to synchronize the shipment status
 
 ### 1.0.6 - 2024-08-26
@@ -26,9 +29,3 @@ CHANGELOG
 
 ### 1.0.0 - 2024-04-10
 - Init module
-
-### 1.0.0 - 2024-09 - 24
-- added module styles
-
-### 1.0.0 - 2024-09 - 25
-- added more specification to styles added pointer event

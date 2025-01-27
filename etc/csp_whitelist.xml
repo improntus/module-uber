@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  @author Improntus Dev Team
-  @copyright Copyright (c) 2024 Improntus (http://www.improntus.com)
+  ~  @author Improntus Dev Team
+  ~  @copyright Copyright (c) 2025 Improntus (http://www.improntus.com)
   -->
-
 <csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
     <policies>

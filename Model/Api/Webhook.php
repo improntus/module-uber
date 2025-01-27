@@ -12,6 +12,7 @@ use Improntus\Uber\Api\OrderShipmentRepositoryInterface;
 use Improntus\Uber\Api\WebhookInterface;
 use Improntus\Uber\Helper\Data;
 use Improntus\Uber\Model\EmailSender;
+use Improntus\Uber\Model\Uber;
 use Magento\Framework\Webapi\Rest\Request;
 use Magento\Sales\Model\OrderFactory;
 use Magento\Sales\Model\OrderRepository;
@@ -45,11 +46,17 @@ class Webhook implements WebhookInterface
     protected EmailSender $emailSender;
 
     /**
+     * @var Uber $uber
+     */
+    protected Uber $uber;
+
+    /**
      * @var OrderShipmentRepositoryInterface $orderShipmentRepository
      */
     protected OrderShipmentRepositoryInterface $orderShipmentRepository;
 
     /**
+     * @param Uber $uber
      * @param Data $helper
      * @param Request $request
      * @param EmailSender $emailSender
@@ -58,6 +65,7 @@ class Webhook implements WebhookInterface
      * @param OrderShipmentRepositoryInterface $orderShipmentRepository
      */
     public function __construct(
+        Uber                             $uber,
         Data                             $helper,
         Request                          $request,
         EmailSender                      $emailSender,
@@ -66,6 +74,7 @@ class Webhook implements WebhookInterface
         OrderShipmentRepositoryInterface $orderShipmentRepository
     )
     {
+        $this->uber = $uber;
         $this->helper = $helper;
         $this->request = $request;
         $this->emailSender = $emailSender;
@@ -106,11 +115,26 @@ class Webhook implements WebhookInterface
             if (!isset($data['external_id'])) {
                 throw new Exception(__('Missing External ID'));
             }
-
             $incrementId = $data['external_id'];
             $order = $this->getOrderData($incrementId);
             if ($order['orderId'] === null) {
-                throw new Exception(__('Order not found'));
+                // If the order associated with the shipment does not exist, we proceed to cancel it
+                try {
+                    $uberOrderShipment = $this->orderShipmentRepository->getByIncrementId($incrementId);
+                    if($uberOrderShipment->getUberShippingId() === null ||
+                        in_array($uberOrderShipment->getStatus(),['delivered','cancelled'])){
+                        throw new Exception(__('The order does not have active / in-progress shipments'));
+                    }
+                    // Cancel Uber Shipment
+                    $uberResponse = $this->uber->cancelShipping($delivery_id, $customer_id, $uberOrderShipment->getStoreId());
+                    if (!isset($uberResponse['id'])) {
+                        throw new Exception(__("Increment ID: $incrementId - Delivery ID: $delivery_id - Cannot cancel shipping order"));
+                    }
+                    throw new Exception(__("MISSING ORDER - Driver Call CANCELED - Increment ID: $incrementId - Delivery ID: $delivery_id - Cancellation ID: {$uberResponse['id']}"));
+                } catch (Exception $e) {
+                    throw new Exception($e->getMessage());
+                }
+                throw new Exception(__('Order not found - Cannot cancel shipping order'));
             }
 
             /**
@@ -254,7 +278,7 @@ class Webhook implements WebhookInterface
             $this->helper->logDebug(json_encode([
                 'signature' => $magentoWebhookSignatureKey,
                 'webhookHash' => $uberWebhookSignature,
-                'hashGenerated' => $hashGenerated
+                'hashGenerated' => $hashGenerated,
             ]));
             throw new Exception(__('Webhook Signature Invalid'));
         }

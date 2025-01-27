@@ -520,10 +520,9 @@ class Uber
         ];
 
         // Add Body to RequestData
-        $verificationType = $this->helper->getVerificationType($storeId) === 'signature_requirement' ? 'signature' : $this->helper->getVerificationType($storeId);
         $requestData['body'] = json_encode([
             "waypoint" => "dropoff",
-            "type" => $verificationType
+            "type" => "picture",
         ]);
 
         // Get endpoint URL

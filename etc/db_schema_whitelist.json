@@ -3,6 +3,7 @@
         "column": {
             "entity_id": true,
             "order_id": true,
+            "store_id": true,
             "increment_id": true,
             "uber_shipping_id": true,
             "source_waypoint": true,

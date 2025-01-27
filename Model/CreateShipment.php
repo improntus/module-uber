@@ -25,6 +25,7 @@ use Magento\Sales\Model\Order\Shipment\TrackFactory;
 use Magento\Sales\Model\Order\ShipmentRepository;
 use Magento\Sales\Model\OrderRepository;
 use Magento\Shipping\Model\ShipmentNotifier;
+use Magento\Framework\Event\ManagerInterface;
 
 class CreateShipment
 {
@@ -98,12 +99,18 @@ class CreateShipment
     protected TrackFactory $trackFactory;
 
     /**
+     * @var ManagerInterface $eventManager
+     */
+    protected ManagerInterface $eventManager;
+
+    /**
      * @param Uber $uber
      * @param Data $helper
      * @param Registry $registry
-     * @param Converter $converter
-     * @param TrackFactory $trackFactory
      * @param TimezoneInterface $timezone
+     * @param Converter $converter
+     * @param ManagerInterface $eventManager
+     * @param TrackFactory $trackFactory
      * @param OrderRepository $orderRepository
      * @param ShipmentNotifier $shipmentNotifier
      * @param TransactionFactory $transactionFactory
@@ -116,9 +123,10 @@ class CreateShipment
         Uber                        $uber,
         Data                        $helper,
         Registry                    $registry,
-        Converter                   $converter,
-        TrackFactory                $trackFactory,
         TimezoneInterface           $timezone,
+        Converter                   $converter,
+        ManagerInterface            $eventManager,
+        TrackFactory                $trackFactory,
         OrderRepository             $orderRepository,
         ShipmentNotifier            $shipmentNotifier,
         TransactionFactory          $transactionFactory,
@@ -132,6 +140,7 @@ class CreateShipment
         $this->registry = $registry;
         $this->timezone = $timezone;
         $this->converter = $converter;
+        $this->eventManager = $eventManager;
         $this->trackFactory = $trackFactory;
         $this->orderRepository = $orderRepository;
         $this->shipmentNotifier = $shipmentNotifier;
@@ -295,6 +304,12 @@ class CreateShipment
                 } catch (Exception $e) {
                     throw new Exception($e->getMessage());
                 }
+
+                // Dispatch Event
+                $this->eventManager->dispatch('uber_shipment_create', [
+                    'order' => $order,
+                    'shipment' => $uberOrderShipmentRepository
+                ]);
 
                 // Return Response
                 return $uberResponse;

@@ -2,6 +2,7 @@ CHANGELOG
 ---------
 
 ### 1.0.6 - 2025-01-20
+- Added: Events uber_shipment_create and uber_shipment_cancel were added. Return Order and Uber Shipment
 - Added: Transactional emails are added with shipment status updates. This option requires having Webhooks configured.
 - Added: A cron job is added to synchronize the shipment status
 - Added: Possibility to display a different title when quoting an order outside business hours.

@@ -52,7 +52,7 @@ define([
          * @returns {string}
          */
         prepareContent: function (verificationData) {
-            var verificationContent = "<hr><br>";
+            var verificationContent = "<br>";
             let verificationType = Object.keys(verificationData).toString();
 
             // API or UberOrderShipmentRepository
@@ -99,7 +99,6 @@ define([
             var self = this;
             this.options.dialog = $('<div class="ui-dialog-content ui-widget-content"></div>').modal({
                 type: 'popup',
-                title: $.mage.__('Uber Proof of Delivery'),
                 responsive: true,
                 buttons: []
             });

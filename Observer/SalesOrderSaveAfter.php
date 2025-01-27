@@ -70,8 +70,16 @@ class SalesOrderSaveAfter implements ObserverInterface
             try {
                 // Get Order by IncrementalId and Update OrderId
                 $uberOrderShipment = $this->uberOrderShipmentRepository->getByIncrementId($order->getIncrementId());
+                $needsSave = false;
                 if ($uberOrderShipment->getOrderId() === null) {
                     $uberOrderShipment->setOrderId($order->getId());
+                    $needsSave = true;
+                }
+                if ($uberOrderShipment->getStoreId() === null) {
+                    $uberOrderShipment->setStoreId($order->getStoreId());
+                    $needsSave = true;
+                }
+                if ($needsSave) {
                     $this->uberOrderShipmentRepository->save($uberOrderShipment);
                 }
 

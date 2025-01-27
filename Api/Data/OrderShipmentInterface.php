@@ -10,6 +10,7 @@ interface OrderShipmentInterface
 {
     public const ENTITY_ID = 'entity_id';
     public const ORDER_ID = 'order_id';
+    public const STORE_ID = 'store_id';
     public const INCREMENT_ID = 'increment_id';
     public const SOURCE_WAYPOINT = 'source_waypoint';
     public const SOURCE_MSI = 'source_msi';
@@ -38,6 +39,17 @@ interface OrderShipmentInterface
      * @return mixed
      */
     public function setOrderId(int $orderId);
+
+    /**
+     * @return mixed
+     */
+    public function getStoreId();
+
+    /**
+     * @param int $storeId
+     * @return mixed
+     */
+    public function setStoreId(int $storeId);
 
     /**
      * @return mixed

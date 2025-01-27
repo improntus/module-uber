@@ -89,7 +89,7 @@ class CancelShipment
             if ($order->getId() === null) {
                 throw new Exception(__('The requested Order does not exist'));
             }
-            $warehouseRepository = $this->getWarehouseRepository($order->getStoreId());
+            $warehouseRepository = $this->getWarehouseRepository();
 
             // Validate Shipping Method
             if ($order->getShippingMethod() == self::CARRIER_CODE) {
@@ -103,7 +103,6 @@ class CancelShipment
                     $warehouseId = $uberOrderShipmentRepository->getSourceMsi();
                 }
                 $warehouse = $warehouseRepository->getWarehouse($warehouseId);
-                $warehouseData = $warehouseRepository->getWarehousePickupData($warehouse);
 
                 // Get Organization ID (Customer ID)
                 $organizationId = $warehouseRepository->getWarehouseOrganization($warehouse);

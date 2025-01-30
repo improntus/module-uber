@@ -1,11 +1,13 @@
 CHANGELOG
 ---------
 
-### 1.0.6 - 2025-01-20
+### 1.0.7 - 2025-01-20
 - Added: Events uber_shipment_create and uber_shipment_cancel were added
 - Added: Transactional emails are added with shipment status updates. This option requires having Webhooks configured.
 - Added: A cron job is added to synchronize the shipment status
 - Added: Possibility to display a different title when quoting an order outside business hours.
+
+### 1.0.6 - 2024-10-28
 - Update: WarehouseRepositoryInterface / WarehouseRepository
 
 ### 1.0.5 - 2024-08-21

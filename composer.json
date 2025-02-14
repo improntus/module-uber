@@ -1,6 +1,6 @@
 {
   "name": "improntus/module-uber",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Official module Uber for Adobe Commerce / Magento 2 Open Source",
   "type": "magento2-module",
   "require": {

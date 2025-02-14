@@ -90,10 +90,10 @@ class WarehouseRepository implements WarehouseRepositoryInterface
      * @param int $storeId
      * @param array $cartItemsSku
      * @param string $countryId
-     * @param int $regionId
+     * @param $regionId
      * @return array
      */
-    public function getAvailableSources(int $storeId, array $cartItemsSku, string $countryId, int $regionId): array
+    public function getAvailableSources(int $storeId, array $cartItemsSku, string $countryId, $regionId): array
     {
         // Uber Waypoint
         $searchCriteria = $this->searchCriteriaBuilder
@@ -252,11 +252,11 @@ class WarehouseRepository implements WarehouseRepositoryInterface
      * getWarehouse
      *
      * Returns Uber Waypoint information
-     * @param int|string $warehouseId
+     * @param $warehouseId
      * @return mixed
      * @throws NoSuchEntityException
      */
-    public function getWarehouse(int|string $warehouseId)
+    public function getWarehouse($warehouseId)
     {
         return $this->waypointRepository->get($warehouseId);
     }

@@ -70,7 +70,6 @@ class SalesOrderPlaceBefore implements ObserverInterface
             try {
                 // Get Data from Checkout Session
                 $warehouseId = $this->checkoutSession->getUberWarehouseId() ?: null;
-
                 $orderShipping = $this->orderShipmentFactory->create();
 
                 // Warehouse is Waypoints or MSI
@@ -79,6 +78,7 @@ class SalesOrderPlaceBefore implements ObserverInterface
                 } else {
                     $orderShipping->setSourceWaypoint($warehouseId);
                 }
+                $orderShipping->setStoreId($order->getStoreId());
                 $orderShipping->setIncrementId($order->getIncrementId());
                 $orderShipping->setStatus('pending');
                 $this->orderShipmentRepositoryInterface->save($orderShipping);

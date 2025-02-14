@@ -60,6 +60,24 @@ class OrderShipment extends AbstractModel implements OrderShipmentInterface
     /**
      * @return mixed
      */
+    public function getStoreId()
+    {
+        return $this->getData(OrderShipmentInterface::STORE_ID);
+    }
+
+    /**
+     * @param int $storeId
+     * @return mixed
+     */
+    public function setStoreId(int $storeId)
+    {
+        return $this->setData(OrderShipmentInterface::STORE_ID, $storeId);
+    }
+
+
+    /**
+     * @return mixed
+     */
     public function getSourceWaypoint()
     {
         return $this->getData(OrderShipmentInterface::SOURCE_WAYPOINT);

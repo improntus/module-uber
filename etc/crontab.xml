@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+  ~  @author Improntus Dev Team
+  ~  @copyright Copyright (c) 2025 Improntus (http://www.improntus.com)
+  -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="improntus_uber">
+        <job name="improntus_uber_order_update" instance="Improntus\Uber\Cron\OrderUpdate" method="execute">
+            <schedule>*/1 * * * *</schedule>
+        </job>
+    </group>
+</config>

@@ -292,6 +292,83 @@ class Uber
     }
 
     /**
+     * @param string $shippingId
+     * @param string $organizationId
+     * @param int $storeId
+     * @return mixed
+     * @throws Exception
+     */
+    public function getShipping(string $shippingId, string $organizationId, int $storeId): mixed
+    {
+        // Get Access Token
+        $token = $this->getAccessToken($storeId);
+
+        // Has data?
+        if ($token === null) {
+            throw new Exception(__("An error occurred while validating/generating the token"));
+        }
+
+        // Prepare Request
+        $requestData = [];
+
+        // Add Header Credentials
+        $requestData['headers'] = [
+            "Content-Type" => "application/json",
+            "Authorization" => "Bearer {$token->getToken()}",
+        ];
+
+        // Get endpoint URL
+        $getShippingEndpoint = $this->helper->buildRequestURL("customers/{$organizationId}/deliveries/{$shippingId}", $storeId);
+
+        // Send Request
+        $uberRequest = $this->ws->doRequest($getShippingEndpoint, $requestData, "POST");
+
+        // Get Response
+        $responseBody = $uberRequest->getBody()->getContents();
+
+        // Opps...
+        if ($uberRequest->getStatusCode() !== 200) {
+            $error = json_decode($responseBody, true);
+
+            /**
+             * There are errors that return an invalid json and can generate an error.
+             * That is why if $error is null I use the 'raw' body
+             */
+            if ($error === null) {
+                $logMsg = $responseBody;
+            } else {
+                $logMsg = json_encode($error);
+            }
+
+            // Write log
+            $this->helper->log("ERROR: Uber Shipping Get Request - CustomerID / OrganizationID: $organizationId");
+            $this->helper->log("ERROR: Uber Shipping Get Request: " . json_encode($requestData));
+            $this->helper->log("ERROR: Uber Shipping Get Response: $logMsg");
+
+            /**
+             * If the error is invalid_params and metadata exists, return that message
+             */
+            if ((isset($error['code']) && $error['code'] === "invalid_params") && isset($error['metadata'])) {
+                $metadataValues = array_values($error['metadata']);
+                $exceptionMsg = $metadataValues[0] ?? $uberRequest->getReasonPhrase();
+            } else {
+                $exceptionMsg = $error['message'] ?? $error['code'] ?? $uberRequest->getReasonPhrase();
+            }
+
+            // Create Exception
+            throw new Exception($exceptionMsg, $uberRequest->getStatusCode());
+        }
+
+        // Log Debug Mode
+        $this->helper->logDebug("Uber Shipping Get Request - CustomerID / OrganizationID: $organizationId");
+        $this->helper->logDebug("Uber Shipping Get Request: " . json_encode($requestData));
+        $this->helper->logDebug("Uber Shipping Get Response: $responseBody");
+
+        // Return Data
+        return json_decode($responseBody, true);
+    }
+
+    /**
      * cancelShipping
      * @param string $shippingId
      * @param string $organizationId
@@ -443,9 +520,10 @@ class Uber
         ];
 
         // Add Body to RequestData
+        $verificationType = $this->helper->getVerificationType($storeId) === 'signature_requirement' ? 'signature' : $this->helper->getVerificationType($storeId);
         $requestData['body'] = json_encode([
             "waypoint" => "dropoff",
-            "type" => "picture",
+            "type" => $verificationType,
         ]);
 
         // Get endpoint URL

@@ -172,13 +172,18 @@
                        showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Enable Uber Outside Business Hours</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>If set to NO, the shipping method will be hidden when quoted outside business hours.</comment>
+                    <comment>If set to NO, the shipping method will be hidden when quoted outside business hours.
+                    </comment>
                 </field>
-                <field id="description_obh" translate="label comment tooltip" type="textarea" sortOrder="135" showInDefault="1"
+                <field id="description_obh" translate="label comment tooltip" type="textarea" sortOrder="135"
+                       showInDefault="1"
                        showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Description Outside Business Hours</label>
-                    <tooltip>The goal of this field is to inform the customer that they will receive their purchase the next business day.</tooltip>
-                    <comment>This description will be displayed when an order is quoted outside of Business Hours</comment>
+                    <tooltip>The goal of this field is to inform the customer that they will receive their purchase the
+                        next business day.
+                    </tooltip>
+                    <comment>This description will be displayed when an order is quoted outside of Business Hours
+                    </comment>
                     <validate>required-entry</validate>
                     <depends>
                         <field id="show_carrier_obh">1</field>
@@ -229,6 +234,45 @@
                     <comment>When order change to one of this selected status, shipment will be generated automatically
                     </comment>
                 </field>
+                <group id="email_updates" translate="label" type="text" sortOrder="205" showInDefault="1" showInWebsite="1">
+                    <label>Email Configuration</label>
+                    <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1">
+                        <label>Enable email sending</label>
+                        <validate>required-entry</validate>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="enable_bcc" translate="label" type="select" sortOrder="15" showInDefault="1" showInWebsite="1">
+                        <label>Send Email Copy</label>
+                        <comment>Allows sending a copy of the email sent to the client.</comment>
+                        <validate>required-entry</validate>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="pickup_email" translate="label comment" type="text" sortOrder="20" showInDefault="1"
+                           showInWebsite="1" showInStore="1">
+                        <label>Pick up email</label>
+                        <validate>validate-email no-whitespace required-entry</validate>
+                        <comment><![CDATA[If you want all emails to be sent to the same address, simply fill out this field and leave the rest empty.<br/>Specify the email address that will receive emails with the status: Pick Up]]></comment>
+                        <depends>
+                            <field id="enable_bcc">1</field>
+                        </depends>
+                    </field>
+                    <field id="onway_email" translate="label comment" type="text" sortOrder="25" showInDefault="1"
+                           showInWebsite="1" showInStore="1">
+                        <label>On way email</label>
+                        <comment>Specify the email address that will receive emails with the status: On Way</comment>
+                        <depends>
+                            <field id="enable_bcc">1</field>
+                        </depends>
+                    </field>
+                    <field id="dropoff_email" translate="label comment" type="text" sortOrder="30" showInDefault="1"
+                           showInWebsite="1" showInStore="1">
+                        <label>Drop-off email</label>
+                        <comment>Specify the email address that will receive emails with the status: Drop Off</comment>
+                        <depends>
+                            <field id="enable_bcc">1</field>
+                        </depends>
+                    </field>
+                </group>
             </group>
         </section>
     </system>

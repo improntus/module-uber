@@ -13,10 +13,10 @@ interface WarehouseRepositoryInterface
      * @param int $storeId
      * @param array $cartItemsSku
      * @param string $countryId
-     * @param int $regionId
+     * @param $regionId
      * @return mixed
      */
-    public function getAvailableSources(int $storeId, array $cartItemsSku, string $countryId, int $regionId);
+    public function getAvailableSources(int $storeId, array $cartItemsSku, string $countryId, $regionId);
 
     /**
      * checkWarehouseWorkSchedule
@@ -59,10 +59,10 @@ interface WarehouseRepositoryInterface
 
     /**
      * getWarehouse
-     * @param int|string $warehouseId
+     * @param $warehouseId
      * @return mixed
      */
-    public function getWarehouse(int|string $warehouseId);
+    public function getWarehouse($warehouseId);
 
     /**
      * getWarehousePickupData

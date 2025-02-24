@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.0.8 - 2025-02-13
+- Update: WarehouseRepositoryInterface / WarehouseRepository
+
 ### 1.0.7 - 2025-01-20
 - Added: Events uber_shipment_create and uber_shipment_cancel were added
 - Added: Transactional emails are added with shipment status updates. This option requires having Webhooks configured.

@@ -225,6 +225,7 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
             // Get Warehouse Address
             $warehouseAddress = $warehouseRepository->getWarehouseAddressData($warehouse);
             $warehouseId = $warehouseRepository->getWarehouseId($warehouse);
+            $warehouseName = $warehouseRepository->getWarehouseName($warehouse);
 
             // Prepare Request Data
             $shippingData = [
@@ -269,6 +270,7 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
 
             // Set Warehouse ID on Checkout Session
             $this->checkoutSession->setUberWarehouseId($warehouseId);
+            $this->checkoutSession->setUberWarehouseName($warehouseName);
 
             // Append Rate
             $result->append($uberMethod);

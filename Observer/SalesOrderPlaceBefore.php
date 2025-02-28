@@ -69,8 +69,12 @@ class SalesOrderPlaceBefore implements ObserverInterface
         if ($order->getShippingMethod() == self::CARRIER_CODE && $this->helper->isModuleEnabled()) {
             try {
                 // Get Data from Checkout Session
-                $warehouseId = $this->checkoutSession->getUberWarehouseId() ?: null;
                 $orderShipping = $this->orderShipmentFactory->create();
+                $warehouseId = $this->checkoutSession->getUberWarehouseId() ?: null;
+                $warehouseName = $this->checkoutSession->getUberWarehouseName() ?: 'n/a';
+
+                // Get Current Shipping Description
+                $orderShippingDescription = $order->getShippingDescription() ?: '';
 
                 // Warehouse is Waypoints or MSI
                 if ($this->helper->getSourceOrigin() == 'msi') {
@@ -82,10 +86,27 @@ class SalesOrderPlaceBefore implements ObserverInterface
                 $orderShipping->setIncrementId($order->getIncrementId());
                 $orderShipping->setStatus('pending');
                 $this->orderShipmentRepositoryInterface->save($orderShipping);
+
+                // Update Order
+                $orderShippingDescription.= __(" | Warehouse Assigned: %1", $warehouseName);
+                $order->setShippingDescription($orderShippingDescription);
+                $order->addStatusHistoryComment($this->getOrderHistoryInformation($warehouseName));
+                $order->save();
             } catch (\Exception $e) {
                 $this->helper->log(__("UBER ERROR LOG SalesOrderSaveAfter: %1", $e->getMessage()));
             }
         }
         return $this;
+    }
+
+    /**
+     * @param $warehouseName
+     * @return string
+     */
+    private function getOrderHistoryInformation($warehouseName): string
+    {
+        $orderHistoryInformation = __('<b>Uber Information:</b><br>');
+        $orderHistoryInformation.= __('The order has been assigned to the Warehouse: <b>%1</b>', $warehouseName);
+        return $orderHistoryInformation;
     }
 }

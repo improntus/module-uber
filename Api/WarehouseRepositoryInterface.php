@@ -86,4 +86,11 @@ interface WarehouseRepositoryInterface
      * @return array
      */
     public function getSourcesByWebsite($storeId): array;
+
+    /**
+     * getWarehouseName
+     * @param $warehouse
+     * @return mixed
+     */
+    public function getWarehouseName($warehouse): string;
 }

@@ -316,4 +316,14 @@ class WarehouseRepository implements WarehouseRepositoryInterface
     {
         return [];
     }
+
+    /**
+     * getWarehouseName
+     * @param $warehouse
+     * @return mixed
+     */
+    public function getWarehouseName($warehouse): string
+    {
+        return $warehouse->getName() ?: 'n/a';
+    }
 }

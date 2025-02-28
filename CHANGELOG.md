@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.0.9 - 2025-03-17
+- Added: A functionality is added that allows writing an Order History with the Warehouse assigned to the order.
+
 ### 1.0.8 - 2025-02-13
 - Update: WarehouseRepositoryInterface / WarehouseRepository
 

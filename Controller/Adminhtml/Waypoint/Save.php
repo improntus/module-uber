@@ -219,7 +219,8 @@ class Save extends Action
 
                     $requestData = [
                         'pickup_address'    => $addressData,
-                        'dropoff_address'   => $addressData
+                        'dropoff_address'   => $addressData,
+                        'external_store_id' => $externalStoreId
                     ];
                     $organizationId = $this->getOrganization($waypoint->getOrganizationId(), $waypoint->getStoreId());
                     $this->uber->getEstimateShipping($requestData, $organizationId, $waypoint->getStoreId());

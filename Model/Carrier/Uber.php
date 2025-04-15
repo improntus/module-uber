@@ -237,7 +237,7 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
                     'zip_code'       => $request->getDestPostcode(),
                     'country'        => $request->getDestCountryId(),
                 ], JSON_UNESCAPED_SLASHES),
-                'external_store_id' => $warehouse->getId(),
+                //'external_store_id' => $warehouse->getId(),
             ];
 
             // Get Organization ID for Estimate

@@ -17,17 +17,20 @@
             }
         }
     }
-    .form.methods-shipping{
-        tbody{
-            .row{
-                &:has(>#label_carrier_uber_uber){
-                    .col{
-                        &.col-carrier{
+    .form.methods-shipping {
+        tbody {
+            .row {
+                &:has(>#label_carrier_uber_uber) {
+                    .col {
+                        &.col-carrier {
                             min-width: 80px;
-                            &:before{
+                            &:before {
                                 width: auto;
                             }
                         }
+                    }
+                    #label_carrier_uber_uber {
+                        vertical-align: inherit;
                     }
                 }
             }

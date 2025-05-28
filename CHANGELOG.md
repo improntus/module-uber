@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.0.10 - 2025-05-28
+- Fix: Adjust Uber Direct logo in Shipping Method (Storefront)
+
 ### 1.0.9 - 2025-03-17
 - Added: A functionality is added that allows writing an Order History with the Warehouse assigned to the order.
 

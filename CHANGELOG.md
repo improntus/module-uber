@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.0.11 - 2025-07-16
+* Compatibility with Adobe Commerce and Magento Open Source 2.4.8-p1
+
 ### 1.0.10 - 2025-05-28
 - Fix: Adjust Uber Direct logo in Shipping Method (Storefront)
 

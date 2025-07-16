@@ -30,7 +30,7 @@ abstract class AbstractCollection extends DbAbstractCollection implements Search
      * Aggregations
      * @var AggregationInterface
      */
-    protected $aggregations;
+    protected AggregationInterface $aggregations;
 
     /**
      * @param EntityFactoryInterface $entityFactory
@@ -55,8 +55,8 @@ abstract class AbstractCollection extends DbAbstractCollection implements Search
         $idFieldName,
         $eventPrefix,
         $eventObject,
-        AdapterInterface $connection = null,
-        AbstractDb $resource = null
+        ?AdapterInterface $connection = null,
+        ?AbstractDb $resource = null
     ) {
         $this->_eventObject = $eventObject;
         $this->_eventPrefix = $eventPrefix;
@@ -68,7 +68,7 @@ abstract class AbstractCollection extends DbAbstractCollection implements Search
     /**
      * @return Select
      */
-    public function getSelectCountSql()
+    public function getSelectCountSql(): Select
     {
         $countSelect = parent::getSelectCountSql();
         $countSelect->reset(Select::GROUP);
@@ -105,7 +105,7 @@ abstract class AbstractCollection extends DbAbstractCollection implements Search
      * @return $this
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function setSearchCriteria(SearchCriteriaInterface $searchCriteria = null)
+    public function setSearchCriteria(?SearchCriteriaInterface $searchCriteria = null)
     {
         return $this;
     }
@@ -135,7 +135,7 @@ abstract class AbstractCollection extends DbAbstractCollection implements Search
      * @return $this
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function setItems(array $items = null)
+    public function setItems(?array $items = null)
     {
         return $this;
     }

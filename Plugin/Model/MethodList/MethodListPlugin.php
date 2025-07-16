@@ -43,7 +43,7 @@ class MethodListPlugin
     public function afterGetAvailableMethods(
         MethodList $subject,
         array $availableMethods,
-        CartInterface $quote = null
+        ?CartInterface $quote = null
     ): array {
         // Validate Shipping Method
         if ($this->getShippingMethodFromQuote($quote) !== self::CARRIER_CODE) {

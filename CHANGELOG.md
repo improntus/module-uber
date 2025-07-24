@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+### 1.1.1 - 2025-07-24
+* Fix the way the JSON object is formatted to create a new submission. 
+* Specifically, we changed the "picture" object attribute to Boolean.
+
 ### 1.1.0 - 2025-07-16
 * Compatibility with Adobe Commerce and Magento Open Source 2.4.8-p1
 

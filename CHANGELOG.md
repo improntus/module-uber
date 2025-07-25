@@ -1,6 +1,11 @@
 CHANGELOG
 ---------
 
+### 1.0.12 - 2025-07-25
+- Fix the way the JSON object is formatted to create a new submission. 
+- Specifically, we changed the "picture" object attribute to Boolean.
+- This is an alternative branch that is born from version 1.0.10.
+
 ### 1.0.10 - 2025-05-28
 - Fix: Adjust Uber Direct logo in Shipping Method (Storefront)
 

@@ -234,6 +234,13 @@
                     <comment>When order change to one of this selected status, shipment will be generated automatically
                     </comment>
                 </field>
+                <field id="steet_address_lines" translate="label" type="multiselect" sortOrder="201" showInDefault="1" showInWebsite="1"
+                       showInStore="1" canRestore="1">
+                    <label>Street address lines</label>
+                    <validate>required-entry</validate>
+                    <source_model>Improntus\Uber\Model\Config\Source\Carriers\SteetAddressLinesOption</source_model>
+                    <comment>Which lines of the street are used in drop off address?</comment>
+                </field>
                 <group id="email_updates" translate="label" type="text" sortOrder="205" showInDefault="1" showInWebsite="1">
                     <label>Email Configuration</label>
                     <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1">

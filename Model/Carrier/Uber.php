@@ -231,7 +231,7 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
             $shippingData = [
                 'pickup_address'    => $warehouseAddress,
                 'dropoff_address'   => json_encode([
-                    'street_address' => [$request->getDestStreet()],
+                    'street_address' => [$this->getDropOffStreetAddress($request->getDestStreet())],
                     'city'           => $request->getDestCity(),
                     'state'          => $customerState->getName(),
                     'zip_code'       => $request->getDestPostcode(),
@@ -292,6 +292,23 @@ class Uber extends AbstractCarrierOnline implements CarrierInterface
         }
         // Return Rate
         return $result;
+    }
+
+    /**
+     * @param string|null $destStreet
+     * @return string
+     */
+    private function getDropOffStreetAddress(?string $destStreet): string
+    {
+        $streetLines = strlen($destStreet ?? "")
+            ? explode("\n", $destStreet)
+            : [];
+
+        $streetAddress = [];
+        foreach ($this->uberHelper->getStreetAddressLines() as $line) {
+            $streetAddress[] = $streetLines[$line];
+        }
+        return implode("\n", $streetAddress);
     }
 
     /**

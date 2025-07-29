@@ -1,8 +1,11 @@
 CHANGELOG
 ---------
 
+### 1.0.13 - 2025-07-28
+- Add a new configuration to indicate which street lines are used in the delivery address.
+
 ### 1.0.12 - 2025-07-25
-- Fix the way the JSON object is formatted to create a new submission. 
+- Fix the way the JSON object is formatted to create a new submission.
 - Specifically, we changed the "picture" object attribute to Boolean.
 - This is an alternative branch that is born from version 1.0.10.
 

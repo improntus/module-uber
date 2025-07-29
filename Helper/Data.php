@@ -347,6 +347,17 @@ class Data extends AbstractHelper
     }
 
     /**
+     * getStreetAddressLines
+     * @param $storeId
+     * @return array
+     */
+    public function getStreetAddressLines($storeId = null): array
+    {
+        $lines = $this->getConfigCarrierData('steet_address_lines', $storeId) ?? "0";
+        return explode(",", $lines);
+    }
+
+    /**
      * getStoreWeightUnit
      * @param $storeId
      * @return mixed

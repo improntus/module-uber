@@ -599,9 +599,7 @@ class CreateShipment
                 ];
                 break;
             case "picture":
-                $verificationParams['picture'] = [
-                    'enabled' => true,
-                ];
+                $verificationParams['picture'] = true;
                 break;
             case "pincode":
                 $verificationParams['pincode'] = [

@@ -7,7 +7,7 @@
 namespace Improntus\Uber\Logger\Handler;
 
 use Magento\Framework\Logger\Handler\Base;
-use Monolog\Level;
+use Monolog\Logger;
 
 class AbstractHandler extends Base
 {
@@ -15,13 +15,22 @@ class AbstractHandler extends Base
      * @var array
      */
     protected $loggerTypes = [
-        Level::Debug,
-        Level::Info,
-        Level::Notice,
-        Level::Warning,
-        Level::Error,
-        Level::Critical,
-        Level::Alert,
-        Level::Emergency,
+        Logger::DEBUG,
+        Logger::INFO,
+        Logger::NOTICE,
+        Logger::WARNING,
+        Logger::ERROR,
+        Logger::CRITICAL,
+        Logger::ALERT,
+        Logger::EMERGENCY,
     ];
+
+    /**
+     * @param array $record
+     * @return bool
+     */
+    public function isHandling(array $record): bool
+    {
+        return in_array($record['level'], $this->loggerTypes);
+    }
 }

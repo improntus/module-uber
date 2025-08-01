@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.1.3 - 2025-07-31
+- Merge alternative branch 1.0.13 into Main.
+
 ### 1.1.2 - 2025-07-30
 * Updated Monologuer in AbstractHandler.php
 
@@ -10,6 +13,14 @@ CHANGELOG
 
 ### 1.1.0 - 2025-07-16
 * Compatibility with Adobe Commerce and Magento Open Source 2.4.8-p1
+
+### 1.0.13 - 2025-07-28
+- Add a new configuration to indicate which street lines are used in the delivery address.
+
+### 1.0.12 - 2025-07-25
+- Fix the way the JSON object is formatted to create a new submission.
+- Specifically, we changed the "picture" object attribute to Boolean.
+- This is an alternative branch that is born from version 1.0.10.
 
 ### 1.0.10 - 2025-05-28
 - Fix: Adjust Uber Direct logo in Shipping Method (Storefront)

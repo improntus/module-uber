@@ -520,14 +520,16 @@ class CreateShipment
             'dropoff_verification'  => $this->getVerificationMethod($order),
         ];
 
+        $shippingAddressStreet = $order->getShippingAddress()->getStreet();
+
         // Has Customer Notes?
-        if ($order->getCustomerNote() !== null) {
-            $dropoffData['dropoff_notes'] = $order->getCustomerNote();
+        if ($dropoffNotes = $this->getDropOffNotes($shippingAddressStreet, $order->getCustomerNote())) {
+            $dropoffData['dropoff_notes'] = $dropoffNotes;
         }
 
         // Add DropOff Address
         $dropoffData['dropoff_address'] = json_encode([
-            'street_address' => $order->getShippingAddress()->getStreet(),
+            'street_address' => $this->getDropOffStreetAddress($shippingAddressStreet),
             'city'           => $order->getShippingAddress()->getCity(),
             'state'          => $order->getShippingAddress()->getRegion(),
             'zip_code'       => $order->getShippingAddress()->getPostcode(),
@@ -536,6 +538,46 @@ class CreateShipment
 
         // Return DropOff data
         return $dropoffData;
+    }
+
+    /**
+     * @param array $streetLines
+     * @return string
+     */
+    private function getDropOffStreetAddress(array $streetLines): string
+    {
+        $streetAddress = [];
+        foreach ($this->helper->getStreetAddressLines() as $line) {
+            if (isset($streetLines[$line]) && strlen(trim((string) $streetLines[$line]))) {
+                $streetAddress[] = trim((string) $streetLines[$line]);
+            }
+        }
+        return implode("\n", $streetAddress);
+    }
+
+    /**
+     * @param array $streetLines
+     * @param string|null $orderCustomerNote
+     * @return string
+     */
+    private function getDropOffNotes(array $streetLines, ?string $orderCustomerNote): string
+    {
+        $streetAddressLines = $this->helper->getStreetAddressLines();
+        
+        // We add everything that doesn't fit in the street address
+        $notes = [];
+        foreach ($streetLines as $line => $value) {
+            if (!in_array($line, $streetAddressLines)) {
+                $notes[] = $value;
+            }
+        }
+
+        // We add the customer note if it exist
+        if ($orderCustomerNote) {
+            $notes[] = $orderCustomerNote;
+        }
+        
+        return implode("\n", $notes);
     }
 
     /**

@@ -23,6 +23,7 @@
                 <description>Uber Direct</description>
                 <preparation_time>15</preparation_time>
                 <automatic_shipment>0</automatic_shipment>
+                <steet_address_lines>0</steet_address_lines>
                 <webhooks_integration>0</webhooks_integration>
                 <model>Improntus\Uber\Model\Carrier\Uber</model>
                 <verification_age_pickup>21</verification_age_pickup>

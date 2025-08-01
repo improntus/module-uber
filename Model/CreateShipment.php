@@ -529,7 +529,10 @@ class CreateShipment
 
         // Add DropOff Address
         $dropoffData['dropoff_address'] = json_encode([
-            'street_address' => $this->getDropOffStreetAddress($shippingAddressStreet),
+            'street_address' => [
+                $this->getDropOffStreetAddress($shippingAddressStreet),
+                $this->getDropOffNotes($shippingAddressStreet)
+            ],
             'city'           => $order->getShippingAddress()->getCity(),
             'state'          => $order->getShippingAddress()->getRegion(),
             'zip_code'       => $order->getShippingAddress()->getPostcode(),
@@ -560,7 +563,7 @@ class CreateShipment
      * @param string|null $orderCustomerNote
      * @return string
      */
-    private function getDropOffNotes(array $streetLines, ?string $orderCustomerNote): string
+    private function getDropOffNotes(array $streetLines, ?string $orderCustomerNote = ""): string
     {
         $streetAddressLines = $this->helper->getStreetAddressLines();
         

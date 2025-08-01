@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.1.4 - 2025-08-01
+- Modify the format of the "dropoff_address" field in the data sent when creating the shipment.
+
 ### 1.1.3 - 2025-07-31
 - Merge alternative branch 1.0.13 into Main.
 

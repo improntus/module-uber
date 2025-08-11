@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.1.5 - 2025-08-11
+- We've added a new setting to determine whether we'll send additional address information when creating the shipment.
+ 
 ### 1.1.4 - 2025-08-01
 - Modify the format of the "dropoff_address" field in the data sent when creating the shipment.
 

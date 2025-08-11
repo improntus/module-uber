@@ -353,8 +353,17 @@ class Data extends AbstractHelper
      */
     public function getStreetAddressLines($storeId = null): array
     {
-        $lines = $this->getConfigCarrierData('steet_address_lines', $storeId) ?? "0";
+        $lines = $this->getConfigCarrierData('dropoff_address/street_address_lines', $storeId) ?? "0";
         return explode(",", $lines);
+    }
+
+    /**
+     * @param $storeId
+     * @return bool
+     */
+    public function getUseAdditionalAddressData($storeId = null): bool
+    {
+        return (bool) $this->getConfigCarrierData('dropoff_address/use_additional_address_data', $storeId) ?? false;
     }
 
     /**

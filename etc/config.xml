@@ -23,7 +23,6 @@
                 <description>Uber Direct</description>
                 <preparation_time>15</preparation_time>
                 <automatic_shipment>0</automatic_shipment>
-                <steet_address_lines>0</steet_address_lines>
                 <webhooks_integration>0</webhooks_integration>
                 <model>Improntus\Uber\Model\Carrier\Uber</model>
                 <verification_age_pickup>21</verification_age_pickup>
@@ -35,6 +34,10 @@
                 <verification_type_dropoff>signature_requirement</verification_type_dropoff>
                 <webhook_signing backend_model="Magento\Config\Model\Config\Backend\Encrypted"/>
                 <description_obh>You will receive your purchase on the next business day.</description_obh>
+                <dropoff_address>
+                    <street_address_lines>0</street_address_lines>
+                    <use_additional_address_data>0</use_additional_address_data>
+                </dropoff_address>
                 <email_updates>
                     <enable>0</enable>
                     <enable_bcc>0</enable_bcc>

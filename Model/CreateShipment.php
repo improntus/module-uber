@@ -308,7 +308,7 @@ class CreateShipment
                 // Dispatch Event
                 $this->eventManager->dispatch('uber_shipment_create', [
                     'order' => $order,
-                    'shipment' => $uberOrderShipmentRepository
+                    'shipment' => $uberOrderShipmentRepository,
                 ]);
 
                 // Return Response
@@ -529,10 +529,7 @@ class CreateShipment
 
         // Add DropOff Address
         $dropoffData['dropoff_address'] = json_encode([
-            'street_address' => [
-                $this->getDropOffStreetAddress($shippingAddressStreet),
-                $this->getDropOffNotes($shippingAddressStreet)
-            ],
+            'street_address' => $this->getDropOffStreetAddress($shippingAddressStreet),
             'city'           => $order->getShippingAddress()->getCity(),
             'state'          => $order->getShippingAddress()->getRegion(),
             'zip_code'       => $order->getShippingAddress()->getPostcode(),
@@ -544,10 +541,24 @@ class CreateShipment
     }
 
     /**
+     * @param $shippingAddressStreet
+     * @return array
+     */
+    private function getDropOffStreetAddress($shippingAddressStreet): array
+    {
+        $streetAddress = [];
+        $streetAddress[] = $this->getDropOffStreet($shippingAddressStreet);
+        if ($this->helper->getUseAdditionalAddressData()) {
+            $streetAddress[] = $this->getDropOffNotes($shippingAddressStreet);
+        }
+        return $streetAddress;
+    }
+
+    /**
      * @param array $streetLines
      * @return string
      */
-    private function getDropOffStreetAddress(array $streetLines): string
+    private function getDropOffStreet(array $streetLines): string
     {
         $streetAddress = [];
         foreach ($this->helper->getStreetAddressLines() as $line) {

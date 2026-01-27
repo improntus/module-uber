@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.1.6 - 2026-01-27
+- Adjust `manifest_total_value` to be in cents.
+
 ### 1.1.5 - 2025-08-11
 - We've added a new setting to determine whether we'll send additional address information when creating the shipment.
  

@@ -226,7 +226,7 @@ class CreateShipment
                     'pickup_deadline_dt'   => $pickupDeadLine->format('Y-m-d\TH:i:s.000\Z'),
                     'dropoff_ready_dt'     => $dropoffReady->format('Y-m-d\TH:i:s.000\Z'),
                     'dropoff_deadline_dt'  => $dropoffDeadLine->format('Y-m-d\TH:i:s.000\Z'),
-                    'manifest_total_value' => (int)$order->getGrandTotal(),
+                    'manifest_total_value' => (int)$order->getGrandTotal() * 100,
                     'manifest_reference'   => $order->getIncrementId(),
                     'external_id'          => $order->getIncrementId(),
                     'external_store_id'    => $warehouseStoreId,

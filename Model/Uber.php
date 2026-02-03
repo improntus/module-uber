@@ -659,8 +659,10 @@ class Uber
             }
 
             // Add Stores
-            foreach ($responseBody['stores'] as $store) {
-                $storesAllowed['stores'][] = $store;
+            if (!empty($responseBody['stores']) && is_array($responseBody['stores'])) {
+                foreach ($responseBody['stores'] as $store) {
+                    $storesAllowed['stores'][] = $store;
+                }
             }
         }
 

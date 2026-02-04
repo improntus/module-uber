@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.1.8 - 2026-02-04
+- Add compatibility with Monolog 2.x and 3.x for Adobe Commerce 2.4.6+.
+
 ### 1.1.7 - 2026-02-03
 - Add validation to fix null response from uber API.
 
